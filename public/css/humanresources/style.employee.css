@@ -1,0 +1,70 @@
+.empMenu {
+    margin-top: 200px;
+}
+.canvaJs {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline;
+    width: 182px;
+    height: 182px;
+}
+.canvasJS {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+}
+.canvasJSpie {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 18vw;
+}
+.employee {
+    padding: 70px;
+}
+.titleh1 {
+    margin: 0;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+}
+.titleHead {
+    font-family: "Montserrat", sans-serif;
+    background-color: #022135;
+    margin: auto;
+    margin-bottom: 1vw;
+}
+.titleHead h1 {
+    color: whitesmoke;
+    padding: 10px;
+}
+.emp{
+    position: relative  ;
+}
+.percent {
+   margin-top: 10px;
+   margin-left: 5px;
+
+}
+
+.graphBox{
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    
+}
+.graphBox .box{
+    position: relative;
+    padding:20px;
+    width: 100%;
+
+    
+}
