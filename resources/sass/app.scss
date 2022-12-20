@@ -5,4 +5,7 @@
 @import 'variables';
 
 // Bootstrap
+
+$enable-grid-classes: false;
+$enable-cssgrid: true;
 @import 'bootstrap/scss/bootstrap';

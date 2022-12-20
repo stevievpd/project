@@ -25,9 +25,6 @@
     display: block;
     width: 18vw;
 }
-.employee {
-    padding: 70px;
-}
 .titleh1 {
     margin: 0;
     padding-bottom: 20px;
@@ -45,26 +42,22 @@
     color: whitesmoke;
     padding: 10px;
 }
-.emp{
-    position: relative  ;
+.emp {
+    position: relative;
 }
 .percent {
-   margin-top: 10px;
-   margin-left: 5px;
-
+    margin-top: 10px;
+    margin-left: 5px;
 }
 
-.graphBox{
+.graphBox {
     position: relative;
     width: 100%;
     padding: 20px;
     display: grid;
-    
 }
-.graphBox .box{
+.graphBox .box {
     position: relative;
-    padding:20px;
+    padding: 20px;
     width: 100%;
-
-    
 }

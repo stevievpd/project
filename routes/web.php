@@ -27,5 +27,12 @@ Route::get('/loginv2', [App\Http\Controllers\HomeController::class, 'logiv2']);
 
 Route::get('/employee', [App\Http\Controllers\HumanResourcesController::class, 'index']);
 
+// CRUD HUMAN RESOURCESphoto.store
+Route::post('/addSchedule', [App\Http\Controllers\HumanResourcesController::class, 'storeSchedule'])->name('addSchedule.store');
+Route::post('/addJob', [App\Http\Controllers\HumanResourcesController::class, 'storeJob'])->name('addJob.store');
+Route::post('/addDepartment', [App\Http\Controllers\HumanResourcesController::class, 'storeDepartment'])->name('addDepartment.store');
+Route::post('/addEmployee', [App\Http\Controllers\HumanResourcesController::class, 'storeEmployee'])->name('addEmployee.store');
+
+
 
 
