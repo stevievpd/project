@@ -13,7 +13,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="resources/css/app.css">
+    
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
@@ -22,7 +22,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
+    <link rel="stylesheet" href="/css/sidebar/app.css">
 
 </head>
 
@@ -94,13 +94,7 @@
     </div>
 </body>
 <style>
-    .navbar {
-        width: 100%;
-        position: fixed;
-        z-index: 0;
-        margin-top: -6px;
-        padding: 20px;
-    }
+
 </style>
 
 </html>

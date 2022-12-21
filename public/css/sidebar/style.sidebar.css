@@ -274,16 +274,17 @@
     background: #e4e9f7;
     /* height: 100vh; */
     left: 240px;
-    margin-top: 54px;
+    margin-top: 75px;
     width: 80px;
     transition: all 0.5s ease;
     border-radius: 0 10px 10px 0;
+    
 }
 
 .sidebar.close ~ .home-section {
     left: 60px;
     border-radius: 0 10px 10px 0;
-    margin-top: 54px;
+    margin-top: 75px;
 }
 
 .home-section .home-content {

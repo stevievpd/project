@@ -5,6 +5,7 @@
 
 @section('sidebar_content')
 @section('content')
+    @include('layouts.modals')
     <!-- ====================================MODAL================= -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!-- Start Add Employee -->
@@ -83,7 +84,7 @@
                             <select class="form-control -Selection" name="schedule" aria-label="Select schedule" required>
                                 <option value="0" selected>- Select -</option>
                                 @foreach ($sched as $s)
-                                    <option value="{{ $s->id }}">{{ $s->time_in }} - {{$s->time_out }}</option>
+                                    <option value="{{ $s->id }}">{{ $s->time_in }} - {{ $s->time_out }}</option>
                                 @endforeach
                             </select>
                             <label for="scheduleSelection">Schedule</label>
@@ -555,6 +556,15 @@
                 {{-- Employee Stats end --}}
 
                 {{-- Employee Details --}}
+                @if (Session::has('msg'))
+                    <script>
+                        $(document).ready(function() {
+                            $("#popModalSuccess").modal('show');
+                        });
+                    </script>
+                    <p class="alert alert-info">{{ Session::get('msg') }}</p>
+                @endif
+                {{-- session --}}
                 <div class="row align-items-start  employee ">
                     <div class="col-8 shadow-sm p-3 mb-5 bg-body rounded employeList">
                         <div class="text-center titleHead  rounded">
@@ -601,6 +611,13 @@
                                                     Add new employee
                                                 </span>
                                             </button>
+                                            <button type="button" class="btn btn-primary btn-sm mt-2"
+                                                data-bs-toggle="modal" data-bs-target="#popModalSuccess">
+                                                <span>
+                                                    <i class="fa fa-plus"></i>
+                                                    sa
+                                                </span>
+                                            </button>
                                         </div>
                                     </div>
 
@@ -617,17 +634,19 @@
                                                 </thead>
                                                 <tbody class="text-center">
                                                     @foreach ($employee as $emp)
-                                                    <tr>
-                                                        <td>{{$emp->employee_code}}</td>
-                                                        <td>{{$emp->first_name}} {{$emp->last_name}}</td>
-                                                        <td>{{$emp->email}}</td>
-                                                        <td> <a data-id="{{$emp->id}}" class="btn btn-sm btn-success btnEdit"><i
-                                                                    class="fa-solid fa-user-pen"></i></a>
+                                                        <tr>
+                                                            <td>{{ $emp->employee_code }}</td>
+                                                            <td>{{ $emp->first_name }} {{ $emp->last_name }}</td>
+                                                            <td>{{ $emp->email }}</td>
+                                                            <td> <a data-id="{{ $emp->id }}"
+                                                                    class="btn btn-sm btn-success btnEdit"><i
+                                                                        class="fa-solid fa-user-pen"></i></a>
 
-                                                            <a data-del="{{$emp->id}}" class="btn btn-sm btn-danger btnDelete"><i
-                                                                    class="fa-solid fa-delete-left"></i></a>
-                                                        </td>
-                                                    </tr>
+                                                                <a data-del="{{ $emp->id }}"
+                                                                    class="btn btn-sm btn-danger btnDelete"><i
+                                                                        class="fa-solid fa-delete-left"></i></a>
+                                                            </td>
+                                                        </tr>
                                                     @endforeach
                                                 </tbody>
                                                 <tfoot class="text-center">
