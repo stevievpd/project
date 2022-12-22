@@ -84,7 +84,9 @@ class HumanResourcesController extends Controller
         $emp->schedule_id = $request->input('schedule');
         $emp->save();
 
-        return redirect()->back()->with(['msg' => 'The Message']);
+        $msg = "$emp->first_name $emp->last_name has been Added";
+
+        return redirect()->back()->with(['msg' => $msg]);
     }
 
     //  =====================EMPLOYEE CONTROLLER========================//

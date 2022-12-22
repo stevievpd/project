@@ -2,9 +2,11 @@
 @extends('layouts.sidebar')
 <link rel="stylesheet" href="/css/humanresources/style.employee.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 @section('sidebar_content')
 @section('content')
+    @include('layouts.modals')
     <!-- ====================================MODAL================= -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!-- Start Add Employee -->
@@ -495,6 +497,15 @@
                 {{-- Employee Stats end --}}
 
                 {{-- Employee Details --}}
+                @if (Session::has('msg'))
+                    <script>
+                        $(document).ready(function() {
+                            $("#popModalSuccess").modal('show');
+                        });
+                    </script>
+                    <p class="alert alert-info">{{ Session::get('msg') }}</p>
+                @endif
+                {{-- session --}}
                 <div class="row align-items-start  employee ">
                     <div class="col-7 col-md-offset-1 shadow-sm p-3 mb-5 bg-body rounded employeList">
                         <div class="text-center titleHead  rounded">
@@ -539,6 +550,13 @@
                                                 <span>
                                                     <i class="fa fa-plus"></i>
                                                     Add new employee
+                                                </span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-sm mt-2"
+                                                data-bs-toggle="modal" data-bs-target="#deletePopupModal">
+                                                <span>
+                                                    <i class="fa fa-plus"></i>
+                                                    sa
                                                 </span>
                                             </button>
                                         </div>
