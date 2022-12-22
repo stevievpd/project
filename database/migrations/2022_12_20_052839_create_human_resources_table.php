@@ -45,10 +45,10 @@ return new class extends Migration
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('job_id');
             $table->unsignedBigInteger('schedule_id');
-            $table->string('employee_code');
+            $table->string('employee_code')->unique();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('address');
             $table->date('birthdate');
             $table->integer('contact_number');

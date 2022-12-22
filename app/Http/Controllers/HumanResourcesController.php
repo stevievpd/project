@@ -22,12 +22,19 @@ class HumanResourcesController extends Controller
         $job = DB::table('job')->get();
         $depart = DB::table('department')->get();
         $emp = DB::table('employee')->get();
+        
+        $empCount       = $emp->count();
+        $departCount    = $depart->count();
+        $jobCount       = $job->count();
 
         $data=[
             'sched'         => $sched,
             'job'           => $job,
             'depart'        => $depart,
             'employee'      => $emp,
+            'empCount'      => $empCount,
+            'depCount'      => $departCount,
+            'jobCount'      => $jobCount,
         ];
 
         return view('human_resources.employee', $data);
@@ -39,7 +46,9 @@ class HumanResourcesController extends Controller
         $sched->time_in = $request->input('time_in');
         $sched->time_out = $request->input('time_out');
         $sched->save();
-        return redirect()->back()->with(['msg' => 'The Message']);
+        
+        $msg = "New Schedule has been created.";
+        return redirect()->back()->with(['msg' => $msg]);
     }
     //  =====================SCHEDULE CONTROLLER========================//
 
@@ -51,7 +60,9 @@ class HumanResourcesController extends Controller
         $job->description = $request->input('description');
         $job->rate = $request->input('rate');
         $job->save();
-        return redirect()->back()->with(['msg' => 'The Message']);
+
+        $msg = "New $job->job_name Job has been created.";
+        return redirect()->back()->with(['msg' => $msg]);
     }
     //  =====================JOB CONTROLLER========================//
 
@@ -63,7 +74,8 @@ class HumanResourcesController extends Controller
         $depart->department_name = $request->input('department_name');
         $depart->save();
 
-        return redirect()->back()->with(['msg' => 'The Message']);
+        $msg = "New $depart->department_name Department has been created.";
+        return redirect()->back()->with(['msg' => $msg]);
     }
     //  =====================DEPARTMENT CONTROLLER========================//
 
