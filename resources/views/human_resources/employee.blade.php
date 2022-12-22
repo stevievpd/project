@@ -23,7 +23,7 @@
                         @csrf
                         <div class="col-12 form-floating">
                             <input type="text" class="form-control empCode text-center"
-                                value="VPD-<?php echo (new DateTime())->format('my'); ?>-xxxx" name="emp_code" required style="opacity: 50%;">
+                                value="VPD-<?php echo (new DateTime())->format('my') ?>-xxxx" name="emp_code" required style="opacity: 50%;">
                             <label for="firstName">Employee Code</label>
                         </div>
                         <div class="col-md-6 form-floating">
@@ -83,7 +83,7 @@
                             <select class="form-control -Selection" name="schedule" aria-label="Select schedule" required>
                                 <option value="0" selected>- Select -</option>
                                 @foreach ($sched as $s)
-                                    <option value="{{ $s->id }}">{{ $s->time_in }} - {{$s->time_out }}</option>
+                                    <option value="{{ $s->id }}">{{ $s->time_in }} - {{ $s->time_out }}</option>
                                 @endforeach
                             </select>
                             <label for="scheduleSelection">Schedule</label>
@@ -487,68 +487,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4 containEmp border border-rounded graphBox" style="height:32.6vh;">
+                    <div class="col-8 containEmp border border-rounded graphBox" style="height:32.6vh;">
                         <canvas id="myChart" class="canvasJS" style="width:100vw;"></canvas>
-                    </div>
-                    <div class="col-4 containEmp border border-rounded" style="height:32.6vh;">
-                        <div class="row emp">
-                            <div
-                                class="col-6 border border-top-0 border-start-0 border-bottom-0 border-secondary border-opacity-50">
-                                <div class="p-3 empTitle">
-                                    <h5>Total Employees</h5>
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <h1>13</h1>
-                                    <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
-                                            style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
-                                            6%</span>
-                                    </div>
-                                </div>
-
-                                <p class="text-center">Employees</p>
-                            </div>
-                            <div
-                                class="col-6 border border-top-0 border-start-0 border-bottom-0 border-end-0 border-secondary border-opacity-50">
-                                <div class="p-3 empTitle">
-                                    <h5>Total Employees</h5>
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <h1>13</h1>
-                                    <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
-                                            style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
-                                            6%</span>
-                                    </div>
-                                </div>
-                                <p class="text-center">Employees</p>
-                            </div>
-                            <div class="col-6 border border-start-0 border-bottom-0 border-secondary border-opacity-50">
-                                <div class="p-3 empTitle">
-                                    <h5>Total Employees</h5>
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <h1>13</h1>
-                                    <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
-                                            style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
-                                            6%</span>
-                                    </div>
-                                </div>
-                                <p class="text-center">Employees</p>
-                            </div>
-                            <div
-                                class="col-6 border border-end-0 border-start-0 border-bottom-0 border-secondary border-opacity-50">
-                                <div class="p-3 empTitle">
-                                    <h5>Total Employees</h5>
-                                </div>
-                                <div class="d-flex justify-content-center">
-                                    <h1>13</h1>
-                                    <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
-                                            style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
-                                            6%</span>
-                                    </div>
-                                </div>
-                                <p class="text-center">Employees</p>
-                            </div>
-                        </div>
                     </div>
                     <!-- new design end -->
                 </div>
@@ -556,7 +496,7 @@
 
                 {{-- Employee Details --}}
                 <div class="row align-items-start  employee ">
-                    <div class="col-8 shadow-sm p-3 mb-5 bg-body rounded employeList">
+                    <div class="col-7 col-md-offset-1 shadow-sm p-3 mb-5 bg-body rounded employeList">
                         <div class="text-center titleHead  rounded">
                             <h1 class=" titleh1">Employee Status</h1>
                         </div>
@@ -617,17 +557,19 @@
                                                 </thead>
                                                 <tbody class="text-center">
                                                     @foreach ($employee as $emp)
-                                                    <tr>
-                                                        <td>{{$emp->employee_code}}</td>
-                                                        <td>{{$emp->first_name}} {{$emp->last_name}}</td>
-                                                        <td>{{$emp->email}}</td>
-                                                        <td> <a data-id="{{$emp->id}}" class="btn btn-sm btn-success btnEdit"><i
-                                                                    class="fa-solid fa-user-pen"></i></a>
+                                                        <tr>
+                                                            <td>{{ $emp->employee_code }}</td>
+                                                            <td>{{ $emp->first_name }} {{ $emp->last_name }}</td>
+                                                            <td>{{ $emp->email }}</td>
+                                                            <td> <a data-id="{{ $emp->id }}"
+                                                                    class="btn btn-sm btn-success btnEdit"><i
+                                                                        class="fa-solid fa-user-pen"></i></a>
 
-                                                            <a data-del="{{$emp->id}}" class="btn btn-sm btn-danger btnDelete"><i
-                                                                    class="fa-solid fa-delete-left"></i></a>
-                                                        </td>
-                                                    </tr>
+                                                                <a data-del="{{ $emp->id }}"
+                                                                    class="btn btn-sm btn-danger btnDelete"><i
+                                                                        class="fa-solid fa-delete-left"></i></a>
+                                                            </td>
+                                                        </tr>
                                                     @endforeach
                                                 </tbody>
                                                 <tfoot class="text-center">
@@ -794,8 +736,8 @@
 
                         </div>
                     </div>
-                    <div class="col-4 containEmp shadow-sm p-3 mb-5 mx-auto bg-body rounded graphBox">
-                        <div class="text-center titleHead  rounded">
+                    <div class="col-4 containEmp shadow-sm  ms-5 bg-body rounded graphBox">
+                        <div class="text-center titleHead rounded">
                             <h1 class=" titleh1">Working Format</h1>
                         </div>
                         <div class="box">
@@ -823,7 +765,6 @@
     <script>
         //bar chart
         const ctx = document.getElementById('myChart');
-
         new Chart(ctx, {
             type: 'bar',
             data: {
@@ -831,17 +772,41 @@
                     'October', 'November', 'December'
                 ],
                 datasets: [{
-                    label: 'Employee Work Hours',
-                    data: [7, 1, 4, 9, 13, 3, 2, 6, 1, 7, 9, 11],
-
-                }]
+                    label: 'Employee',
+                    data: [12, 59, 5, 56, 58, 12, 59, 87, 45, 65, 40, 12],
+                    backgroundColor: 'rgb(113,82,243)'
+                }, {
+                    label: 'Working Hours',
+                    data: [12, 59, 5, 56, 58, 12, 59, 85, 23, 25, 84, 14],
+                }],
             },
             options: {
+                tooltips: {
+                    displayColors: true,
+                    callbacks: {
+                        mode: 'x',
+                    },
+                },
                 scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                    xAxes: [{
+                        stacked: true,
+                        gridLines: {
+                            display: false,
+                        }
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                        type: 'linear',
+                    }]
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom'
+                },
             }
         });
     </script>
