@@ -16,7 +16,7 @@
         <input type="checkbox" id="flip">
         <div class="cover" id="cover">
             <div class="front">
-                <img src="https://png.pngtree.com/thumb_back/fh260/background/20220523/pngtree-professional-streamer-banner-e-sport-fan-image_1375154.jpg"
+                <img src="https://blog.loginradius.com/static/c49123200495a3bc193612dc9923645d/a3513/Authentication-vs.-Authorization.png"
                     alt="">
                 <div class="text">
                     <span class="text-1">A positive mind set, <br> gives you postive things</span>
@@ -25,11 +25,11 @@
             </div>
 
             <div class="back">
-                <img src="https://png.pngtree.com/thumb_back/fh260/background/20190221/ourmid/pngtree-simple-business-office-document-image_20843.jpg"
+                <img src="https://www.thesslstore.com/blog/wp-content/uploads/2021/05/client-authentication-certificate-feature-698x419.jpg"
                     alt="">
                 <div class="text">
-                    <span class="text-1">A big business<br> Starts small</span>
-                    <span class="text-2">- Richard Branson</span>
+                    <span class="text-1">What would you do if you weren’t afraid?</span>
+                    <span class="text-2">Shifting Ways!</span>
                 </div>
             </div>
         </div>

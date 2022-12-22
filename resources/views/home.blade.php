@@ -1,13 +1,13 @@
 @extends('layouts.app')
-@extends('layouts.sidebar')
+
 <link rel="stylesheet" href="/css/dashboard/style.dash.css">
 
-@section('sidebar_content')
+
 @section('content')
     <div class="container">
         <div class="text-center titleHead  rounded">
             <h1 class=" heading">Dashboard</h1>
-            <h3>Howdy, {{ Auth::user()->name }}</h3>
+            <h4>Howdy, {{ Auth::user()->name }}</h4>
         </div>
         <div class="gallery-image">
             <div class="img-box rounded">
@@ -74,5 +74,4 @@
             background-color: #aecfe5;
         }
     </style>
-@endsection
 @endsection

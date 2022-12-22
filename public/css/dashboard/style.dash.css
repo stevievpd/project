@@ -18,6 +18,10 @@ body {
     color: white;
 }
 
+.titleHead h4{
+  color:#e8e4c9;
+}
+
 .gallery-image {
   padding: 20px;
   display: flex;
@@ -51,7 +55,9 @@ body {
   left: 20px;
   opacity: 0.0;
   transition: transform 0.5s ease, opacity 0.5s ease;
+  color: #e8e4c9;
 }
+
 
 .transparent-box {
   height: 250px;
