@@ -25,7 +25,7 @@
                         @csrf
                         <div class="col-12 form-floating">
                             <input type="text" class="form-control empCode text-center"
-                                value="VPD-<?php echo (new DateTime())->format('my') ?>-xxxx" name="emp_code" required style="opacity: 50%;">
+                                value="VPD-<?php echo (new DateTime())->format('my') ?>-00{{$empCount+1}}" name="emp_code" required style="opacity: 50%;">
                             <label for="firstName">Employee Code</label>
                         </div>
                         <div class="col-md-6 form-floating">
@@ -437,7 +437,7 @@
                                     <h5>Total Employees</h5>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <h1>13</h1>
+                                    <h1>{{$empCount}}</h1>
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
@@ -452,26 +452,26 @@
                                     <h5>Total Department</h5>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <h1>2</h1>
+                                    <h1>{{$depCount}}</h1>
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
                                     </div>
                                 </div>
-                                <p class="text-center">Employees</p>
+                                <p class="text-center">Department</p>
                             </div>
                             <div class="col-6 border border-start-0 border-bottom-0 border-secondary border-opacity-50">
                                 <div class="p-3 empTitle">
                                     <h5>Total Jobs</h5>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <h1>10</h1>
+                                    <h1>{{$jobCount}}</h1>
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
                                     </div>
                                 </div>
-                                <p class="text-center">Employees</p>
+                                <p class="text-center">Job</p>
                             </div>
                             <div
                                 class="col-6 border border-end-0 border-start-0 border-bottom-0 border-secondary border-opacity-50">
@@ -552,13 +552,7 @@
                                                     Add new employee
                                                 </span>
                                             </button>
-                                            <button type="button" class="btn btn-primary btn-sm mt-2"
-                                                data-bs-toggle="modal" data-bs-target="#deletePopupModal">
-                                                <span>
-                                                    <i class="fa fa-plus"></i>
-                                                    sa
-                                                </span>
-                                            </button>
+                                         
                                         </div>
                                     </div>
 
