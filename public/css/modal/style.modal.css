@@ -1,0 +1,165 @@
+/* for success popup modal */
+body {
+	font-family: 'Varela Round', sans-serif;
+}
+.modal-pop {		
+	color: #636363;
+	width: 325px;
+	font-size: 14px;
+}
+.modal-pop .modal-content {
+	padding: 20px;
+	border-radius: 5px;
+	border: none;
+}
+.modal-pop .modal-header {
+	border-bottom: none;   
+	position: relative;
+}
+.modal-pop h4 {
+	text-align: center;
+	font-size: 26px;
+	margin: 30px 0 -15px;
+}
+.modal-pop .form-control, .modal-pop .btn {
+	min-height: 40px;
+	border-radius: 3px; 
+}
+.modal-pop .close {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+}	
+.modal-pop .modal-footerpop {
+	border: none;
+	text-align: center;
+	border-radius: 5px;
+	font-size: 13px;
+
+}	
+.modal-pop .icon-box {
+	color: #fff;		
+	position: absolute;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	top: -70px;
+	width: 95px;
+	height: 95px;
+	border-radius: 50%;
+	z-index: 9;
+	background: #82ce34;
+	padding: 15px;
+	text-align: center;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+}
+.modal-pop .icon-box i {
+	font-size: 58px;
+	position: relative;
+	top: 3px;
+}
+.modal-pop.modal-dialog {
+	margin-top: 80px;
+}
+.modal-pop .btn {
+	color: #fff;
+	border-radius: 4px;
+	background: #82ce34;
+	text-decoration: none;
+	transition: all 0.4s;
+	line-height: normal;
+	border: none;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.modal-pop .btn:hover, .modal-pop .btn:focus {
+	background: #6fb32b;
+	outline: none;
+}
+.trigger-btn{
+	display: inline-block;
+	margin: 100px auto;
+}
+/* for success popup modal */
+
+/* for deleted popup modal */
+body .modal-del {
+	font-family: 'Varela Round', sans-serif;
+}
+.modal-del {		
+	color: #636363;
+	width: 325px;
+}
+.modal-del .modal-content {
+	padding: 20px;
+	border-radius: 5px;
+	border: none;
+}
+.modal-del .modal-headerDel {
+	border-bottom: none;   
+	position: relative;
+}
+.modal-del h4 {
+	text-align: center;
+	font-size: 26px;
+	margin: 30px 0 -15px;
+}
+.modal-del .form-control, .modal-del .btn {
+	min-height: 40px;
+	border-radius: 3px; 
+}
+.modal-del .close {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+}	
+.modal-del .modal-footerDel {
+	border: none;
+	text-align: center;
+	border-radius: 5px;
+	font-size: 13px;
+}	
+.modal-del .icon-box {
+	color: #fff;		
+	position: absolute;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	top: -70px;
+	width: 95px;
+	height: 95px;
+	border-radius: 50%;
+	z-index: 9;
+	background: #ef513a;
+	padding: 15px;
+	text-align: center;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+}
+.modal-del .icon-box i {
+	font-size: 56px;
+	position: relative;
+	top: 4px;
+}
+.modal-del.modal-dialog {
+	margin-top: 80px;
+}
+.modal-del .btn {
+	color: #fff;
+	border-radius: 4px;
+	background: #ef513a;
+	text-decoration: none;
+	transition: all 0.4s;
+	line-height: normal;
+	border: none;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.modal-del .btn:hover, .modal-del .btn:focus {
+	background: #da2c12;
+	outline: none;
+}
+.trigger-btn {
+	display: inline-block;
+	margin: 100px auto;
+}
+/* for deleted popup modal */

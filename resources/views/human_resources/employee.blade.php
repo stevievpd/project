@@ -2,6 +2,7 @@
 @extends('layouts.sidebar')
 <link rel="stylesheet" href="/css/humanresources/style.employee.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 @section('sidebar_content')
 @section('content')
@@ -612,7 +613,7 @@
                                                 </span>
                                             </button>
                                             <button type="button" class="btn btn-primary btn-sm mt-2"
-                                                data-bs-toggle="modal" data-bs-target="#popModalSuccess">
+                                                data-bs-toggle="modal" data-bs-target="#deletePopupModal">
                                                 <span>
                                                     <i class="fa fa-plus"></i>
                                                     sa
