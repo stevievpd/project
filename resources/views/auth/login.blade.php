@@ -140,7 +140,7 @@
                             <div class="input-box">
                                 <i class="fas fa-lock"></i>
                                 <input id="password-confirm" type="password" class="form-control"
-                                    placeholder="Confirm Password" name="password_confirmation" required
+                                    placeholder="Confirm Password" name="password_confirmation"
                                     autocomplete="new-password">
                             </div>
                             <div class="button input-box">

@@ -13,9 +13,26 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('inventory', function (Blueprint $table) {
-            $table->id();
+        Schema::create('category', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('category_name');
+            $table->string('category_description');
+            $table->softDeletes();
             $table->timestamps();
+        });
+
+        Schema::create('product', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('product_name');
+            $table->string('product_description');
+            $table->unsignedBigInteger('category_id');
+            $table->double('price');
+            $table->integer('quantity');
+            $table->softDeletes();
+            $table->timestamps();
+
+            // foreign keys
+            $table->foreign('category_id')->references('id')->on('category');
         });
     }
 
