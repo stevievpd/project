@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="/css/modal/style.modal.css">
 <!-- popup SUCCESS MODAL -->
 <div id="popModalSuccess" class="modal fade">
     <div class="modal-dialog modal-pop ">
@@ -10,7 +10,7 @@
                 <h4 class="modal-title w-100 ">Awesome!</h4>
             </div>
             <div class="modal-body ">
-                <p class="text-center"></p>
+                <p class="text-center">{{ Session::get('msg') }}</p>
             </div>
             <div class="modal-footerpop">
                 <button class="btn btn-success btn-block btn-pop" data-bs-dismiss="modal">OK</button>
@@ -28,10 +28,10 @@
 				<div class="icon-box">
 					<i class="material-icons">&#xE5CD;</i>
 				</div>				
-				<h4 class="modal-title w-100">Done!</h4>	
+				<h4 class="modal-title w-100">Done!</h4>
 			</div>
 			<div class="modal-body">
-				<p class="text-center"></p>
+				<p class="text-center">{{ Session::get('msg') }}</p>
 			</div>
 			<div class="modal-footerDel">
 				<button class="btn btn-danger btn-block" data-bs-dismiss="modal">OK</button>
