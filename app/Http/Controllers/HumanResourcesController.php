@@ -21,7 +21,7 @@ class HumanResourcesController extends Controller
         $sched = DB::table('schedule')->get();
         $job = DB::table('job')->get();
         $depart = DB::table('department')->get();
-        $emp = DB::table('employee')->get();
+        $emp = DB::table('employee')->get()->whereNull('deleted_at');
         
         $empCount       = $emp->count();
         $departCount    = $depart->count();
@@ -64,6 +64,35 @@ class HumanResourcesController extends Controller
         $msg = "New $job->job_name Job has been created.";
         return redirect()->back()->with(['msg' => $msg]);
     }
+
+    public function editJob($id){
+        $job = new job;
+        
+        $job1 = $job::find($id);
+        return response()->json($job1);
+
+    }
+
+    public function updateJob(Request $request){
+
+        $id = $request->input('id');
+
+        $job_name = $request->input('job_name');
+        $rate = $request->input('rate');
+        $description = $request->input('description');
+
+        DB::table('job')
+            ->where('id', $id)
+            ->update([
+                'job_name' => $job_name,
+                'rate' => $rate,
+                'description' => $description,
+            ]);
+            $msg = "$job_name has been Updated";
+
+        return redirect()->back()->with(['msg' => $msg]);
+    }
+
     //  =====================JOB CONTROLLER========================//
 
 
@@ -109,5 +138,54 @@ class HumanResourcesController extends Controller
 
     }
 
+    public function updateEmployee(Request $request){
+
+        $id = $request->input('employeeId');
+
+        $employee_code = $request->input('emp_code');
+        $first_name = $request->input('first_name');
+        $last_name = $request->input('last_name');
+        $address = $request->input('address');
+        $birthdate = $request->input('birthdate');
+        $contact_number = $request->input('contact_number');
+        $gender = $request->input('gender');
+        $email = $request->input('email');
+        $department_id = $request->input('department');
+        $job_id = $request->input('job');
+        $schedule_id = $request->input('schedule');
+
+        DB::table('employee')
+            ->where('id', $id)
+            ->update([
+                'employee_code' => $employee_code,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'address' => $address,
+                'birthdate' => $birthdate,
+                'contact_number' => $contact_number,
+                'gender' => $gender,
+                'email' => $email,
+                'department_id' => $department_id,
+                'job_id' => $job_id,
+                'schedule_id' => $schedule_id,
+            ]);
+            $msg = "$employee_code has been Updated";
+
+        return redirect()->back()->with(['msg' => $msg]);
+    }
+
+    public function deleteEmployee(Request $request){
+        $id = $request->input('employeeId');
+
+        DB::table('employee')
+        ->where('id', $id)
+        ->update([
+            'deleted_at' => now(),
+        ]);
+        $msg = "Employee has been Deleted";
+
+    return redirect()->back()->with(['msgDel' => $msg]);
+    }
+     
     //  =====================EMPLOYEE CONTROLLER========================//
 }
