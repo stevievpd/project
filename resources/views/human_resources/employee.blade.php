@@ -3,6 +3,9 @@
 <link rel="stylesheet" href="/css/humanresources/style.employee.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
 
 @section('sidebar_content')
 @section('content')
@@ -25,7 +28,8 @@
                         @csrf
                         <div class="col-12 form-floating">
                             <input type="text" class="form-control empCode text-center"
-                                value="VPD-<?php echo (new DateTime())->format('my') ?>-00{{$empCount+1}}" name="emp_code" required style="opacity: 50%;">
+                                value="VPD-<?php echo (new DateTime())->format('my'); ?>-00{{ $empCount + 1 }}" name="emp_code" required
+                                style="opacity: 50%;">
                             <label for="firstName">Employee Code</label>
                         </div>
                         <div class="col-md-6 form-floating">
@@ -118,8 +122,11 @@
                 </div>
                 <div class="modal-body  ">
 
-                    <form class="row g-3" action="" method="POST" enctype="multipart/form-data"
+                    <form class="row g-3" action="/updateEmployee" method="POST" enctype="multipart/form-data"
                         autocomplete="off">
+                        @csrf
+                        @method('PATCH')
+
                         <div class="col-12 form-floating">
                             <input type="hidden" id="empId" name="employeeId">
                             <input type="text" class="form-control empCode text-center" id="empCode"
@@ -166,14 +173,18 @@
                         <div class="col-12 form-floating departSelect">
                             <select class="form-control departmentSelection" name="department"
                                 aria-label="Select department" required>
-
+                                @foreach ($depart as $dep)
+                                    <option value="{{ $dep->id }}">{{ $dep->department_name }}</option>
+                                @endforeach
 
                             </select>
                             <label for="departmentSelection">Department</label>
                         </div>
                         <div class="col-12 form-floating jobSelect">
                             <select class="form-control jobSelection" name="job" aria-label="Select job" required>
-
+                                @foreach ($job as $j)
+                                    <option value="{{ $j->id }}">{{ $j->job_name }}</option>
+                                @endforeach
 
                             </select>
                             <label for="jobSelection">Job</label>
@@ -181,7 +192,10 @@
                         <div class="col-12 form-floating schedSelect">
                             <select class="form-control -Selection" name="schedule" aria-label="Select schedule"
                                 required>
-
+                                @foreach ($sched as $s)
+                                    <option value="{{ $s->id }}">{{ $s->time_in }} - {{ $s->time_out }}
+                                    </option>
+                                @endforeach
                             </select>
                             <label for="scheduleSelection">Schedule</label>
                         </div>
@@ -437,7 +451,7 @@
                                     <h5>Total Employees</h5>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <h1>{{$empCount}}</h1>
+                                    <h1>{{ $empCount }}</h1>
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
@@ -452,7 +466,7 @@
                                     <h5>Total Department</h5>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <h1>{{$depCount}}</h1>
+                                    <h1>{{ $depCount }}</h1>
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
@@ -465,7 +479,7 @@
                                     <h5>Total Jobs</h5>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <h1>{{$jobCount}}</h1>
+                                    <h1>{{ $jobCount }}</h1>
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
@@ -552,13 +566,13 @@
                                                     Add new employee
                                                 </span>
                                             </button>
-                                         
+
                                         </div>
                                     </div>
 
                                     <div class="shadow-sm card-body">
                                         <div class="table-responsive ">
-                                            <table id="employeelist" class="table table-borderless display">
+                                            <table id="employeelist" class="table">
                                                 <thead>
                                                     <tr class="text-center">
                                                         <th scope="col" class="text-center">Employee Code</th>
@@ -574,7 +588,7 @@
                                                             <td>{{ $emp->first_name }} {{ $emp->last_name }}</td>
                                                             <td>{{ $emp->email }}</td>
                                                             <td> <a data-id="{{ $emp->id }}"
-                                                                    class="btn btn-sm btn-success btnEdit"><i
+                                                                    class="btn btn-sm btn-success btnEditEmp"><i
                                                                         class="fa-solid fa-user-pen"></i></a>
 
                                                                 <a data-del="{{ $emp->id }}"
@@ -612,7 +626,7 @@
 
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table id="empschedule" class="table display">
+                                            <table id="empschedule" class="table">
                                                 <thead>
 
                                                     <tr>
@@ -662,7 +676,7 @@
 
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table id="empschedule" class="table display">
+                                            <table id="jobList" class="table">
                                                 <thead>
                                                     <tr>
                                                         <th>Job Name</th>
@@ -712,7 +726,7 @@
 
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table id="empschedule" class="table display">
+                                            <table id="deptList" class="table">
                                                 <thead>
                                                     <tr>
                                                         <th>Department</th>
@@ -772,8 +786,130 @@
         }
     </style>
     {{-- scripts --}}
+    {{-- CRUD SCRIPTS --}}
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            //edit modal
+            // var empId = $(this).attr("data-id");
+            // $(document).on('click', '.btnEditEmp', function() {
+            //     $.ajax({
+            //         type: "GET",
+            //         url: "/editEmployee/{id}/edit",
+            //         data: {
+            //             'id': empId,
+            //         },
+            //         dataType: 'json',
+            //         success: function(response) {
+            //             alert('asda');
+            //         }
+            //     });
+            // });
+            $(document).on('click', '.btnEditEmp', function() {
+                var empId = $(this).attr("data-id");
+                var url = "/editEmployee";
+                $.get(url + '/' + empId, function(data) {
+                    //success data
+                    $('#empId').val(data.id);
+                    $('#empCode').val(data.employee_code);
+                    $('#fName').val(data.first_name);
+                    $('#lName').val(data.last_name);
+                    $('#add').val(data.address);
+                    $('#email').val(data.email);
+                    $('#bday').val(data.birthdate);
+                    $('#contact').val(data.contact_number);
+                    $("div.genderSelect select").val(data.gender).change();
+                    $("div.departSelect select").val(data.department_id).change();
+                    $("div.jobSelect select").val(data.job_id).change();
+                    $("div.schedSelect select").val(data.schedule_id).change();
+                    $('#EmployeeEditModal').modal('show');
+                })
+            });
+            //view profile
+            $(document).on('click', '.btnView', function() {
+
+                var empId = $(this).attr("data-view");
+                var pic = $(this).attr("data-pic");
+                $("#pic").attr("src", pic);
+                $.ajax({
+                    method: "POST",
+                    url: "",
+                    data: {
+                        'employee_id': empId,
+                    },
+                    success: function(response) {
+
+                        $.each(response, function(key, emp) {
+                            $(".detail h5").html(emp['firstname'] + '&nbsp' + emp[
+                                'lastname']).change();
+                            $(".detail p").html(emp['job_name']).change();
+                            $(".phone p").html(emp['contact_info']).change();
+                            $(".add p").html(emp['address']).change();
+                            $(".bday p").html(emp['birthdate']).change();
+                            $(".emails p").html(emp['email']).change();
+                            $(".sched p").html(emp['time_in'] + ' - ' + emp['time_out'])
+                                .change();
+                            $(".depart p").html(emp['department_name']).change();
+                            $(".rate p").html('Php ' + emp['rate']).change();
+
+                            $('#profileModal').modal('show');
+                        });
+                    }
+                });
+            });
+            //delete employee
+            $('.btnDelete').on('click', function() {
+
+                const emp_id = $(this).attr("data-del");
+                $('.empId').val(emp_id);
+                $('#deleteEmployeeModal').modal('show');
+            });
 
 
+        });
+    </script>
+
+    {{-- graph --}}
+    <script>
+        $(document).ready(function() {
+            $('#employeelist').DataTable({
+                pageLength: 5,
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, 'All']
+                ],
+
+            });
+            $('#empschedule').DataTable({
+                pageLength: 5,
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, 'All']
+                ],
+
+            });
+            $('#jobList').DataTable({
+                pageLength: 5,
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, 'All']
+                ],
+
+            });
+            $('#deptList').DataTable({
+                pageLength: 5,
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, 'All']
+                ],
+
+            });
+        });
+    </script>
     <script>
         //bar chart
         const ctx = document.getElementById('myChart');
