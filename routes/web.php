@@ -34,6 +34,12 @@ Route::post('/addDepartment', [App\Http\Controllers\HumanResourcesController::cl
 Route::post('/addEmployee', [App\Http\Controllers\HumanResourcesController::class, 'storeEmployee'])->name('addEmployee.store');
 
 Route::get('/editEmployee/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editEmployee'])->name('editEmployee.edit');
+Route::patch('/updateEmployee', [App\Http\Controllers\HumanResourcesController::class, 'updateEmployee'])->name('updateEmployee.update');
+Route::patch('/deleteEmployee', [App\Http\Controllers\HumanResourcesController::class, 'deleteEmployee'])->name('deleteEmployee.update');
+
+Route::get('/editJob/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editJob'])->name('editJob.edit');
+Route::patch('/updateJob', [App\Http\Controllers\HumanResourcesController::class, 'updateJob'])->name('updateJob.update');
+
 
 
 

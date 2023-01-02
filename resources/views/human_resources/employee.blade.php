@@ -29,7 +29,7 @@
                         <div class="col-12 form-floating">
                             <input type="text" class="form-control empCode text-center"
                                 value="VPD-<?php echo (new DateTime())->format('my'); ?>-00{{ $empCount + 1 }}" name="emp_code" required
-                                style="opacity: 50%;">
+                                style="opacity: 50%;" readonly="true">
                             <label for="firstName">Employee Code</label>
                         </div>
                         <div class="col-md-6 form-floating">
@@ -130,17 +130,18 @@
                         <div class="col-12 form-floating">
                             <input type="hidden" id="empId" name="employeeId">
                             <input type="text" class="form-control empCode text-center" id="empCode"
-                                name="emp_code" disabled style="opacity: 50%;">
+                                name="emp_code" style="opacity: 50%;" readonly="true">
                             <label for="firstName">Employee Code</label>
                         </div>
                         <div class="col-md-6 form-floating">
-                            <input type="text" class="form-control firstName" id="fName" name="firstname"
+                            <input type="text" class="form-control firstName" id="fName" name="first_name"
                                 required>
                             <label for="firstName">First name</label>
                         </div>
 
                         <div class="col-md-6 form-floating">
-                            <input type="text" class="form-control lastName" id="lName" name="lastname" required>
+                            <input type="text" class="form-control lastName" id="lName" name="last_name"
+                                required>
                             <label for="lastName">Last name</label>
                         </div>
                         <div class="col form-floating">
@@ -153,7 +154,7 @@
                             <label for="birthDate">Birthdate</label>
                         </div>
                         <div class="col-md-6 form-floating">
-                            <input type="number" class="form-control contactInfo" id="contact" name="contact"
+                            <input type="number" class="form-control contactInfo" id="contact" name="contact_number"
                                 required>
                             <label for="contactInfo">Contact Info</label>
                         </div>
@@ -200,7 +201,7 @@
                             <label for="scheduleSelection">Schedule</label>
                         </div>
                         <div class="mb-2">
-                            <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Cancel</button>
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Cancel</button>
                             <button type="submit" class="btn btn-primary float-end"
                                 name="updateEmployee">Submit</button>
                         </div>
@@ -224,9 +225,13 @@
                     <h4 class="modal-title w-100 text-center">Are you sure?</h4>
 
                 </div>
-                <form class="row g-3" action="" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <form class="row g-3" action="/deleteEmployee" method="POST" enctype="multipart/form-data"
+                    autocomplete="off">
+                    @csrf
+                    @method('PATCH')
+
                     <div class="modal-body">
-                        <input type="hidden" class="empId" name="employee_id">
+                        <input type="hidden" class="empId" name="employeeId">
                         <p>Do you really want to delete these Employee? This process cannot be undone.</p>
                     </div>
                     <div class="modal-footer justify-content-center">
@@ -394,6 +399,52 @@
     </div>
     <!-- End Add JOB -->
 
+    {{-- Start Edit Job --}}
+    <div class="modal fade" id="jobEditModal" tabindex="-1" role="dialog" aria-labelledby="jobTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="jobTitle">Edit Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form class="row g-3" action="/updateJob" method="POST" enctype="multipart/form-data"
+                        autocomplete="off">
+                        @csrf
+                        @method('PATCH')
+                        <div class="col-md-6 form-floating">
+                            <input type="hidden" id="jobId" name="id">
+                            <input type="text" class="form-control jobName" name="job_name" id="jobName" required>
+                            <label for="Job Name">Job</label>
+                        </div>
+                        <div class="col-md-6 form-floating">
+                            <input type="number" step="0.01" class="form-control rate" name="rate" id="rate" required>
+                            <label for="Rate">Rate</label>
+                        </div>
+                        <div class="col-md-12 form-floating">
+                            <input type="text" class="form-control descript" name="description" id="description" required>
+                            <label for="Description">Description</label>
+                        </div>
+
+                        <div class="mb-2">
+                            <button type="button" data-bs-dismiss="modal"
+                                class="btn btn-danger opacity-75">Cancel</button>
+                            <button type="submit" class="btn btn-success opacity-75 float-end"
+                                name="updateJob">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- End Edit Job --}}
+
+
+
+
     <!-- Start Add DEPARTMENT -->
     <div class="modal fade" id="newDepartment" tabindex="-1" role="dialog" aria-labelledby="employeeTitle"
         aria-hidden="true">
@@ -518,6 +569,14 @@
                         });
                     </script>
                     <p class="alert alert-info">{{ Session::get('msg') }}</p>
+                @endif
+                @if (Session::has('msgDel'))
+                    <script>
+                        $(document).ready(function() {
+                            $("#deletePopupModal").modal('show');
+                        });
+                    </script>
+                    <p class="alert alert-danger">{{ Session::get('msgDel') }}</p>
                 @endif
                 {{-- session --}}
                 <div class="row align-items-start  employee ">
@@ -692,7 +751,7 @@
                                                             <td>{{ $job->description }}</td>
                                                             <td>{{ $job->rate }}</td>
                                                             <td><a data-id="{{ $job->id }}"
-                                                                    class="btn btn-sm btn-success btnEdit"><i
+                                                                    class="btn btn-sm btn-success btnEditJob"><i
                                                                         class="fa-solid fa-user-pen"></i></a>
 
                                                                 <a data-del="{{ $job->id }}"
@@ -794,21 +853,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            //edit modal
-            // var empId = $(this).attr("data-id");
-            // $(document).on('click', '.btnEditEmp', function() {
-            //     $.ajax({
-            //         type: "GET",
-            //         url: "/editEmployee/{id}/edit",
-            //         data: {
-            //             'id': empId,
-            //         },
-            //         dataType: 'json',
-            //         success: function(response) {
-            //             alert('asda');
-            //         }
-            //     });
-            // });
+
             $(document).on('click', '.btnEditEmp', function() {
                 var empId = $(this).attr("data-id");
                 var url = "/editEmployee";
@@ -829,7 +874,7 @@
                     $('#EmployeeEditModal').modal('show');
                 })
             });
-            //view profile
+
             $(document).on('click', '.btnView', function() {
 
                 var empId = $(this).attr("data-view");
@@ -861,12 +906,24 @@
                     }
                 });
             });
-            //delete employee
             $('.btnDelete').on('click', function() {
 
                 const emp_id = $(this).attr("data-del");
                 $('.empId').val(emp_id);
                 $('#deleteEmployeeModal').modal('show');
+            });
+
+            $(document).on('click', '.btnEditJob', function() {
+                var jobId = $(this).attr("data-id");
+                var url = "/editJob";
+                $.get(url + '/' + jobId, function(data) {
+                    //success data
+                    $('#jobId').val(data.id);
+                    $('#jobName').val(data.job_name);
+                    $('#rate').val(data.rate);
+                    $('#description').val(data.description);
+                    $('#jobEditModal').modal('show');
+                })
             });
 
 
