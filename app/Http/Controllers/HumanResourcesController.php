@@ -101,5 +101,13 @@ class HumanResourcesController extends Controller
         return redirect()->back()->with(['msg' => $msg]);
     }
 
+    public function editEmployee($id){
+        $emp = new employee;
+        
+        $emp1 = $emp::find($id);
+        return response()->json($emp1);
+
+    }
+
     //  =====================EMPLOYEE CONTROLLER========================//
 }

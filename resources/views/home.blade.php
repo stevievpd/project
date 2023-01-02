@@ -7,7 +7,7 @@
     <div class="container">
         <div class="text-center titleHead  rounded">
             <h1 class=" heading">Dashboard</h1>
-            <h4>Howdy, {{ Auth::user()->name }}</h4>
+            <h5>Howdy, {{ Auth::user()->name }}</h4>
         </div>
         <div class="gallery-image">
             <div class="img-box rounded">
