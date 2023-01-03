@@ -18,14 +18,23 @@ class HumanResourcesController extends Controller
     }
 
     public function index(){
-        $sched = DB::table('schedule')->get();
-        $job = DB::table('job')->get();
-        $depart = DB::table('department')->get();
-        $emp = DB::table('employee')->get()->whereNull('deleted_at');
-        
+        $sched = DB::table('schedule')->get()->whereNull('deleted_at');
+        $job = DB::table('job')->get()->whereNull('deleted_at');
+        $depart = DB::table('department')->get()->whereNull('deleted_at');
+        $emp = DB::table('employee')
+            ->join('job', 'job.id', '=', 'employee.job_id')    
+         ->get()->whereNull('employee.deleted_at');
+
+        $workformat = DB::table('employee')
+                    ->join('department', 'employee.department_id', '=', 'department.id')
+                    ->select( DB::raw('count(employee.id) as total'), 'department.department_name')
+                    ->groupBy('department.department_name')
+                    ->get();
+
         $empCount       = $emp->count();
         $departCount    = $depart->count();
         $jobCount       = $job->count();
+        $schedCount       = $sched->count();
 
         $data=[
             'sched'         => $sched,
@@ -35,6 +44,8 @@ class HumanResourcesController extends Controller
             'empCount'      => $empCount,
             'depCount'      => $departCount,
             'jobCount'      => $jobCount,
+            'schedCount'    => $schedCount,
+            'workformat'    => $workformat,
         ];
 
         return view('human_resources.employee', $data);
@@ -49,6 +60,42 @@ class HumanResourcesController extends Controller
         
         $msg = "New Schedule has been created.";
         return redirect()->back()->with(['msg' => $msg]);
+    }
+    public function editSchedule($id){
+        $schedule = new schedules;
+        
+        $sched = $schedule::find($id);
+        return response()->json($sched);
+
+    }
+    public function updateSchedule(Request $request){
+
+        $id = $request->input('sched_id');
+
+        $time_in = $request->input('time_in');
+        $time_out = $request->input('time_out');
+
+        DB::table('schedule')
+            ->where('id', $id)
+            ->update([
+                'time_in' => $time_in,
+                'time_out' => $time_out,
+            ]);
+            $msg = "Schedule has been Updated";
+
+        return redirect()->back()->with(['msg' => $msg]);
+    }
+    public function deleteSchedule(Request $request){
+        $id = $request->input('sched_id');
+
+        DB::table('schedule')
+        ->where('id', $id)
+        ->update([
+            'deleted_at' => now(),
+        ]);
+        $msg = "Schedule has been Deleted";
+
+    return redirect()->back()->with(['msgDel' => $msg]);
     }
     //  =====================SCHEDULE CONTROLLER========================//
 
@@ -92,6 +139,18 @@ class HumanResourcesController extends Controller
 
         return redirect()->back()->with(['msg' => $msg]);
     }
+    public function deleteJob(Request $request){
+        $id = $request->input('job_id');
+
+        DB::table('job')
+        ->where('id', $id)
+        ->update([
+            'deleted_at' => now(),
+        ]);
+        $msg = "Job has been Deleted";
+
+    return redirect()->back()->with(['msgDel' => $msg]);
+    }
 
     //  =====================JOB CONTROLLER========================//
 
@@ -105,6 +164,41 @@ class HumanResourcesController extends Controller
 
         $msg = "New $depart->department_name Department has been created.";
         return redirect()->back()->with(['msg' => $msg]);
+    }
+    public function editDepartment($id){
+        $department = new department;
+        
+        $depart = $department::find($id);
+        return response()->json($depart);
+
+    }
+    public function updateDepartment(Request $request){
+
+        $id = $request->input('depart_id');
+
+        $department_name = $request->input('department_name');
+
+
+        DB::table('department')
+            ->where('id', $id)
+            ->update([
+                'department_name' => $department_name,
+            ]);
+            $msg = "Department has been Updated";
+
+        return redirect()->back()->with(['msg' => $msg]);
+    }
+    public function deleteDepartment(Request $request){
+        $id = $request->input('department_id');
+
+        DB::table('department')
+        ->where('id', $id)
+        ->update([
+            'deleted_at' => date("Y-m-d H:i:s"),
+        ]);
+        $msg = "Department has been Deleted";
+
+    return redirect()->back()->with(['msgDel' => $msg]);
     }
     //  =====================DEPARTMENT CONTROLLER========================//
 

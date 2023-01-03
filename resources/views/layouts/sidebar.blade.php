@@ -82,7 +82,7 @@
         <li>
             <div class="iocn-link">
                 <a href="#">
-                    <i class="fa-solid fa-peso-sign"></i>
+                    <i class="fa-solid fa-coins"></i>
                     <span class="link_name">Payroll</span>
                 </a>
                 <i class='bx bxs-chevron-down arrow'></i>
