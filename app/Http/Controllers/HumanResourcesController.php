@@ -21,8 +21,10 @@ class HumanResourcesController extends Controller
         $sched = DB::table('schedule')->get()->whereNull('deleted_at');
         $job = DB::table('job')->get()->whereNull('deleted_at');
         $depart = DB::table('department')->get()->whereNull('deleted_at');
-        $emp = DB::table('employee')->get()->whereNull('deleted_at');
-        
+        $emp = DB::table('employee')
+            ->join('job', 'job.id', '=', 'employee.job_id')    
+         ->get()->whereNull('employee.deleted_at');
+
         $workformat = DB::table('employee')
                     ->join('department', 'employee.department_id', '=', 'department.id')
                     ->select( DB::raw('count(employee.id) as total'), 'department.department_name')

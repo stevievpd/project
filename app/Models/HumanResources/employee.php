@@ -24,4 +24,5 @@ class employee extends Model
                                 'image',
                              ];
 
+
 }
