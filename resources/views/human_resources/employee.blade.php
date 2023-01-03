@@ -645,7 +645,7 @@
                                                         <tr>
                                                             <td>{{ $emp->employee_code }}</td>
                                                             <td>{{ $emp->first_name }} {{ $emp->last_name }}</td>
-                                                            <td>{{ $emp->email }}</td>
+                                                            <td>{{ $emp->job_name }}</td>
                                                             <td> <a data-id="{{ $emp->id }}"
                                                                     class="btn btn-sm btn-success btnEditEmp"><i
                                                                         class="fa-solid fa-user-pen"></i></a>

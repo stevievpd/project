@@ -1,0 +1,14 @@
+.titleHead {
+    font-family: "Montserrat", sans-serif;
+    margin: auto;
+    margin-bottom: 1vw;
+}
+.titleHead h2 {
+    padding-left: 7vw;
+}
+
+.inventoryCardContainer{
+    width: 84% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
