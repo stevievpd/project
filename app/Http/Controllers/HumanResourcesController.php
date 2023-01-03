@@ -117,7 +117,6 @@ class HumanResourcesController extends Controller
         
         $job1 = $job::find($id);
         return response()->json($job1);
-
     }
 
     public function updateJob(Request $request){

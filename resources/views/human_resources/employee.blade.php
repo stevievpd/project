@@ -490,7 +490,7 @@
 
                 const sched_id = $(this).attr("data-del");
                 $('.schedId').val(sched_id);
-                $('#deleteJobModal').modal('show');
+                $('#deleteSchedModal').modal('show');
             });
             $('.btnDeleteDepart').on('click', function() {
 
