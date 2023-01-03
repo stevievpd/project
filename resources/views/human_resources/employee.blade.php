@@ -71,16 +71,17 @@
                             <div
                                 class="col-6 border border-end-0 border-start-0 border-bottom-0 border-secondary border-opacity-50">
                                 <div class="p-3 empTitle">
-                                    <h5>Salary</h5>
+                                    <h5>Total Schedule</h5>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <h1>13</h1>
+                                    <h1>{{ $schedCount }}</h1>
+                                    
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
                                     </div>
                                 </div>
-                                <p class="text-center">Employees</p>
+                                <p class="text-center">Work Schedule</p>
                             </div>
                         </div>
                     </div>
@@ -586,17 +587,21 @@
         });
     </script>
     <script>
-        //Pie Chart
+        //WORK FORMAT
         const ctxs = document.getElementById('pieCHartJS');
 
         new Chart(ctxs, {
             type: 'polarArea',
             data: {
-                labels: ['IT', 'Creatives', 'Sales', ],
+                labels: [@foreach ($workformat as $work)
+                                        '{{ $work->department_name }}',
+                                    @endforeach ],
                 datasets: [{
-                    label: 'Job Statistics',
-                    data: [3, 3, 2, ],
-                    borderWidth: 1
+                    label: 'Employee',
+                    data: [@foreach ($workformat as $work)
+                                        {{ $work->total }},
+                                    @endforeach ],
+                    borderWidth: 0
                 }]
             },
             options: {

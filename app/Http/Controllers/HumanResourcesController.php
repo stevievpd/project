@@ -23,9 +23,16 @@ class HumanResourcesController extends Controller
         $depart = DB::table('department')->get()->whereNull('deleted_at');
         $emp = DB::table('employee')->get()->whereNull('deleted_at');
         
+        $workformat = DB::table('employee')
+                    ->join('department', 'employee.department_id', '=', 'department.id')
+                    ->select( DB::raw('count(employee.id) as total'), 'department.department_name')
+                    ->groupBy('department.department_name')
+                    ->get();
+
         $empCount       = $emp->count();
         $departCount    = $depart->count();
         $jobCount       = $job->count();
+        $schedCount       = $sched->count();
 
         $data=[
             'sched'         => $sched,
@@ -35,6 +42,8 @@ class HumanResourcesController extends Controller
             'empCount'      => $empCount,
             'depCount'      => $departCount,
             'jobCount'      => $jobCount,
+            'schedCount'    => $schedCount,
+            'workformat'    => $workformat,
         ];
 
         return view('human_resources.employee', $data);
