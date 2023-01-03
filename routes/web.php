@@ -39,10 +39,14 @@ Route::patch('/deleteEmployee', [App\Http\Controllers\HumanResourcesController::
 
 Route::get('/editJob/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editJob'])->name('editJob.edit');
 Route::patch('/updateJob', [App\Http\Controllers\HumanResourcesController::class, 'updateJob'])->name('updateJob.update');
+Route::patch('/deleteJob', [App\Http\Controllers\HumanResourcesController::class, 'deleteJob'])->name('deleteJob.update');
 
 
+Route::get('/editSchedule/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editSchedule'])->name('editSchedule.edit');
+Route::patch('/updateSchedule', [App\Http\Controllers\HumanResourcesController::class, 'updateSchedule'])->name('updateSchedule.update');
+Route::patch('/deleteSchedule', [App\Http\Controllers\HumanResourcesController::class, 'deleteSchedule'])->name('deleteSchedule.update');
 
-
-
-
+Route::get('/editDepartment/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editDepartment'])->name('editDepartment.edit');
+Route::patch('/updateDepartment', [App\Http\Controllers\HumanResourcesController::class, 'updateDepartment'])->name('updateDepartment.update');
+Route::patch('/deleteDepartment', [App\Http\Controllers\HumanResourcesController::class, 'deleteDepartment'])->name('deleteDepartment.update');
 
