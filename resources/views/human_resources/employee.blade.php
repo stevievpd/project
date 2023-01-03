@@ -10,9 +10,9 @@
 @section('sidebar_content')
 @section('content')
     @include('layouts.modals')
-    @include('layouts/modal.humanresources')
+    @include('layouts/modal.HumanResourcesModal')
 
-    
+
     <div id="container cont-mains empMenu" class=" mx-4" id="main">
         <div id="content" class="" style="width: 80%; margin:auto;">
             <!-- title -->
@@ -129,9 +129,9 @@
                                         Schedules</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="jobTable" data-bs-toggle="tab"
-                                        data-bs-target="#jobTab" type="button" role="tab"
-                                        aria-controls="profile-tab-pane" aria-selected="false">Job Details</button>
+                                    <button class="nav-link" id="jobTable" data-bs-toggle="tab" data-bs-target="#jobTab"
+                                        type="button" role="tab" aria-controls="profile-tab-pane"
+                                        aria-selected="false">Job Details</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="departmentTable" data-bs-toggle="tab"
@@ -181,7 +181,7 @@
                                                                         class="fa-solid fa-user-pen"></i></a>
 
                                                                 <a data-del="{{ $emp->id }}"
-                                                                    class="btn btn-sm btn-danger btnDelete"><i
+                                                                    class="btn btn-sm btn-danger btnDeleteEmp"><i
                                                                         class="fa-solid fa-delete-left"></i></a>
                                                             </td>
                                                         </tr>
@@ -201,7 +201,7 @@
 
                                 {{-- =============================================SCHEDULE table NAV START============================================ --}}
 
-                                <div id="scheduleTab" class="card tab-pane fade border-0" role="tabpanel"
+                                <div id="scheduleTab" class="card tab-pane fade border-0 " role="tabpanel"
                                     aria-labelledby="scheduleTab" tabindex="0">
                                     <div class="card-header">
                                         <button type="button" class="btn btn-primary btn-sm btn-flat"
@@ -231,11 +231,11 @@
                                                             <td>{{ $s->time_in }}</td>
                                                             <td>{{ $s->time_out }}</td>
                                                             <td><a data-id="{{ $s->id }}"
-                                                                    class="btn btn-sm btn-success btnEdit"><i
+                                                                    class="btn btn-sm btn-success btnEditSched"><i
                                                                         class="fa-solid fa-user-pen"></i></a>
 
                                                                 <a data-del="{{ $s->id }}"
-                                                                    class="btn btn-sm btn-danger btnDelete"><i
+                                                                    class="btn btn-sm btn-danger btnDeleteSched"><i
                                                                         class="fa-solid fa-delete-left"></i></a>
                                                             </td>
                                                         </tr>
@@ -248,7 +248,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- =============================================Employee table NAV END============================================ --}}
+                                {{-- =============================================Schedule table NAV END============================================ --}}
 
                                 {{-- =============================================JOB TABLE NAV START============================================ --}}
                                 <div id="jobTab" class="card tab-pane fade border-0" role="tabpanel"
@@ -285,7 +285,7 @@
                                                                         class="fa-solid fa-user-pen"></i></a>
 
                                                                 <a data-del="{{ $job->id }}"
-                                                                    class="btn btn-sm btn-danger btnDelete"><i
+                                                                    class="btn btn-sm btn-danger btnDeleteJob"><i
                                                                         class="fa-solid fa-delete-left"></i></a>
                                                             </td>
                                                         </tr>
@@ -327,11 +327,11 @@
                                                         <tr>
                                                             <td>{{ $dep->department_name }}</td>
                                                             <td><a data-id="{{ $dep->id }}"
-                                                                    class="btn btn-sm btn-success btnEdit"><i
+                                                                    class="btn btn-sm btn-success btnEditDepart"><i
                                                                         class="fa-solid fa-user-pen"></i></a>
 
                                                                 <a data-del="{{ $dep->id }}"
-                                                                    class="btn btn-sm btn-danger btnDelete"><i
+                                                                    class="btn btn-sm btn-danger btnDeleteDepart"><i
                                                                         class="fa-solid fa-delete-left"></i></a>
                                                             </td>
                                                         </tr>
@@ -384,6 +384,7 @@
                 }
             });
 
+            // EDIT scripts for modals
             $(document).on('click', '.btnEditEmp', function() {
                 var empId = $(this).attr("data-id");
                 var url = "/editEmployee";
@@ -436,12 +437,6 @@
                     }
                 });
             });
-            $('.btnDelete').on('click', function() {
-
-                const emp_id = $(this).attr("data-del");
-                $('.empId').val(emp_id);
-                $('#deleteEmployeeModal').modal('show');
-            });
 
             $(document).on('click', '.btnEditJob', function() {
                 var jobId = $(this).attr("data-id");
@@ -455,8 +450,53 @@
                     $('#jobEditModal').modal('show');
                 })
             });
+            $(document).on('click', '.btnEditSched', function() {
+                var schedId = $(this).attr("data-id");
+                var url = "/editSchedule";
+                $.get(url + '/' + schedId, function(data) {
+                    //success data
+                    $('#schedId').val(data.id);
+                    $('#timeIn').val(data.time_in);
+                    $('#timeOut').val(data.time_out);
+                    $('#scheduleEditModal').modal('show');
+                })
+            });
+            $(document).on('click', '.btnEditDepart', function() {
+                var departId = $(this).attr("data-id");
+                var url = "/editDepartment";
+                $.get(url + '/' + departId, function(data) {
+                    //success data
+                    $('#departId').val(data.id);
+                    $('#departName').val(data.department_name);
+                    $('#departmentEditModal').modal('show');
+                })
+            });
 
+            // DELETE scripts for modals
+            $('.btnDeleteEmp').on('click', function() {
 
+                const emp_id = $(this).attr("data-del");
+                $('.empId').val(emp_id);
+                $('#deleteEmployeeModal').modal('show');
+            });
+            $('.btnDeleteJob').on('click', function() {
+
+                const job_id = $(this).attr("data-del");
+                $('.jobId').val(job_id);
+                $('#deleteJobModal').modal('show');
+            });
+            $('.btnDeleteSched').on('click', function() {
+
+                const sched_id = $(this).attr("data-del");
+                $('.schedId').val(sched_id);
+                $('#deleteJobModal').modal('show');
+            });
+            $('.btnDeleteDepart').on('click', function() {
+
+                const depart_id = $(this).attr("data-del");
+                $('.departId').val(depart_id);
+                $('#deleteDepartmentModal').modal('show');
+            });
         });
     </script>
 
