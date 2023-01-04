@@ -26,6 +26,7 @@ Route::get('/loginv2', [App\Http\Controllers\HomeController::class, 'logiv2']);
 
 
 Route::get('/employee', [App\Http\Controllers\HumanResourcesController::class, 'index']);
+Route::get('/journal', [App\Http\Controllers\accountingController::class, 'index']);
 
 // CRUD HUMAN RESOURCESphoto.store
 Route::post('/addSchedule', [App\Http\Controllers\HumanResourcesController::class, 'storeSchedule'])->name('addSchedule.store');
