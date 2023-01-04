@@ -1,0 +1,12 @@
+.titleh1 {
+    margin-left: 10vw !important;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+}
+
+.inventoryCard{
+    margin-left: 9vw !important;
+    margin-right: 2vw !important;
+}
