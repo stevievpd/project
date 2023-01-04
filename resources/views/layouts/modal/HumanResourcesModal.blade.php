@@ -387,7 +387,7 @@
  </div>
  <!-- End EDIT SCHEDULE -->
  {{-- START SCHEDULE DELETE MODAL --}}
- <div id="deleteJobModal" class="modal fade">
+ <div id="deleteSchedModal" class="modal fade">
      <div class="modal-dialog modal-confirm">
          <div class="modal-content">
              <div class="modal-header flex-column">
