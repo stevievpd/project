@@ -1,12 +1,19 @@
-.titleh1 {
-    margin-left: 10vw !important;
-    padding-bottom: 20px;
-    box-sizing: border-box;
+.titleHead {
     font-family: "Montserrat", sans-serif;
-    font-weight: 600;
+    margin: auto;
+    margin-bottom: 1vw;
+}
+.titleHead h2 {
+    padding-left: 7vw;
 }
 
-.inventoryCard{
-    margin-left: 9vw !important;
-    margin-right: 2vw !important;
+.inventoryCardContainer{
+    width: 84% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+.dashboardCardContainer{
+    width: 84% !important;
+    margin-left: auto;
+    margin-right: auto;
 }

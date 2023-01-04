@@ -12,8 +12,4 @@ class job extends Model
     protected $table = 'job';
     protected $fillable  = ['job_name', 'description', 'rate'];
 
-    public function employee()
-    {
-        return $this->belongsToMany(Employee::class);
-    }
 }

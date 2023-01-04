@@ -25,9 +25,5 @@ class employee extends Model
         'image',
     ];
 
-    public function job()
-    {
-        return $this->belongsToMany(Job::class);
-    }
 
 }

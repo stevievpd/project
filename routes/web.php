@@ -33,6 +33,27 @@ Route::post('/addJob', [App\Http\Controllers\HumanResourcesController::class, 's
 Route::post('/addDepartment', [App\Http\Controllers\HumanResourcesController::class, 'storeDepartment'])->name('addDepartment.store');
 Route::post('/addEmployee', [App\Http\Controllers\HumanResourcesController::class, 'storeEmployee'])->name('addEmployee.store');
 
+Route::get('/editEmployee/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editEmployee'])->name('editEmployee.edit');
+Route::patch('/updateEmployee', [App\Http\Controllers\HumanResourcesController::class, 'updateEmployee'])->name('updateEmployee.update');
+Route::patch('/deleteEmployee', [App\Http\Controllers\HumanResourcesController::class, 'deleteEmployee'])->name('deleteEmployee.update');
 
+Route::get('/editJob/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editJob'])->name('editJob.edit');
+Route::patch('/updateJob', [App\Http\Controllers\HumanResourcesController::class, 'updateJob'])->name('updateJob.update');
+Route::patch('/deleteJob', [App\Http\Controllers\HumanResourcesController::class, 'deleteJob'])->name('deleteJob.update');
+
+
+Route::get('/editSchedule/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editSchedule'])->name('editSchedule.edit');
+Route::patch('/updateSchedule', [App\Http\Controllers\HumanResourcesController::class, 'updateSchedule'])->name('updateSchedule.update');
+Route::patch('/deleteSchedule', [App\Http\Controllers\HumanResourcesController::class, 'deleteSchedule'])->name('deleteSchedule.update');
+
+Route::get('/editDepartment/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editDepartment'])->name('editDepartment.edit');
+Route::patch('/updateDepartment', [App\Http\Controllers\HumanResourcesController::class, 'updateDepartment'])->name('updateDepartment.update');
+Route::patch('/deleteDepartment', [App\Http\Controllers\HumanResourcesController::class, 'deleteDepartment'])->name('deleteDepartment.update');
+
+// CRUD INVENTORY
+
+Route::post('/addProduct', [App\Http\Controllers\InventoryController::class, 'storeProduct'])->name('addProduct.store');
+Route::get('/editProduct/{id}', [App\Http\Controllers\InventoryController::class, 'editProduct'])->name('editProduct.edit');
+Route::patch('/updateProduct', [App\Http\Controllers\InventoryController::class, 'updateProduct'])->name('updateProduct.update');
 
 

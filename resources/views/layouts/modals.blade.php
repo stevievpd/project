@@ -31,7 +31,7 @@
 				<h4 class="modal-title w-100">Done!</h4>
 			</div>
 			<div class="modal-body">
-				<p class="text-center">{{ Session::get('msg') }}</p>
+				<p class="text-center">{{ Session::get('msgDel') }}</p>
 			</div>
 			<div class="modal-footerDel">
 				<button class="btn btn-danger btn-block" data-bs-dismiss="modal">OK</button>
