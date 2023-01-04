@@ -116,7 +116,7 @@
                             <h1 class=" titleh1">Employee Status</h1>
                         </div>
                         <div>
-                            <ul class="nav nav-tabs" id="employeeTab" role="tablist">
+                            <ul class="nav  nav-pills" id="employeeTab" role="tablist">
 
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="employeeTableTab" data-bs-toggle="tab"
