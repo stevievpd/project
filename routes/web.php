@@ -50,3 +50,10 @@ Route::get('/editDepartment/{id}', [App\Http\Controllers\HumanResourcesControlle
 Route::patch('/updateDepartment', [App\Http\Controllers\HumanResourcesController::class, 'updateDepartment'])->name('updateDepartment.update');
 Route::patch('/deleteDepartment', [App\Http\Controllers\HumanResourcesController::class, 'deleteDepartment'])->name('deleteDepartment.update');
 
+// CRUD INVENTORY
+
+Route::post('/addProduct', [App\Http\Controllers\InventoryController::class, 'storeProduct'])->name('addProduct.store');
+Route::get('/editProduct/{id}', [App\Http\Controllers\InventoryController::class, 'editProduct'])->name('editProduct.edit');
+Route::patch('/updateProduct', [App\Http\Controllers\InventoryController::class, 'updateProduct'])->name('updateProduct.update');
+
+
