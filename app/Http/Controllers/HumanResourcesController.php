@@ -9,6 +9,7 @@ use App\Models\HumanResources\department;
 use App\Models\HumanResources\employee;
 
 use DB;
+use Carbon\Carbon;
 
 class HumanResourcesController extends Controller
 {
@@ -18,17 +19,24 @@ class HumanResourcesController extends Controller
     }
 
     public function index(){
+
         $sched = DB::table('schedule')->get()->whereNull('deleted_at');
         $job = DB::table('job')->get()->whereNull('deleted_at');
         $depart = DB::table('department')->get()->whereNull('deleted_at');
         $emp = DB::table('employee')
             ->join('job', 'job.id', '=', 'employee.job_id')    
-         ->get()->whereNull('employee.deleted_at');
+            ->get()->whereNull('employee.deleted_at');
 
         $workformat = DB::table('employee')
                     ->join('department', 'employee.department_id', '=', 'department.id')
                     ->select( DB::raw('count(employee.id) as total'), 'department.department_name')
                     ->groupBy('department.department_name')
+                    ->get();
+
+        $empMonth = DB::table('employee')
+                    ->select(DB::raw('MONTHNAME(created_at) as month'), DB::raw('count(id) as total'))
+                    ->groupBy('month')
+                    ->orderBy('created_at')
                     ->get();
 
         $empCount       = $emp->count();
@@ -46,6 +54,7 @@ class HumanResourcesController extends Controller
             'jobCount'      => $jobCount,
             'schedCount'    => $schedCount,
             'workformat'    => $workformat,
+            'empMonth'      => $empMonth,
         ];
 
         return view('human_resources.employee', $data);

@@ -51,7 +51,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('address');
             $table->date('birthdate');
-            $table->integer('contact_number')->length(15);
+            $table->bigInteger('contact_number');
             $table->string('gender');
             $table->string('image')->nullable();
             $table->softDeletes();
