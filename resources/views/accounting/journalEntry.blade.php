@@ -17,7 +17,8 @@
         <div id="content" class="" style="width: 80%; margin:auto;">
 
             <div class="row" style="width:99%; margin-left:auto; margin-right:auto;">
-                <div class="row align-items-start shadow-sm p-3 mb-5 bg-body rounded">
+                <div class="row align-items-start shadow-sm pt-3 mb-4 bg-body rounded"
+                    style="width:99%; margin-left:auto; margin-right:auto; ">
                     <div class="text-center titleHead  rounded">
                         <h1 class=" titleh1">Journal Entries</h1>
                     </div>
@@ -44,7 +45,7 @@
 
             </div>
             <!-- start of content -->
-            <div class="card" style="width:98%; margin-left:auto; margin-right:auto;">
+            <div class="card" style="width:95%; margin-left:auto; margin-right:auto;">
 
                 <div class="card-header">
 
@@ -54,7 +55,7 @@
                     </button>
                 </div>
                 <div class="card-body ">
-                    <table id="table1" class="table table-hover table-striped table-bordered">
+                    <table id="table1" class="table table-responsive-sm">
                         <colgroup>
                             <col width="15%">
                             <col width="15%">
@@ -62,17 +63,17 @@
                             <col width="16%">
                             <col width="5%">
                         </colgroup>
-                        <thead>
+                        <thead class="table-info border border-secondary ">
 
                             <tr>
                                 <th>Date</th>
                                 <th>Journal Code</th>
                                 <!-- <th>Partners</th> -->
                                 <th class="p-2">
-                                    <div class="d-flex w-100">
-                                        <div class="col-6 px-2 border">Description</div>
-                                        <div class="col-3 px-2 border">Debit</div>
-                                        <div class="col-3 px-2 border">Credit</div>
+                                    <div class="d-flex w-100 ">
+                                        <div class="col-6 px-2 border border-secondary">Description</div>
+                                        <div class="col-3 px-2 border border-secondary">Debit</div>
+                                        <div class="col-3 px-2 border border-secondary">Credit</div>
                                     </div>
                                 </th>
                                 <!-- <th>Journal</th> -->
@@ -82,7 +83,86 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            <tr>
+                                <td>Date</td>
+                                <td>Journal Code</td>
+                                <!-- <th>Partners</th> -->
+                                <td class="p-2">
+                                    <div class="d-flex w-100 ">
+                                        <div class="col-6 px-2">Description</div>
+                                        <div class="col-3 px-2 ">Debit</div>
+                                        <div class="col-3 px-2 ">Credit</div>
+                                    </div>
+                                </td>
+                                <!-- <th>Journal</th> -->
+                                <td>Added By</td>
+                                <!-- <th>Status</th> -->
+                                <td>Action</td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td>Journal Code</td>
+                                <!-- <th>Partners</th> -->
+                                <td class="p-2">
+                                    <div class="d-flex w-100 ">
+                                        <div class="col-6 px-2">Description</div>
+                                        <div class="col-3 px-2 ">Debit</div>
+                                        <div class="col-3 px-2 ">Credit</div>
+                                    </div>
+                                </td>
+                                <!-- <th>Journal</th> -->
+                                <td>Added By</td>
+                                <!-- <th>Status</th> -->
+                                <td>Action</td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td>Journal Code</td>
+                                <!-- <th>Partners</th> -->
+                                <td class="p-2">
+                                    <div class="d-flex w-100 ">
+                                        <div class="col-6 px-2">Description</div>
+                                        <div class="col-3 px-2 ">Debit</div>
+                                        <div class="col-3 px-2 ">Credit</div>
+                                    </div>
+                                </td>
+                                <!-- <th>Journal</th> -->
+                                <td>Added By</td>
+                                <!-- <th>Status</th> -->
+                                <td>Action</td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td>Journal Code</td>
+                                <!-- <th>Partners</th> -->
+                                <td class="p-2">
+                                    <div class="d-flex w-100 ">
+                                        <div class="col-6 px-2">Description</div>
+                                        <div class="col-3 px-2 ">Debit</div>
+                                        <div class="col-3 px-2 ">Credit</div>
+                                    </div>
+                                </td>
+                                <!-- <th>Journal</th> -->
+                                <td>Added By</td>
+                                <!-- <th>Status</th> -->
+                                <td>Action</td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td>Journal Code</td>
+                                <!-- <th>Partners</th> -->
+                                <td class="p-2">
+                                    <div class="d-flex w-100 ">
+                                        <div class="col-6 px-2">Description</div>
+                                        <div class="col-3 px-2 ">Debit</div>
+                                        <div class="col-3 px-2 ">Credit</div>
+                                    </div>
+                                </td>
+                                <!-- <th>Journal</th> -->
+                                <td>Added By</td>
+                                <!-- <th>Status</th> -->
+                                <td>Action</td>
+                            </tr>
                         </tbody>
                         <tfoot>
                             <tr>
