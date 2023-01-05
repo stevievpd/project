@@ -16,4 +16,9 @@ class journal_item extends Model
         'amount',
         'type',
     ];
+
+    public function entry()
+{
+    return $this->belongsTo(journal_entry::class, 'journal_id');
+}
 }
