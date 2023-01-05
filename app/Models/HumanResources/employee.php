@@ -25,5 +25,9 @@ class employee extends Model
         'image',
     ];
 
+    public function job()
+    {
+        return $this->hasone(job::class, 'id', 'job_id');
+    }
 
 }

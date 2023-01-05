@@ -16,4 +16,9 @@ class journal_entry extends Model
         'entry_date',
         'partner',
     ];
+
+    public function journal_item()
+    {
+        return $this->hasMany(journal_item::class, 'journal_id');
+    }
 }
