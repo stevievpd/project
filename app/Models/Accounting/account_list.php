@@ -14,4 +14,8 @@ class account_list extends Model
         'description',
         'status',
     ];
+
+    public function item(){
+        return $this->belongsTo(journal_item::class, 'id');
+    }
 }

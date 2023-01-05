@@ -15,4 +15,7 @@ class group_list extends Model
         'type',
         'status',
     ];
+    public function item(){
+        return $this->belongsTo(journal_item::class, 'id');
+    }
 }
