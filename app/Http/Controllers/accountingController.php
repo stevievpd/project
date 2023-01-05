@@ -21,14 +21,12 @@ class accountingController extends Controller
         $journ = new journal_entry;
 
     
-        $journal_entry = journal_entry::with('journal_item')->get();
+        $journalEntry = journal_entry::with('journal_item')
+        
+        ->get();
 
 
-        $data = [
-            'journalEntry' => $journal_entry,
-            
- 
-        ];
-        return view('accounting.journalEntry', $data);
+       
+        return view('accounting.journalEntry', compact('journalEntry'));
     }
 }

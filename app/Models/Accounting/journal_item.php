@@ -21,4 +21,7 @@ class journal_item extends Model
 {
     return $this->belongsTo(journal_entry::class, 'journal_id');
 }
+public function account(){
+    return $this->hasOne(account_list::class, 'id');
+}
 }
