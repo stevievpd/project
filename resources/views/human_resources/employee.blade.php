@@ -47,7 +47,7 @@
                                     <h5>Total Department</h5>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <h1>{{ $depCount }}</h1>
+                                    <h1>{{ $departCount }}</h1>
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
@@ -174,9 +174,9 @@
                                                 <tbody class="text-center">
                                                     @foreach ($employee as $emp)
                                                         <tr>
-                                                            <td>{{ $emp->employee_code }}</td>
+                                                            <td>{{ $emp->id }}</td>
                                                             <td>{{ $emp->first_name }} {{ $emp->last_name }}</td>
-                                                            <td>{{ $emp->job_name }}</td>
+                                                            <td>{{$emp->job->job_name ?? "NA"}}</td>
                                                             <td> <a data-id="{{ $emp->id }}"
                                                                     class="btn btn-sm btn-success btnEditEmp"><i
                                                                         class="fa-solid fa-user-pen"></i></a>
