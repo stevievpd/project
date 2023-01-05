@@ -2,40 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Inventory\product;
-use App\Models\Inventory\category;
+use App\Models\Inventory\Product;
+use App\Models\Inventory\Category;
 
 use DB;
 
-
 class InventoryController extends Controller
 {
-    //
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
-        $category = DB::table('category')->get()->whereNull('deleted_at');
-
-        $product = DB::table('product')
-            ->join('category', 'category.id', '=', 'product.category_id')
-            // ->select('product.id as prod_id', 'product_name', 'product_description', 'price', 'quantity', 'category.id as cat_id', 'category_name')
-            ->get()->whereNull('product.deleted_at');
-
-        $data = [
-            'product' => $product,
-            'category' => $category,
-        ];
-
-        return view('inventory.product', $data);
+        $products = Product::with('category')->get();
+        $category = Category::with('product')->get();
+        return view('inventory.product', compact(['products', 'category']));
     }
 
-    public function storeProduct(Request $request){
-        $prod = new product;
+    public function storeProduct(Request $request)
+    {
+        $prod = new Product();
 
         $prod->product_name = $request->input('product_name');
         $prod->product_description = $request->input('product_description');
@@ -43,40 +28,41 @@ class InventoryController extends Controller
         $prod->price = $request->input('price');
         $prod->quantity = $request->input('quantity');
         $prod->save();
-    
-        $msg = "New Product has been created.";
-        return redirect()->back()->with(['msg' => $msg]);
+
+        $msg = "New $prod->product_name Product has been Added.";
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
     }
 
-    public function editProduct($id){
-        $prod = new product;
-        
-        $prod1 = $prod::find($id);
-        return response()->json($prod1);
-
+    public function editProduct($id)
+    {
+        $prod = Product::find($id);
+        return response()->json($prod);
     }
 
-    public function updateProduct(Request $request){
-
+    public function updateProduct(Request $request)
+    {
         $id = $request->input('prod_id');
         $product_name = $request->input('product_name');
         $product_description = $request->input('product_description');
-        $category = $request->input('category');
+        $category_id = $request->input('category');
         $price = $request->input('price');
         $quantity = $request->input('quantity');
 
-        DB::table('product')
+        DB::table('products')
             ->where('id', $id)
             ->update([
                 'product_name' => $product_name,
                 'product_description' => $product_description,
-                'category_id' => $category,
+                'category_id' => $category_id,
                 'price' => $price,
                 'quantity' => $quantity,
             ]);
-            $msg = "$product_name has been Updated";
+        $msg = 'Product has been Updated';
 
-        return redirect()->back()->with(['msg' => $msg]);
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
     }
-
 }

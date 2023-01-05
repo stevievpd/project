@@ -83,9 +83,8 @@
                      <div class="col-12 form-floating categorySelect">
                          <select class="form-control categorySelection" name="category" id="category"
                              aria-label="Select Category" required>
-                             <option value="0" selected>- Select -</option>
                              @foreach ($category as $cat)
-                                 <option value="{{ $cat->cat_id }}">{{ $cat->category_name }}</option>
+                                 <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
                              @endforeach
                          </select>
                          <label for="categorySelection">Category</label>

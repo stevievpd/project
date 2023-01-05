@@ -71,8 +71,29 @@
                         </div>
                     </div>
                 </div>
+
             </div>
-            <div class="card inventoryCardContainer p-4">
+
+
+        </div>
+
+
+        <div class="inventoryCardContainer">
+            <ul class="nav  nav-pills" id="employeeTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="inventoryTableTab" data-bs-toggle="tab"
+                        data-bs-target="#inventoryTable" type="button" role="tab" aria-controls="home-tab-pane"
+                        aria-selected="true">Products</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="scheduleTable" data-bs-toggle="tab" data-bs-target="#scheduleTab"
+                        type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+                        Category</button>
+                </li>
+            </ul>
+
+            <div id="inventoryTable" class="card tab-pane fade show active  border-0" role="tabpanel"
+                aria-labelledby="inventoryTableTab" tabindex="0">
                 <div class="card-header text-white" style="background-color: #ffff;">
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-primary btn-sm mt-2" data-bs-toggle="modal"
@@ -99,19 +120,19 @@
                             </tr>
                         </thead>
                         <tbody class="text-center">
-                            @foreach ($product as $prod)
+                            @foreach ($products as $product)
                                 <?php
-                                $status = $prod->quantity ? '<span class ="badge text-bg-success bg-opacity-25 percent" style="color: green !important">Active</span>' : '<span class ="badge text-bg-danger bg-opacity-25 percent" style="color: red !important">Out of Stock</span>';
+                                $status = $product->quantity ? '<span class ="badge text-bg-success bg-opacity-25 percent" style="color: green !important">Active</span>' : '<span class ="badge text-bg-danger bg-opacity-25 percent" style="color: red !important">Out of Stock</span>';
                                 ?>
                                 <tr>
-                                    <td>{{ $prod->id }}</td>
-                                    <td>{{ $prod->category_name }}</td>
-                                    <td>{{ $prod->quantity }}</td>
-                                    <td>{{ $prod->price }}</td>
+                                    <td>{{ $product->product_name }}</td>
+                                    <td>{{ $product->category->category_name }}</td>
+                                    <td>{{ $product->quantity }}</td>
+                                    <td>{{ $product->price }}</td>
                                     <td><?= $status ?></td>
-                                    <td> <a data-id="{{ $prod->id }}" class="btn btn-sm btn-success btnEditProd"><i
+                                    <td> <a data-id="{{ $product->id }}" class="btn btn-sm btn-success btnEditProd"><i
                                                 class="fa-solid fa-user-pen"></i></a>
-                                        <a data-del="{{ $prod->id }}" class="btn btn-sm btn-danger btnDelete"><i
+                                        <a data-del="{{ $product->id }}" class="btn btn-sm btn-danger btnDelete"><i
                                                 class="fa-solid fa-delete-left"></i></a>
                                     </td>
                                 </tr>
@@ -121,6 +142,8 @@
                 </div>
             </div>
         </div>
+    </div>
+
 
     </div>
     <script>
