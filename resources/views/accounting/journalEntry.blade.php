@@ -83,15 +83,23 @@
                             </tr>
                         </thead>
                         <tbody>
+                     
+
+                            @foreach ($journalEntry as $journalEntry)
+                                
+                         
                             <tr>
-                                <td>Date</td>
-                                <td>Journal Code</td>
+                                <td>{{ $journalEntry->entry_date}}</td>
+                                <td>{{ $journalEntry->entry_code}}</td>
                                 <!-- <th>Partners</th> -->
                                 <td class="p-2">
                                     <div class="d-flex w-100 ">
-                                        <div class="col-6 px-2">Description</div>
-                                        <div class="col-3 px-2 ">Debit</div>
-                                        <div class="col-3 px-2 ">Credit</div>
+                                        <div class="col-6 px-2">{{ $journalEntry->description}}</div>
+                                        @foreach ($journalEntry->journal_item as $item)
+                                        <div class="col-3 px-2 ">{{$item->amount}}</div>
+                                        @endforeach
+                                        
+                                        <div class="col-3 px-2 "></div>
                                     </div>
                                 </td>
                                 <!-- <th>Journal</th> -->
@@ -99,6 +107,26 @@
                                 <!-- <th>Status</th> -->
                                 <td>Action</td>
                             </tr>
+                            @endforeach
+                                
+                            
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <!-- <th>Partners</th> -->
+                                <td class="p-2">
+                                    <div class="d-flex w-100 ">
+                                        <div class="col-6 px-2"></div>
+                                        <div class="col-3 px-2 ">asdad</div>
+                                        <div class="col-3 px-2 ">asda </div>
+                                    </div>
+                                </td>
+                                <!-- <th>Journal</th> -->
+                                <td></td>
+                                <!-- <th>Status</th> -->
+                                <td></td>
+                            </tr>
+   
                             <tr>
                                 <td>Date</td>
                                 <td>Journal Code</td>
