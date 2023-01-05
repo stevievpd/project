@@ -107,3 +107,140 @@
          </div>
      </div>
  </div>
+
+ {{-- DELETE PRODUCT --}}
+
+ <div>
+     <div id="deleteProductModal" class="modal fade">
+         <div class="modal-dialog modal-confirm">
+             <div class="modal-content">
+                 <div class="modal-header flex-column">
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     </button>
+                     <div class="icon-box">
+                         <i class="material-icons">&#xE5CD;</i>
+                     </div>
+                     <h4 class="modal-title w-100 text-center">Are you sure?</h4>
+
+                 </div>
+                 <form class="row g-3" action="/deleteProduct" method="POST" enctype="multipart/form-data"
+                     autocomplete="off">
+                     @csrf
+                     @method('PATCH')
+
+                     <div class="modal-body">
+                         <input type="hidden" class="prodId" name="prod_id">
+                         <p>Do you really want to delete these product? This process cannot be undone.</p>
+                     </div>
+                     <div class="modal-footer justify-content-center">
+                 </form>
+                 <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button>
+                 <button type="submit" class="btn btn-danger">Delete</button>
+             </div>
+         </div>
+     </div>
+ </div>
+
+
+
+ {{-- ADD CATEGORY --}}
+ <div class="modal fade" id="newCategory" tabindex="-1" role="dialog" aria-labelledby="categoryTitle"
+     aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="categoryTitle">Add Category</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                 </button>
+             </div>
+             <div class="modal-body  ">
+
+                 <form class="row g-3" action="/addCategory" method="POST" enctype="multipart/form-data"
+                     autocomplete="off">
+                     @csrf
+                     <div class="col-md-12 form-floating">
+                         <input type="text" class="form-control categoryName" name="category_name" required>
+                         <label for="categoryName">Category Name</label>
+                     </div>
+                     <div class="col-md-12 form-floating">
+                         <input type="text" class="form-control categoryDescription" name="category_description"
+                             required>
+                         <label for="categoryDescription">category Description</label>
+                     </div>
+                     <div class="mb-2">
+                         <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Cancel</button>
+                         <button type="submit" class="btn btn-success float-end" name="addProduct">Submit</button>
+                     </div>
+                 </form>
+             </div>
+         </div>
+     </div>
+ </div>
+
+ {{-- EDIT  CATEGORY --}}
+ <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryTitle"
+     aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="categoryTitle">Add Category</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                 </button>
+             </div>
+             <div class="modal-body  ">
+                 <form class="row g-3" action="/updateCategory" method="POST" enctype="multipart/form-data"
+                     autocomplete="off">
+                     @csrf
+                     @method('PATCH')
+                     <div class="col-md-12 form-floating">
+                         <input type="hidden" name="cat_id" id="catId">
+                         <input type="text" class="form-control categoryName" name="category_name"
+                             id="categoryName" required>
+                         <label for="categoryName">Category Name</label>
+                     </div>
+                     <div class="col-md-12 form-floating">
+                         <input type="text" class="form-control categoryDescription" name="category_description"
+                             id="categoryDescription" required>
+                         <label for="categoryDescription">category Description</label>
+                     </div>
+                     <div class="mb-2">
+                         <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Cancel</button>
+                         <button type="submit" class="btn btn-success float-end" name="addProduct">Submit</button>
+                     </div>
+                 </form>
+             </div>
+         </div>
+     </div>
+ </div>
+
+ {{-- DELETE CATEGORY --}}
+ <div>
+     <div id="deleteCategoryModal" class="modal fade">
+         <div class="modal-dialog modal-confirm">
+             <div class="modal-content">
+                 <div class="modal-header flex-column">
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     </button>
+                     <div class="icon-box">
+                         <i class="material-icons">&#xE5CD;</i>
+                     </div>
+                     <h4 class="modal-title w-100 text-center">Are you sure?</h4>
+
+                 </div>
+                 <form class="row g-3" action="/deleteCategory" method="POST" enctype="multipart/form-data"
+                     autocomplete="off">
+                     @csrf
+                     @method('PATCH')
+
+                     <div class="modal-body">
+                         <input type="hidden" class="catId" name="cat_id">
+                         <p>Do you really want to delete these category ? This process cannot be undone.</p>
+                     </div>
+                     <div class="modal-footer justify-content-center">
+                 </form>
+                 <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button>
+                 <button type="submit" class="btn btn-danger">Delete</button>
+             </div>
+         </div>
+     </div>
+ </div>

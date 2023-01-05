@@ -13,10 +13,16 @@ class InventoryController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get();
-        $category = Category::with('product')->get();
+        $products = Product::with('category')
+            ->whereNull('deleted_at')
+            ->get();
+        $category = Category::with('product')
+            ->whereNull('deleted_at')
+            ->get();
         return view('inventory.product', compact(['products', 'category']));
     }
+
+    // Product Section
 
     public function storeProduct(Request $request)
     {
@@ -64,5 +70,78 @@ class InventoryController extends Controller
         return redirect()
             ->back()
             ->with(['msg' => $msg]);
+    }
+
+    public function deleteProduct(Request $request)
+    {
+        $id = $request->input('prod_id');
+
+        DB::table('products')
+            ->where('id', $id)
+            ->update([
+                'deleted_at' => date('Y-m-d H:i:s'),
+            ]);
+        $msg = 'Product has been Deleted';
+
+        return redirect()
+            ->back()
+            ->with(['msgDel' => $msg]);
+    }
+
+    // Category Section
+
+    public function storeCategory(Request $request)
+    {
+        $cat = new Category();
+
+        $cat->category_name = $request->input('category_name');
+        $cat->category_description = $request->input('category_description');
+        $cat->save();
+
+        $msg = "New $cat->category_name category has been Added.";
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
+    }
+
+    public function editCategory($id)
+    {
+        $cat = Category::find($id);
+        return response()->json($cat);
+    }
+
+    public function updateCategory(Request $request)
+    {
+        $id = $request->input('cat_id');
+        $category_name = $request->input('category_name');
+        $category_description = $request->input('category_description');
+
+        DB::table('categories')
+            ->where('id', $id)
+            ->update([
+                'category_name' => $category_name,
+                'category_description' => $category_description,
+            ]);
+        $msg = 'Category has been Updated';
+
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
+    }
+
+    public function deleteCategory(Request $request)
+    {
+        $id = $request->input('cat_id');
+
+        DB::table('categories')
+            ->where('id', $id)
+            ->update([
+                'deleted_at' => date('Y-m-d H:i:s'),
+            ]);
+        $msg = 'Category has been Deleted';
+
+        return redirect()
+            ->back()
+            ->with(['msgDel' => $msg]);
     }
 }

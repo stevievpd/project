@@ -176,7 +176,7 @@
                                                         <tr>
                                                             <td>{{ $emp->id }}</td>
                                                             <td>{{ $emp->first_name }} {{ $emp->last_name }}</td>
-                                                            <td>{{$emp->job->job_name ?? "NA"}}</td>
+                                                            <td>{{ $emp->job->job_name ?? 'NA' }}</td>
                                                             <td> <a data-id="{{ $emp->id }}"
                                                                     class="btn btn-sm btn-success btnEditEmp"><i
                                                                         class="fa-solid fa-user-pen"></i></a>
@@ -549,13 +549,13 @@
             data: {
                 labels: [
                     @foreach ($empMonth as $month)
-                        '{{ $month->month}}',
+                        '{{ $month->month }}',
                     @endforeach
                 ],
                 datasets: [{
                     label: 'Employee',
                     data: [
-                        @foreach ($empMonth as $total )
+                        @foreach ($empMonth as $total)
                             {{ $total->total }},
                         @endforeach
                     ],

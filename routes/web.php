@@ -21,9 +21,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/loginv2', [App\Http\Controllers\HomeController::class, 'logiv2']);
-Route::get('/inventory', [App\Http\Controllers\InventoryController::class, 'index']);
-
-
 
 Route::get('/inventory', [App\Http\Controllers\InventoryController::class, 'index']);
 Route::get('/employee', [App\Http\Controllers\HumanResourcesController::class, 'index']);
@@ -58,5 +55,14 @@ Route::patch('/deleteDepartment', [App\Http\Controllers\HumanResourcesController
 Route::post('/addProduct', [App\Http\Controllers\InventoryController::class, 'storeProduct'])->name('addProduct.store');
 Route::get('/editProduct/{id}', [App\Http\Controllers\InventoryController::class, 'editProduct'])->name('editProduct.edit');
 Route::patch('/updateProduct', [App\Http\Controllers\InventoryController::class, 'updateProduct'])->name('updateProduct.update');
+Route::patch('/deleteProduct', [App\Http\Controllers\InventoryController::class, 'deleteProduct'])->name('deleteProduct.update');
+
+
+Route::post('/addCategory', [App\Http\Controllers\InventoryController::class, 'storeCategory'])->name('addCategory.store');
+Route::get('/editCategory/{id}', [App\Http\Controllers\InventoryController::class, 'editCategory'])->name('editCategory.edit');
+Route::patch('/updateCategory', [App\Http\Controllers\InventoryController::class, 'updateCategory'])->name('updateCategory.update');
+Route::patch('/deleteCategory', [App\Http\Controllers\InventoryController::class, 'deleteCategory'])->name('deleteCategory.update');
+
+
 
 
