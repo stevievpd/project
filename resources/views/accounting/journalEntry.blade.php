@@ -137,7 +137,12 @@
                                 <!-- <th>Partners</th> -->
                                 <td class="p-2">
                                     <div class="d-flex w-100 ">
-                                        <div class="col-6 px-2">Description</div>
+                                        <div class="col-6 px-2"> <b> Title</b><br>
+                                             <p class="">asd <br></p>
+                                             <p class="">asasdadd <br></p>
+                                             <p class="">aasdsd <br></p>
+
+                                        </div>
                                         <div class="col-3 px-2 ">Debit</div>
                                         <div class="col-3 px-2 ">Credit</div>
                                     </div>
