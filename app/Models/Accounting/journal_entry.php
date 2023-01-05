@@ -2,8 +2,12 @@
 
 namespace App\Models\Accounting;
 
+
+
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 class journal_entry extends Model
 {
@@ -20,5 +24,9 @@ class journal_entry extends Model
     public function journal_item()
     {
         return $this->hasMany(journal_item::class, 'journal_id');
+    }
+    public function employee()
+    {
+        return $this->hasMany('App\Models\HumanResources\employee'::class, 'id', 'employee_id');
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Accounting\account_list;
 use App\Models\Accounting\group_list;
 use App\Models\Accounting\journal_entry;
 use App\Models\Accounting\journal_item;
+use App\Models\HumanResources\employee;
 
 use DB;
 
@@ -18,12 +19,11 @@ class accountingController extends Controller
     }
     
     public function index(){
-        $journ = new journal_entry;
 
-    
-        $journalEntry = journal_entry::with('journal_item')
-        
-        ->get();
+        $journalEntry = journal_entry::with(['employee','journal_item' => function($acc){
+                $acc
+                ->with('account_list');
+        }])->get();
 
 
        

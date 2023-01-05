@@ -99,7 +99,7 @@
                                         </div>
                                     </td>
                                     <!-- <th>Journal</th> -->
-                                    <td>{{ $journalEntry->employee_id }}</td>
+                                    <td>{{ $journalEntry->employee->last_name}}</td>
                                     <!-- <th>Status</th> -->
                                     <td>Action</td>
                                 </tr>
@@ -110,7 +110,7 @@
                                     <!-- <th>Partners</th> -->
                                     <td class="p-2">
                                         <div class="d-flex w-100 ">
-                                            <div class="col-6 px-2">{{  $item->account_id }}</div>
+                                            <div class="col-6 px-2">{{  $item->account_list->account_name }}</div>
                                             <?php 
                                             $debit = '';
                                             $credit = '';
