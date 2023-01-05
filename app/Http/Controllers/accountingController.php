@@ -22,8 +22,8 @@ class accountingController extends Controller
 
         $journalEntry = journal_entry::with(['employee','journal_item' => function($acc){
                 $acc
-                ->with('account_list');
-        }])->get();
+                    ->with('account_list');
+                    }])->get();
 
 
        

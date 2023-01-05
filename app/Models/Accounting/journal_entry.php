@@ -27,6 +27,6 @@ class journal_entry extends Model
     }
     public function employee()
     {
-        return $this->hasMany('App\Models\HumanResources\employee'::class, 'id', 'employee_id');
+        return $this->hasOne('App\Models\HumanResources\employee'::class, 'id', 'employee_id');
     }
 }

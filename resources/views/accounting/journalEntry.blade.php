@@ -99,7 +99,7 @@
                                         </div>
                                     </td>
                                     <!-- <th>Journal</th> -->
-                                    <td>{{ $journalEntry->employee->last_name}}</td>
+                                    <td>{{ $journalEntry->employee->first_name}} {{ $journalEntry->employee->last_name}}</td>
                                     <!-- <th>Status</th> -->
                                     <td>Action</td>
                                 </tr>
