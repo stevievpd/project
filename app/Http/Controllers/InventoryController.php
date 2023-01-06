@@ -6,14 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Inventory\Product;
 use App\Models\Inventory\Category;
+use App\Models\Inventory\Supplier;
+use App\Models\Inventory\Debts_Supplier;
+use App\Models\Inventory\Warehouse;
+use App\Models\Inventory\Product_in_Warehouse;
 
 use DB;
 
 class InventoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    // Product Index
     public function index()
     {
-        $products = Product::with('category')
+        $products = Product::with('category', 'supplier')
             ->whereNull('deleted_at')
             ->get();
         $category = Category::with('product')
@@ -21,9 +31,37 @@ class InventoryController extends Controller
             ->get();
         return view('inventory.product', compact(['products', 'category']));
     }
+    // Supplier Index
+    public function supplierIndex()
+    {
+        $supplier = Supplier::with('debtSupplier')
+            ->whereNull('deleted_at')
+            ->get();
+        $debtSupplier = Debts_Supplier::with('supplier')
+            ->whereNull('deleted_at')
+            ->get();
+
+        return view(
+            'inventory.supplier',
+            compact(['supplier', 'debtSupplier'])
+        );
+    }
+
+    // Warehouse Index
+    public function warehouseIndex()
+    {
+        $warehouse = DB::table('warehouse')
+            ->get()
+            ->whereNull('deleted_at');
+
+        // $productInWarehouse = Product_in_Warehouse::with('warehouse')
+        //     ->whereNull('deleted_at')
+        //     ->get();
+
+        return view('inventory.warehouse', compact(['warehouse']));
+    }
 
     // Product Section
-
     public function storeProduct(Request $request)
     {
         $prod = new Product();

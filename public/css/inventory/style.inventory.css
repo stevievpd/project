@@ -12,6 +12,19 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.supplierCardContainer{
+	width: 84% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.warehouseCardContainer{
+	width: 84% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .dashboardCardContainer{
     width: 84% !important;
     margin-left: auto;

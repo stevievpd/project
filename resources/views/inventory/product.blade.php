@@ -107,7 +107,7 @@
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
                     tabindex="0">
 
-                    <div id="inventoryTable" clas s="card tab-pane fade show active  border-0" role="tabpanel"
+                    <div id="inventoryTable" class="card tab-pane fade show active  border-0" role="tabpanel"
                         aria-labelledby="inventoryTableTab" tabindex="0">
                         <div class="card-header text-white" style="background-color: #ffff;">
                             <div class="d-flex justify-content-end pb-4">
@@ -126,12 +126,17 @@
                             <table id="inventoryList" class="table">
                                 <thead>
                                     <tr class="text-center">
-                                        <th scope="col" class="text-center">Product</th>
-                                        <th scope="col" class="text-center">Category</th>
-                                        <th scope="col" class="text-center">Quantity</th>
-                                        <th scope="col" class="text-center">Price</th>
+                                        <th scope="col" class="text-center">Product Name</th>
+                                        <th scope="col" class="text-center">Description</th>
+                                        <th scope="col" class="text-center">Supplier Price</th>
+                                        <th scope="col" class="text-center">Retail Price</th>
+                                        <th scope="col" class="text-center">WholeSale Price</th>
+                                        <th scope="col" class="text-center">Max Discount</th>
+                                        <th scope="col" class="text-center">QoH</th>
+                                        <th scope="col" class="text-center">Unit</th>
                                         <th scope="col" class="text-center">Status</th>
-                                        <th scope="col" class="text-center">Action</th>
+                                        <th scope="col" class="text-center">Actions</th>
+
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
@@ -142,7 +147,7 @@
                                         <tr>
                                             <td>{{ $product->product_name }}</td>
                                             <td>{{ $product->category->category_name }}</td>
-                                            <td>{{ $product->quantity }}</td>
+                                            <td>{{ $product->supplier->supplier_name }}</td>
                                             <td>{{ $product->price }}</td>
                                             <td><?= $status ?></td>
                                             <td> <a data-id="{{ $product->id }}"
@@ -162,7 +167,7 @@
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
                     tabindex="0">
-                    <div id="inventoryTable" clas s="card tab-pane fade show active  border-0" role="tabpanel"
+                    <div id="inventoryTable" class="card tab-pane fade show active  border-0" role="tabpanel"
                         aria-labelledby="inventoryTableTab" tabindex="0">
                         <div class="card-header text-white" style="background-color: #ffff;">
                             <div class="d-flex justify-content-end pb-4">
