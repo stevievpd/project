@@ -19,7 +19,7 @@ class journal_item extends Model
 
     public function entry()
 {
-    return $this->belongsTo(journal_entry::class, 'journal_id');
+    return $this->belongsTo(journal_entry::class, 'journal_id','id');
 }
 public function account_list(){
     return $this->hasOne(account_list::class, 'id', 'account_id');

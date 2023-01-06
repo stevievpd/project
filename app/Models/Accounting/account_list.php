@@ -16,6 +16,10 @@ class account_list extends Model
     ];
 
     public function item(){
-        return $this->belongsTo(journal_item::class, 'id');
+        return $this->belongsTo(journal_item::class, 'id','account_id');
+    }
+
+    public function journItems(){
+        return $this->hasMany(journal_item::class, 'account_id');
     }
 }

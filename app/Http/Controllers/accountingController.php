@@ -29,4 +29,34 @@ class accountingController extends Controller
        
         return view('accounting.journalEntry', compact('journalEntry'));
     }
+    public function generalLedger(){
+
+        $ledger = journal_item::with(['account_list','entry'])      
+                ->groupBy('account_id')
+                ->get();
+
+        $ledgeritems = journal_item::with(['account_list','entry'=> function($journ){
+            $journ
+            ->orderBy('description', 'ASC');
+            }])
+        ->get();
+
+        return view('accounting.general_ledger', compact( 'ledger', 'ledgeritems'));
+    }
+
+    public function partnerLedger(){
+        $partner = journal_entry::with(['employee','journal_item' => function($acc){
+            $acc
+                ->with('account_list');
+                }])
+                ->groupBy('partner')
+                ->get();
+         $ledgeritems = journal_item::with(['account_list','entry'=> function($journ){
+                    $journ
+                    ->orderBy('description', 'ASC');
+                    }])
+                    ->get();
+
+        return view('accounting.partner_ledger', compact('partner', 'ledgeritems'));
+    }
 }
