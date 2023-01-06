@@ -29,15 +29,15 @@
         </li>
         <li>
             <div class="iocn-link">
-                <a href="#">
+                <a href="/employee">
                     <i class='bx bxs-user-circle'></i>
                     <span class="link_name">Human Resource</span>
                 </a>
                 <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-                <li><a class="link_name" href="#">Human Resource</a></li>
-                <li><a href="">Employees</a></li>
+                <li><a class="link_name" href="/employee">Human Resource</a></li>
+                {{-- <li><a href="">Employees</a></li> --}}
                 <li><a href="">Attendance</a></li>
                 <li><a href="">Cash Advance</a></li>
                 <li><a href="">Department</a></li>
@@ -104,7 +104,7 @@
             <ul class="sub-menu">
                 <li><a class="link_name" href="#">Accounting</a></li>
                 <li><a href="">Dashboard</a></li>
-                <li><a href="">Journal Entries</a></li>
+                <li><a href="/journal">Journal Entries</a></li>
 
                 <li><a class="link_name" href="#">Journals</a></li>
                 <li><a href="">Sales</a></li>

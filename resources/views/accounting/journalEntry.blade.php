@@ -45,7 +45,7 @@
 
             </div>
             <!-- start of content -->
-            <div class="card" style="width:95%; margin-left:auto; margin-right:auto;">
+            <div class="card" style="width:98%; margin-left:auto; margin-right:auto;">
 
                 <div class="card-header">
 
@@ -55,7 +55,7 @@
                     </button>
                 </div>
                 <div class="card-body ">
-                    <table id="table1" class="table table-responsive-sm">
+                    <table id="table1" class="table table-responsive-sm table-hover">
                         <colgroup>
                             <col width="15%">
                             <col width="15%">
@@ -63,34 +63,35 @@
                             <col width="16%">
                             <col width="5%">
                         </colgroup>
-                        <thead class="table-info border border-secondary ">
+                        <thead class="table-info border ">
 
                             <tr>
-                                <th>Date</th>
-                                <th>Journal Code</th>
+                                <th class="border text-center">Date</th>
+                                <th class="border text-center">Journal Code</th>
                                 <!-- <th>Partners</th> -->
                                 <th class="p-2">
                                     <div class="d-flex w-100 ">
-                                        <div class="col-6 px-2 border border-secondary">Description</div>
-                                        <div class="col-3 px-2 border border-secondary">Debit</div>
-                                        <div class="col-3 px-2 border border-secondary">Credit</div>
+                                        <div class="col-6 px-2 border ">Description</div>
+                                        <div class="col-3 px-2 border text-end">Debit</div>
+                                        <div class="col-3 px-2 border text-end">Credit</div>
                                     </div>
                                 </th>
                                 <!-- <th>Journal</th> -->
-                                <th>Added By</th>
+                                <th class="border text-center">Added By</th>
                                 <!-- <th>Status</th> -->
-                                <th>Action</th>
+                                <th class="border text-center">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class=" ">
                             @foreach ($journalEntry as $journalEntry)
-                                <tr>
-                                    <td>{{ $journalEntry->entry_date }}</td>
-                                    <td>{{ $journalEntry->entry_code }}</td>
+                                <tr class="bg bg-secondary bg-opacity-10">
+                                    <td class="text-center"><?= date('M d, Y', strtotime($journalEntry->entry_date)) ?></td>
+                                    <td class="text-center">{{ $journalEntry->entry_code }}</td>
                                     <!-- <th>Partners</th> -->
                                     <td class="p-2">
                                         <div class="d-flex w-100 ">
-                                            <div class="col-6 px-2">{{ $journalEntry->description }}</div>
+                                            <div class="col-6 px-2 text-center"><b>{{ $journalEntry->description }}</b>
+                                            </div>
 
                                             <div class="col-3 px-2 "></div>
 
@@ -99,55 +100,59 @@
                                         </div>
                                     </td>
                                     <!-- <th>Journal</th> -->
-                                    <td>{{ $journalEntry->employee->first_name}} {{ $journalEntry->employee->last_name}}</td>
+                                    <td class="text-center">{{ $journalEntry->employee->first_name }}
+                                        {{ $journalEntry->employee->last_name }}</td>
                                     <!-- <th>Status</th> -->
-                                    <td>Action</td>
+                                    <td class="text-center"><button class="btn btn-warning btn-sm edit btn-flat"
+                                            data-id=""><i class="fa-solid fa-file-pen"></i></button>
+                                        <button class="btn btn-danger btn-sm delete btn-flat" data-id=""><i
+                                                class="fa-solid fa-trash"></i></i></button>
+                                    </td>
                                 </tr>
                                 @foreach ($journalEntry->journal_item as $item)
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <!-- <th>Partners</th> -->
-                                    <td class="p-2">
-                                        <div class="d-flex w-100 ">
-                                            <div class="col-6 px-2">{{  $item->account_list->account_name }}</div>
-                                            <?php 
-                                            $debit = '';
-                                            $credit = '';
-                                            if($item->type == 1){
-                                                $debit = $item->amount;
-                                            }elseif($item->type == 2){
-                                                $credit = $item->amount;
-                                            }
-                                            ?>
-                                            <div class="col-3 px-2 text-end"><?= $debit?></div>
-                                            <div class="col-3 px-2 text-end"><?= $credit?></div>
-                                        </div>
-                                    </td>
-                                    <!-- <th>Journal</th> -->
-                                    <td></td>
-                                    <!-- <th>Status</th> -->
-                                    <td></td>
-                                </tr>
+                                    <tr class="s">
+                                        <td></td>
+                                        <td></td>
+                                        <!-- <th>Partners</th> -->
+                                        <td class="p-2">
+                                            <div class="d-flex w-100 ">
+                                                <div class="col-6 px-2">{{ $item->account_list->account_name }}</div>
+                                                <?php
+                                                $debit = '';
+                                                $credit = '';
+                                                if ($item->type == 1) {
+                                                    $debit = $item->amount;
+                                                    $debit = '₱ ' . number_format($debit, 2);
+                                                } elseif ($item->type == 2) {
+                                                    $credit = $item->amount;
+                                                    $credit = '₱ ' . number_format($credit, 2);
+                                                }
+                                                ?>
+                                                <div class="col-3 px-2 text-end"><?= $debit ?></div>
+                                                <div class="col-3 px-2 text-end"><?= $credit ?></div>
+                                            </div>
+                                        </td>
+                                        <!-- <th>Journal</th> -->
+                                        <td></td>
+                                        <!-- <th>Status</th> -->
+                                        <td></td>
+                                    </tr>
                                 @endforeach
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Date</th>
-                                <th>Journal Code</th>
-
+                                <th class="border text-center">Date</th>
+                                <th class="border text-center">Journal Code</th>
                                 <th class="p-2">
-                                    <div class="d-flex w-100">
-                                        <div class="col-6 px-2 border">Description</div>
-                                        <div class="col-3 px-2 border">Debit</div>
-                                        <div class="col-3 px-2 border">Credit</div>
+                                    <div class="d-flex w-100 ">
+                                        <div class="col-6 px-2 border ">Description</div>
+                                        <div class="col-3 px-2 border text-end">Debit</div>
+                                        <div class="col-3 px-2 border text-end">Credit</div>
                                     </div>
                                 </th>
-                                <!-- <th>Journal</th> -->
-                                <th>Added By</th>
-                                <!-- <th>Status</th> -->
-                                <th>Action</th>
+                                <th class="border text-center">Added By</th>
+                                <th class="border text-center">Action</th>
                             </tr>
                         </tfoot>
                     </table>

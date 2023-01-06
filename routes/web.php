@@ -22,11 +22,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/loginv2', [App\Http\Controllers\HomeController::class, 'logiv2']);
 
-Route::get('/supplier', [App\Http\Controllers\InventoryController::class, 'supplierIndex']);
-Route::get('/warehouse', [App\Http\Controllers\InventoryController::class, 'warehouseIndex']);
+// Pages routes
 Route::get('/inventory', [App\Http\Controllers\InventoryController::class, 'index']);
 Route::get('/employee', [App\Http\Controllers\HumanResourcesController::class, 'index']);
 Route::get('/journal', [App\Http\Controllers\accountingController::class, 'index']);
+Route::get('/general-ledger', [App\Http\Controllers\accountingController::class, 'generalLedger']);
+Route::get('/partner-ledger', [App\Http\Controllers\accountingController::class, 'partnerLedger']);
 
 
 
