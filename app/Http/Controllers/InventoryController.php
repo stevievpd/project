@@ -20,6 +20,11 @@ class InventoryController extends Controller
         $this->middleware('auth');
     }
 
+    public function dashboard()
+    {
+        return view('inventory.dashboard');
+    }
+
     // Product Index
     public function index()
     {
@@ -50,15 +55,14 @@ class InventoryController extends Controller
     // Warehouse Index
     public function warehouseIndex()
     {
-        $warehouse = DB::table('warehouse')
+        $warehouse = Warehouse::with('products')
             ->get()
             ->whereNull('deleted_at');
 
-        // $productInWarehouse = Product_in_Warehouse::with('warehouse')
-        //     ->whereNull('deleted_at')
-        //     ->get();
-
-        return view('inventory.warehouse', compact(['warehouse']));
+        $warehouseProduct = Product_in_WareHouse::with('product', 'warehouse')
+            ->get()
+            ->whereNull('deleted_at');
+        return view('inventory.warehouse', compact(['warehouseProduct', 'warehouse']));
     }
 
     // Product Section
