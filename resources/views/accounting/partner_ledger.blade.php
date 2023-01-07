@@ -50,7 +50,7 @@
                 <div class="card-header">
                 </div>
                 <div class="card-body ">
-                    <table id="generalTable" class="table table-responsive-sm table-hover">
+                    <table id="partnerTable" class="table table-responsive-sm table-hover">
                         <colgroup>
                             <col width="20%">
 
@@ -61,11 +61,11 @@
                                 <th>Partner Name</th>
                                 <th class="p-2">
                                     <div class="d-flex w-100">
-                                        <div class="col-2  border" style="text-align: center">Date</div>
-                                        <div class="col-2  border" style="text-align: center">Code</div>
-                                        <div class="col-4  border" style="text-align: center">Description</div>
-                                        <div class="col-2  border text-center">Debit</div>
-                                        <div class="col-2  border text-center">Credit</div>
+                                        <div class="col-2  " style="text-align: center">Date</div>
+                                        <div class="col-2  " style="text-align: center">Code</div>
+                                        <div class="col-4  " style="text-align: center">Description</div>
+                                        <div class="col-2   text-center">Debit</div>
+                                        <div class="col-2   text-center">Credit</div>
                                     </div>
                                 </th>
                             </tr>
@@ -82,61 +82,64 @@
 
                                     <td>
 
-                                        @foreach ($ledgeritems as $item)
-                                            @if ($partner->partner == $item->entry->partner)
-                                                <?php
-                                                if ($item->type == 1) {
-                                                    $type1 = $item->amount;
-                                                    $totaldeb = (float) $type1 + (float) $totaldeb;
-                                                    $type1 = '₱ ' . number_format($type1, 2);
-                                                } else {
-                                                    $type1 = '';
-                                                }
-                                                if ($item->type == 2) {
-                                                    $type2 = $item->amount;
-                                                    $totalcred = (float) $type2 + (float) $totalcred;
-                                                    $type2 = '₱ ' . number_format($type2, 2);
-                                                } else {
-                                                    $type2 = '';
-                                                }
-                                                ?>
-                                                <div class="d-flex w-100 fgh">
-                                                    <div class="col-2 border text-center">
-                                                        <span
-                                                            class="pl-4"><?= date('M d, Y', strtotime($item->entry->entry_date)) ?></span>
-                                                    </div>
-                                                    <div class="col-2 border text-center">
-                                                        <span class="pl-4">{{ $item->entry->entry_code }}</span>
-                                                    </div>
+                                        @foreach ($partneritem as $item)
+                                            @foreach ($item->journal_item as $items)
+                                                @if ($partner->partner == $item->partner)
+                                                    <?php
+                                                    if ($items->type == 1) {
+                                                        $type1 = $items->amount;
+                                                        $totaldeb = (float) $type1 + (float) $totaldeb;
+                                                        $type1 = '₱ ' . number_format($type1, 2);
+                                                    } else {
+                                                        $type1 = '';
+                                                    }
+                                                    if ($items->type == 2) {
+                                                        $type2 = $items->amount;
+                                                        $totalcred = (float) $type2 + (float) $totalcred;
+                                                        $type2 = '₱ ' . number_format($type2, 2);
+                                                    } else {
+                                                        $type2 = '';
+                                                    }
+                                                    ?>
+                                                    <div class="d-flex w-100 fgh">
+                                                        <div class="col-2 border-bottom text-center">
+                                                            <span
+                                                                class="pl-4"><?= date('M d, Y', strtotime($item->entry_date)) ?></span>
+                                                        </div>
+                                                        <div class="col-2 border-bottom text-center">
+                                                            <span class="pl-4">{{ $item->entry_code }}</span>
+                                                        </div>
 
-                                                    <div class="col-4 border text-center">
-                                                        <span class="pl-4">{{ $item->entry->description }}</span>
+                                                        <div class="col-4 border-bottom text-center">
+                                                            <span class="pl-4">{{ $item->description }}</span>
+                                                        </div>
+                                                        <div class="col-2 px-2 border-bottom text-end">
+                                                            <?= $type1 ?>
+                                                        </div>
+                                                        <div class="col-2 px-2 border-bottom text-end">
+                                                            <?= $type2 ?>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-2 px-2 border text-end">
-                                                        <?= $type1 ?>
-                                                    </div>
-                                                    <div class="col-2 px-2 border text-end">
-                                                        <?= $type2 ?>
-                                                    </div>
-                                                </div>
-                                            @endif
+                                                @endif
+                                            @endforeach
                                         @endforeach
 
                                         <div class="d-flex w-100 fgh">
-                                            <div class="col-2 border text-center">
+                                            <div class="col-2  text-center">
 
                                             </div>
-                                            <div class="col-2 border text-center">
+                                            <div class="col-2  text-center">
 
                                             </div>
 
-                                            <div class="col-4 border text-center">
+                                            <div class="col-4  text-center">
 
                                             </div>
-                                            <div class="col-2 border text-end bg-success p-2 text-dark bg-opacity-10">
+                                            <div
+                                                class="col-2 border-bottom text-end bg-success p-2 text-dark bg-opacity-10">
                                                 <?php echo '₱ ' . number_format((float) $totaldeb, 2); ?>
                                             </div>
-                                            <div class="col-2 border text-end bg-danger p-2 text-dark bg-opacity-10">
+                                            <div class="col-2 border-bottom text-end bg-danger p-2 text-dark bg-opacity-10">
                                                 <?php echo '₱ ' . number_format((float) $totalcred, 2); ?>
                                             </div>
                                         </div>
@@ -162,7 +165,7 @@
     {{-- scripts --}}
     <script>
         $(document).ready(function() {
-            $('#generalTable').DataTable();
+            $('#partnerTable').DataTable();
         });
     </script>
 @endsection
