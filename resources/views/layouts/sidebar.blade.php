@@ -54,10 +54,10 @@
                 <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-                <li><a class="link_name" href="#">Inventory</a></li>
-                <li><a href="">Warehouse</a></li>
-                <li><a href="">Products</a></li>
-                <li><a href="">Supplier</a></li>
+                <li><a class="link_name" href="/inventory">Inventory</a></li>
+                <li><a href="/warehouse">Warehouse</a></li>
+                <li><a href="/product">Products</a></li>
+                <li><a href="/supplier">Supplier</a></li>
                 <li><a href="">Purchase Order</a></li>
             </ul>
         </li>

@@ -65,7 +65,6 @@
 
                             </div>
                         </div>
-
                         <div class="card-body table-responsive ">
                             <table id="warehouseList" class="table">
                                 <thead>
@@ -85,13 +84,11 @@
                                         <td>{{ $wh->warehouse_description }}</td>
                                         <td>{{ $wh->abrr }}</td>
                                         <td>Active</td>
-                                        <td> <a data-id="{{ $wh->id }}"
-                                            class="btn btn-sm btn-success btnEditProd"><i
-                                                class="fa-solid fa-user-pen"></i></a>
-                                        <a data-del="{{ $wh->id }}"
-                                            class="btn btn-sm btn-danger btnDeleteProd"><i
-                                                class="fa-solid fa-delete-left"></i></a>
-                                    </td>
+                                        <td> <a data-id="{{ $wh->id }}" class="btn btn-sm btn-success btnEditProd"><i
+                                                    class="fa-solid fa-user-pen"></i></a>
+                                            <a data-del="{{ $wh->id }}" class="btn btn-sm btn-danger btnDeleteProd"><i
+                                                    class="fa-solid fa-delete-left"></i></a>
+                                        </td>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -128,6 +125,19 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
+                                    @foreach ($warehouseProduct as $wp)
+                                        <td>{{ $wp->product_id }}</td>
+                                        <td>{{ $wp->warehouse_id }}</td>
+                                        <td>{{ $wp->product->product_qoh }}</td>
+                                        <td>Active</td>
+                                        <td> <a data-id="{{ $wp->id }}"
+                                                class="btn btn-sm btn-success btnEditProd"><i
+                                                    class="fa-solid fa-user-pen"></i></a>
+                                            <a data-del="{{ $wp->id }}"
+                                                class="btn btn-sm btn-danger btnDeleteProd"><i
+                                                    class="fa-solid fa-delete-left"></i></a>
+                                        </td>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

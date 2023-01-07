@@ -18,8 +18,12 @@ class Warehouse extends Model
         'abrr',
     ];
 
-    // public function productInWarehouse()
-    // {
-    //     return $this->belongsTo(Product_in_Warehouse::class);
-    // }
+    public function products(){
+        return $this->hasMany(Product::class);
+    }
+    
+    public function productWarehouse(){
+        return $this->hasMany(Product_in_Warehouse::class);
+    }
+
 }
