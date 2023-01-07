@@ -51,12 +51,17 @@ class accountingController extends Controller
                 }])
                 ->groupBy('partner')
                 ->get();
+        $partneritem = journal_entry::with(['journal_item' => function($sd){
+                $sd
+                ->with('account_list');
+                }])
+                ->get();
          $ledgeritems = journal_item::with(['account_list','entry'=> function($journ){
                     $journ
                     ->orderBy('description', 'ASC');
                     }])
                     ->get();
 
-        return view('accounting.partner_ledger', compact('partner', 'ledgeritems'));
+        return view('accounting.partner_ledger', compact('partner', 'ledgeritems', 'partneritem'));
     }
 }
