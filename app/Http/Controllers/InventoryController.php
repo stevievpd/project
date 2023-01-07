@@ -2,40 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Inventory\product;
-use App\Models\Inventory\category;
+use App\Models\Inventory\Product;
+use App\Models\Inventory\Category;
+use App\Models\Inventory\Supplier;
+use App\Models\Inventory\Debts_Supplier;
+use App\Models\Inventory\Warehouse;
+use App\Models\Inventory\Product_in_Warehouse;
 
 use DB;
 
-
 class InventoryController extends Controller
 {
-    //
     public function __construct()
     {
         $this->middleware('auth');
     }
 
+    // Product Index
     public function index()
     {
-        $category = DB::table('category')->get()->whereNull('deleted_at');
+        $products = Product::with('category', 'supplier')
+            ->whereNull('deleted_at')
+            ->get();
+        $category = Category::with('product')
+            ->whereNull('deleted_at')
+            ->get();
+        return view('inventory.product', compact(['products', 'category']));
+    }
+    // Supplier Index
+    public function supplierIndex()
+    {
+        $supplier = Supplier::with('debtSupplier')
+            ->whereNull('deleted_at')
+            ->get();
+        $debtSupplier = Debts_Supplier::with('supplier')
+            ->whereNull('deleted_at')
+            ->get();
 
-        $product = DB::table('product')
-            ->join('category', 'category.id', '=', 'product.category_id')
-            // ->select('product.id as prod_id', 'product_name', 'product_description', 'price', 'quantity', 'category.id as cat_id', 'category_name')
-            ->get()->whereNull('product.deleted_at');
-
-        $data = [
-            'product' => $product,
-            'category' => $category,
-        ];
-
-        return view('inventory.product', $data);
+        return view(
+            'inventory.supplier',
+            compact(['supplier', 'debtSupplier'])
+        );
     }
 
-    public function storeProduct(Request $request){
-        $prod = new product;
+    // Warehouse Index
+    public function warehouseIndex()
+    {
+        $warehouse = DB::table('warehouse')
+            ->get()
+            ->whereNull('deleted_at');
+
+        // $productInWarehouse = Product_in_Warehouse::with('warehouse')
+        //     ->whereNull('deleted_at')
+        //     ->get();
+
+        return view('inventory.warehouse', compact(['warehouse']));
+    }
+
+    // Product Section
+    public function storeProduct(Request $request)
+    {
+        $prod = new Product();
 
         $prod->product_name = $request->input('product_name');
         $prod->product_description = $request->input('product_description');
@@ -43,40 +72,114 @@ class InventoryController extends Controller
         $prod->price = $request->input('price');
         $prod->quantity = $request->input('quantity');
         $prod->save();
-    
-        $msg = "New Product has been created.";
-        return redirect()->back()->with(['msg' => $msg]);
+
+        $msg = "New $prod->product_name Product has been Added.";
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
     }
 
-    public function editProduct($id){
-        $prod = new product;
-        
-        $prod1 = $prod::find($id);
-        return response()->json($prod1);
-
+    public function editProduct($id)
+    {
+        $prod = Product::find($id);
+        return response()->json($prod);
     }
 
-    public function updateProduct(Request $request){
-
+    public function updateProduct(Request $request)
+    {
         $id = $request->input('prod_id');
         $product_name = $request->input('product_name');
         $product_description = $request->input('product_description');
-        $category = $request->input('category');
+        $category_id = $request->input('category');
         $price = $request->input('price');
         $quantity = $request->input('quantity');
 
-        DB::table('product')
+        DB::table('products')
             ->where('id', $id)
             ->update([
                 'product_name' => $product_name,
                 'product_description' => $product_description,
-                'category_id' => $category,
+                'category_id' => $category_id,
                 'price' => $price,
                 'quantity' => $quantity,
             ]);
-            $msg = "$product_name has been Updated";
+        $msg = 'Product has been Updated';
 
-        return redirect()->back()->with(['msg' => $msg]);
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
     }
 
+    public function deleteProduct(Request $request)
+    {
+        $id = $request->input('prod_id');
+
+        DB::table('products')
+            ->where('id', $id)
+            ->update([
+                'deleted_at' => date('Y-m-d H:i:s'),
+            ]);
+        $msg = 'Product has been Deleted';
+
+        return redirect()
+            ->back()
+            ->with(['msgDel' => $msg]);
+    }
+
+    // Category Section
+
+    public function storeCategory(Request $request)
+    {
+        $cat = new Category();
+
+        $cat->category_name = $request->input('category_name');
+        $cat->category_description = $request->input('category_description');
+        $cat->save();
+
+        $msg = "New $cat->category_name category has been Added.";
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
+    }
+
+    public function editCategory($id)
+    {
+        $cat = Category::find($id);
+        return response()->json($cat);
+    }
+
+    public function updateCategory(Request $request)
+    {
+        $id = $request->input('cat_id');
+        $category_name = $request->input('category_name');
+        $category_description = $request->input('category_description');
+
+        DB::table('categories')
+            ->where('id', $id)
+            ->update([
+                'category_name' => $category_name,
+                'category_description' => $category_description,
+            ]);
+        $msg = 'Category has been Updated';
+
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
+    }
+
+    public function deleteCategory(Request $request)
+    {
+        $id = $request->input('cat_id');
+
+        DB::table('categories')
+            ->where('id', $id)
+            ->update([
+                'deleted_at' => date('Y-m-d H:i:s'),
+            ]);
+        $msg = 'Category has been Deleted';
+
+        return redirect()
+            ->back()
+            ->with(['msgDel' => $msg]);
+    }
 }

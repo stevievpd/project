@@ -47,7 +47,7 @@
                                     <h5>Total Department</h5>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <h1>{{ $depCount }}</h1>
+                                    <h1>{{ $departCount }}</h1>
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <h1>{{ $schedCount }}</h1>
-                                    
+
                                     <div class="span-text"> <span class="badge text-bg-success bg-opacity-25 percent"
                                             style="color: green !important"><i class="fa-solid fa-arrow-trend-up"></i>
                                             6%</span>
@@ -174,9 +174,9 @@
                                                 <tbody class="text-center">
                                                     @foreach ($employee as $emp)
                                                         <tr>
-                                                            <td>{{ $emp->employee_code }}</td>
+                                                            <td>{{ $emp->id }}</td>
                                                             <td>{{ $emp->first_name }} {{ $emp->last_name }}</td>
-                                                            <td>{{ $emp->job_name }}</td>
+                                                            <td>{{ $emp->job->job_name ?? 'NA' }}</td>
                                                             <td> <a data-id="{{ $emp->id }}"
                                                                     class="btn btn-sm btn-success btnEditEmp"><i
                                                                         class="fa-solid fa-user-pen"></i></a>
@@ -501,7 +501,7 @@
         });
     </script>
 
-    {{-- graph --}}
+    {{-- DATA TABLE --}}
     <script>
         $(document).ready(function() {
             $('#employeelist').DataTable({
@@ -538,22 +538,31 @@
             });
         });
     </script>
+    {{-- DATA TABLE --}}
+
+    {{-- graphs --}}
     <script>
-        //bar chart
+        // Employeee statistics
         const ctx = document.getElementById('myChart');
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                    'October', 'November', 'December'
+                labels: [
+                    @foreach ($empMonth as $month)
+                        '{{ $month->month }}',
+                    @endforeach
                 ],
                 datasets: [{
                     label: 'Employee',
-                    data: [12, 59, 5, 56, 58, 12, 59, 87, 45, 65, 40, 12],
+                    data: [
+                        @foreach ($empMonth as $total)
+                            {{ $total->total }},
+                        @endforeach
+                    ],
                     backgroundColor: 'rgb(113,82,243)'
                 }, {
                     label: 'Working Hours',
-                    data: [12, 59, 5, 56, 58, 12, 59, 85, 23, 25, 84, 14],
+                    data: [1, 2],
                 }],
             },
             options: {
@@ -593,14 +602,18 @@
         new Chart(ctxs, {
             type: 'polarArea',
             data: {
-                labels: [@foreach ($workformat as $work)
-                                        '{{ $work->department_name }}',
-                                    @endforeach ],
+                labels: [
+                    @foreach ($workformat as $work)
+                        '{{ $work->department_name }}',
+                    @endforeach
+                ],
                 datasets: [{
                     label: 'Employee',
-                    data: [@foreach ($workformat as $work)
-                                        {{ $work->total }},
-                                    @endforeach ],
+                    data: [
+                        @foreach ($workformat as $work)
+                            {{ $work->total }},
+                        @endforeach
+                    ],
                     borderWidth: 0
                 }]
             },

@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Models\inventory;
+namespace App\Models\Inventory;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class category extends Model
+class Category extends Model
 {
     use HasFactory;
-    protected $table = 'category';
-    protected $fillable  = ['category_name',
-                            'category_description',
-                             ];
+
+    protected $fillable = ['category_name', 'category_description'];
+
+    public function product(){
+        return $this->hasMany(Product::class);
+    }
 }

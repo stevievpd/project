@@ -9,6 +9,7 @@ use App\Models\HumanResources\department;
 use App\Models\HumanResources\employee;
 
 use DB;
+use Carbon\Carbon;
 
 class HumanResourcesController extends Controller
 {
@@ -18,12 +19,16 @@ class HumanResourcesController extends Controller
     }
 
     public function index(){
+
         $sched = DB::table('schedule')->get()->whereNull('deleted_at');
         $job = DB::table('job')->get()->whereNull('deleted_at');
         $depart = DB::table('department')->get()->whereNull('deleted_at');
-        $emp = DB::table('employee')
-            ->join('job', 'job.id', '=', 'employee.job_id')    
-         ->get()->whereNull('employee.deleted_at');
+        // $emp = DB::table('employee as e')
+        //     ->select('e.id', 'e.first_name', 'e.last_name', 'e.department_id', 'e.job_id', 'e.schedule_id', 'job.job_name')
+        //     ->join('job', 'job.id', '=', 'e.job_id')
+        //     ->get()->whereNull('employee.deleted_at');
+
+        $employee = employee::with('job')->get();
 
         $workformat = DB::table('employee')
                     ->join('department', 'employee.department_id', '=', 'department.id')
@@ -31,24 +36,18 @@ class HumanResourcesController extends Controller
                     ->groupBy('department.department_name')
                     ->get();
 
-        $empCount       = $emp->count();
+        $empMonth = DB::table('employee')
+                    ->select(DB::raw('MONTHNAME(created_at) as month'), DB::raw('count(id) as total'))
+                    ->groupBy('month')
+                    ->orderBy('created_at')
+                    ->get();
+
+        $empCount       = $employee->count();
         $departCount    = $depart->count();
         $jobCount       = $job->count();
         $schedCount       = $sched->count();
 
-        $data=[
-            'sched'         => $sched,
-            'job'           => $job,
-            'depart'        => $depart,
-            'employee'      => $emp,
-            'empCount'      => $empCount,
-            'depCount'      => $departCount,
-            'jobCount'      => $jobCount,
-            'schedCount'    => $schedCount,
-            'workformat'    => $workformat,
-        ];
-
-        return view('human_resources.employee', $data);
+        return view('human_resources.employee', compact('employee', 'empCount', 'departCount', 'depart', 'job', 'sched', 'departCount', 'jobCount', 'schedCount' , 'empMonth', 'workformat'));
     }
     //  =====================SCHEDULE CONTROLLER========================//
     public function storeSchedule(Request $request){
