@@ -13,17 +13,33 @@ class Product extends Model
         'product_name',
         'product_description',
         'product_supplier_name',
+        'product_supplier_price',
+        'product_retail_price',
+        'product_wholesale_price',
+        'product_qoh',
+        'product_unit',
+        'product_min_qoh',
+        'warehouse_id',
         'category_id',
-        'price',
-        'quantity',
-        'supplier_id'
+        'supplier_id',
+        'product_max_discount',
+        'note',
+        'photo',
     ];
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function supplier(){
+    public function supplier()
+    {
         return $this->belongsTo(Supplier::class);
     }
+
+    public function productWarehouse(){
+        return $this->belongsTo(Product_in_Warehouse::class);
+    }
+
+    
 }
