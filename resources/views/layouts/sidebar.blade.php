@@ -113,8 +113,8 @@
                 <li><a href="">Miscellaneous</a></li>
 
                 <li><a class="link_name" href="#">Ledger</a></li>
-                <li><a href="">General Ledger</a></li>
-                <li><a href="">Partner Ledger</a></li>
+                <li><a href="/general-ledger">General Ledger</a></li>
+                <li><a href="/partner-ledger">Partner Ledger</a></li>
 
                 <li><a class="link_name" href="#">Reports</a></li>
                 <li><a href="">Trial Balance</a></li>
