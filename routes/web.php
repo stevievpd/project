@@ -67,6 +67,8 @@ Route::get('/editCategory/{id}', [App\Http\Controllers\InventoryController::clas
 Route::patch('/updateCategory', [App\Http\Controllers\InventoryController::class, 'updateCategory'])->name('updateCategory.update');
 Route::patch('/deleteCategory', [App\Http\Controllers\InventoryController::class, 'deleteCategory'])->name('deleteCategory.update');
 
+// CRUD ACCOUNTING
+Route::post('/addJournalEntry', [App\Http\Controllers\accountingController::class, 'storeJournalEntry'])->name('addJournalEntry.store');
 
 
 
