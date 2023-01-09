@@ -23,10 +23,10 @@ class journal_entry extends Model
 
     public function journal_item()
     {
-        return $this->hasMany(journal_item::class, 'journal_id');
+        return $this->hasMany(journal_item::class,'journ_code', 'entry_code');
     }
-    public function employee()
+    public function user()
     {
-        return $this->hasOne('App\Models\HumanResources\employee'::class, 'id', 'employee_id');
+        return $this->hasOne('App\Models\User'::class, 'id', 'user_id');
     }
 }

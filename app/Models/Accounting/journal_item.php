@@ -12,14 +12,14 @@ class journal_item extends Model
     protected $fillable = [
         'account_id',
         'group_id',
-        'journal_id',
+        'journ_code',
         'amount',
         'type',
     ];
 
     public function entry()
 {
-    return $this->belongsTo(journal_entry::class, 'journal_id','id');
+    return $this->belongsTo(journal_entry::class, 'journ_code','entry_code');
 }
 public function account_list(){
     return $this->hasOne(account_list::class, 'id', 'account_id');

@@ -36,8 +36,8 @@ return new class extends Migration
 
         Schema::create('journal_entry', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('employee_id');
-            $table->string('entry_code');
+            $table->unsignedBigInteger('user_id');
+            $table->string('entry_code')->index();
             $table->string('description');
             $table->date('entry_date');
             $table->string('partner');
@@ -46,14 +46,14 @@ return new class extends Migration
             $table->timestamps();
 
             // foreign keys
-            $table->foreign('employee_id')->references('id')->on('employee');
+            $table->foreign('user_id')->references('id')->on('users');
         });
 
         Schema::create('journal_item', function (Blueprint $table) {
             
             $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('group_id');
-            $table->unsignedBigInteger('journal_id');
+            $table->string('journ_code');
             $table->float('amount');
             $table->tinyInteger('type');
             $table->softDeletes();
@@ -64,7 +64,7 @@ return new class extends Migration
             
             $table->foreign('account_id')->references('id')->on('account_list');
             $table->foreign('group_id')->references('id')->on('group_list');
-            $table->foreign('journal_id')->references('id')->on('journal_entry');
+            $table->foreign('journ_code')->references('entry_code')->on('journal_entry');
         });
     }
 

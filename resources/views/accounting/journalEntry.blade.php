@@ -10,7 +10,7 @@
 @section('sidebar_content')
 @section('content')
     @include('layouts.modals')
-    {{-- @include('layouts/modal.HumanResourcesModal') --}}
+    @include('layouts/modal.AccountingModal')
 
 
     <div id="container cont-mains empMenu" class=" mx-4" id="main">
@@ -55,7 +55,7 @@
                     </button>
                 </div>
                 <div class="card-body ">
-                    <table id="table1" class="table table-responsive-sm table-hover">
+                    <table id="journalTable" class="table table-responsive-sm table-hover">
                         <colgroup>
                             <col width="15%">
                             <col width="15%">
@@ -100,8 +100,7 @@
                                         </div>
                                     </td>
                                     <!-- <th>Journal</th> -->
-                                    <td class="text-center">{{ $journalEntry->employee->first_name }}
-                                        {{ $journalEntry->employee->last_name }}</td>
+                                    <td class="text-center">{{ $journalEntry->user->name }}</td>
                                     <!-- <th>Status</th> -->
                                     <td class="text-center"><button class="btn btn-warning btn-sm edit btn-flat"
                                             data-id=""><i class="fa-solid fa-file-pen"></i></button>
@@ -109,6 +108,7 @@
                                                 class="fa-solid fa-trash"></i></i></button>
                                     </td>
                                 </tr>
+
                                 @foreach ($journalEntry->journal_item as $item)
                                     <tr class="s">
                                         <td></td>
@@ -170,5 +170,131 @@
         }
     </style>
     {{-- scripts --}}
+    {{-- DATA TABLE --}}
+    <script>
+        $(document).ready(function() {
+            $('#journalTable').DataTable({
+                orderCellsTop: {true,}
+            });
+        });
+    </script>
+    {{-- DATA TABLE --}}
+    <script>
+        // JOURNAL ENTRY MODAL FUNCTIONS
+        // calculate journal Debit and Credit
+        function calcuAmount() {
+            var debitAmount = 0;
+            var creditAmount = 0;
+            $('#tableJourn tbody tr').each(function() {
+                if ($(this).find('.debitAmounts').text() != "") {
+                    debitAmount += parseFloat(($(this).find('.debitAmounts').text()).replace(/,/gi, ''));
+                }
+                if ($(this).find('.creditAmounts').text() != "") {
+                    creditAmount += parseFloat(($(this).find('.creditAmounts').text()).replace(/,/gi, ''));
+                }
+            })
+            var totalamount = debitAmount - creditAmount;
+            $('#tableJourn').find('.totalDebit').text(parseFloat(debitAmount).toLocaleString('en-US', {
+                style: 'decimal'
+            }))
+            $('#tableJourn').find('.totalCredit').text(parseFloat(creditAmount).toLocaleString('en-US', {
+                style: 'decimal'
+            }))
+            document.getElementById('totalcatch').value = totalamount;
+
+            //for text color only
+            if (totalamount >= 0) {
+                $('#tableJourn').find('.totalBalanceJourn').text(parseFloat(totalamount).toLocaleString('en-US', {
+                    style: 'decimal'
+                }))
+                document.getElementById("totalCol").style.color = "#196811"
+            } else if (totalamount < 0) {
+                $('#tableJourn').find('.totalBalanceJourn').text(parseFloat(totalamount).toLocaleString('en-US', {
+                    style: 'decimal'
+                }))
+                document.getElementById("totalCol").style.color = "#9E1B18"
+            }
+        }
+
+        $('#myButton').click(function() {
+            var accountId = $('#accountListJourn').val()
+            var groupId = $('#groupListJourn').val()
+            var amountx = $('#amountJourn').val()
+            var type = $('#typeId').val()
+            if (groupId == '' || accountId == '' || amountx == '' || type == '') {
+                $("#errorModalAccount").modal('show');
+            } else {
+                document.getElementById("accountListJourn").value = "";
+                document.getElementById("groupListJourn").value = "";
+                document.getElementById("amountJourn").value = "";
+                document.getElementById("typeId").value = "";
+
+                var rows = $($('noscript#cloneThis').html()).clone().appendTo("tbody#bodys")
+                rows.find('input[name="account_ids[]"]').val(accountId) // add to input field
+                rows.find('input[name="group_ids[]"]').val(groupId)
+                rows.find('input[name="amounts[]"]').val(amountx)
+                rows.find('input[name="amountType[]"]').val(type)
+
+                @foreach ($accountList as $account)
+                    if (accountId == {{ $account->id }}) {
+                        rows.find('.accountsD').text('{{ $account->account_name }}') //Paste Account Name to table
+                    }
+                @endforeach
+
+                @foreach ($groupList as $group)
+                    if (groupId == {{ $group->id }}) {
+                        rows.find('.groupsD').text('{{ $group->group_name }}') //Paste Group Name to table
+                    }
+                @endforeach
+
+
+                if (type == '1') {
+                    rows.find('.debitAmounts').text(parseFloat(amountx).toLocaleString('en-US', {
+                        style: 'decimal'
+                    }))
+                }
+                if (type == 2) {
+                    rows.find('.creditAmounts').text(parseFloat(amountx).toLocaleString('en-US', {
+                        style: 'decimal'
+                    }))
+                }
+                if (type == '') {
+                    alert("NEED AMOUNT TYPE")
+                    rows.find('.creditAmounts').text("NO VALUE")
+                    rows.find('.debitAmounts').text("NO VALUE")
+                }
+                calcuAmount()
+                $('#tableJourn').append(tr)
+            }
+        })
+
+        $('#tableJourn').on('click', ".delRow", function(e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
+            calcuAmount()
+        });
+
+        //catch 
+        $('#journAdd').submit(function(e) {
+            var total = document.getElementById('totalcatch').value;
+            var _this = $(this)
+            $('.pop-msg').remove()
+            var el = $('<div>')
+            el.addClass("pop-msg alert")
+            el.hide()
+            if ($('#tableJourn tbody tr').length <= 0) {
+                el.addClass('alert-danger').text(" Account Table is empty.")
+                _this.prepend(el)
+                el.show('slow')
+                return false;
+            }
+            if (total != 0) {
+                $("#errorModalTrial").modal('show');
+                return false;
+            }
+        });
+        //catch
+        // JOURNAL ENTRY MODAL FUNCTIONS end
+    </script>
 @endsection
 @endsection
