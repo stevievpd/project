@@ -20,14 +20,40 @@ class accountingController extends Controller
     
     public function index(){
 
-        $journalEntry = journal_entry::with(['employee','journal_item' => function($acc){
+        $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
                 $acc
                     ->with('account_list');
                     }])->get();
 
-
+                    $accountList = account_list::orderBy('account_name', 'asc')->get();
+                    $groupList = group_list::orderBy('group_name', 'asc')->get();
+                    $employee = employee::orderBy('first_name', 'asc')->get();
        
-        return view('accounting.journalEntry', compact('journalEntry'));
+        return view('accounting.journalEntry', compact('journalEntry','accountList', 'groupList', 'employee'));
+    }
+    // STORE JOURNAL ENTRIES and ITEMS
+    public function storeJournalEntry(Request $request){
+        $journ = new journal_entry;
+        $items = new journal_item;
+        $code = $request->input('entry_code');
+        $journ->employee_id = $request->input('employee_id');
+        $journ->entry_code  = $request->input('entry_code');
+        $journ->description = $request->input('description');
+        $journ->entry_date  = $request->input('entry_date');
+        $journ->partner     = $request->input('partner');
+        $journ->save();
+
+        foreach($request->account_ids as $key => $value){
+            journal_item::create([
+                'account_id' => $request->account_ids[$key],
+                'group_id'   => $request->group_ids[$key],
+                'journ_code' => $code,
+                'amount'     => $request->amounts[$key],
+                'type'       => $request->amountType[$key],
+            ]);
+        }
+        $msg = "New Schedule has been created.";
+        return redirect()->back()->with(['msg' => $msg]);
     }
     public function generalLedger(){
 
@@ -61,7 +87,6 @@ class accountingController extends Controller
                     ->orderBy('description', 'ASC');
                     }])
                     ->get();
-
         return view('accounting.partner_ledger', compact('partner', 'ledgeritems', 'partneritem'));
     }
 }
