@@ -16,7 +16,7 @@
                             <div class="col input-group">
                                 <span class="input-group-text" id="basic-addon1">JOURNAL CODE</span>
                                 <input type="text" class="form-control code text-dark bg bg-white" name="entry_code"
-                                    value="JRE-<?php echo (new DateTime())->format('mY'); ?>-00" style="--bs-text-opacity: .5;" readonly>
+                                    value="JRE-<?php echo (new DateTime())->format('mY'); ?>-00{{$journCount}}" style="--bs-text-opacity: .5;" readonly>
                             </div>
                             <div class="col input-group">
                                 <span class="input-group-text" id="basic-addon1">Date</span>
@@ -27,13 +27,8 @@
                         <div class=" p-2 row align-items-start">
                             <div class="col-6 g-2 py-2 row border rounded-1">
                                 <div class="form-floating">
-                                    <select class="form-control employee" name="employee_id">
-                                        <option value=""> </option>
-                                        @foreach ($employee as $emp)
-                                        <option value="{{ $emp->id }}">{{ $emp->first_name }} {{ $emp->last_name }}</option>
-                                    @endforeach
-                                    </select>
-                                    <label for="account" class="">Employee</label>
+                                        <input type="text" class="form-control user" id="username" value="{{ Auth::user()->name }}" readonly>
+                                        <label for="account" class="">Creator</label>
                                 </div>
                                 <div class="col-6 form-floating ">
                                     <select class="form-control bg-info account" name="account" id="accountListJourn"
@@ -50,8 +45,8 @@
                                         style="--bs-bg-opacity: .25;">
                                         <option value=""> </option>
                                         @foreach ($groupList as $group)
-                                        <option value="{{ $group->id }}">{{ $group->group_name }}</option>
-                                    @endforeach
+                                            <option value="{{ $group->id }}">{{ $group->group_name }}</option>
+                                        @endforeach
                                     </select>
                                     <label for="account" class="">Group</label>
                                 </div>
@@ -79,8 +74,8 @@
                             </div>
                             <div class="col-6 px-4 py-2 g-2 row align-items-start">
                                 <div class=" form-floating">
-                                    <input type="text" class="description form-control"
-                                        name="description" style="text-transform:uppercase"
+                                    <input type="text" class="description form-control" name="description"
+                                        style="text-transform:uppercase"
                                         onkeyup="this.value = this.value.toUpperCase();" placeholder="Description"
                                         required>
                                     <label for="">Description</label>
@@ -162,7 +157,8 @@
 </div>
 {{-- <!-- modal New Journal Entry END --> --}}
 {{-- <!-- Start error modal --> --}}
-<div class="modal fade" id="errorModalAccount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="errorModalAccount" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -170,7 +166,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-danger p-2 text-white bg-opacity-75 text-center">
-            <h6>Please Insert Proper Data.</h6>
+                <h6>Please Insert Proper Data.</h6>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -188,7 +184,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-danger p-2 text-white bg-opacity-75 text-center">
-            <h5>Trial Balance is not Equal!</h5>
+                <h5>Trial Balance is not Equal!</h5>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

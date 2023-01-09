@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Accounting\account_list;
 use App\Models\Accounting\group_list;
 use App\Models\Accounting\journal_entry;
 use App\Models\Accounting\journal_item;
 use App\Models\HumanResources\employee;
+use App\Models\User;
+
 
 use DB;
 
@@ -19,24 +22,23 @@ class accountingController extends Controller
     }
     
     public function index(){
-
         $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
                 $acc
                     ->with('account_list');
-                    }])->get();
+                    }])whereBetween('')->get();
 
                     $accountList = account_list::orderBy('account_name', 'asc')->get();
                     $groupList = group_list::orderBy('group_name', 'asc')->get();
-                    $employee = employee::orderBy('first_name', 'asc')->get();
+        $journCount = journal_entry::count('id');
        
-        return view('accounting.journalEntry', compact('journalEntry','accountList', 'groupList', 'employee'));
+        return view('accounting.journalEntry', compact('journalEntry','accountList', 'groupList', 'journCount'));
     }
     // STORE JOURNAL ENTRIES and ITEMS
     public function storeJournalEntry(Request $request){
         $journ = new journal_entry;
         $items = new journal_item;
         $code = $request->input('entry_code');
-        $journ->employee_id = $request->input('employee_id');
+        $journ->user_id     = Auth::user()->id;
         $journ->entry_code  = $request->input('entry_code');
         $journ->description = $request->input('description');
         $journ->entry_date  = $request->input('entry_date');
@@ -52,7 +54,7 @@ class accountingController extends Controller
                 'type'       => $request->amountType[$key],
             ]);
         }
-        $msg = "New Schedule has been created.";
+        $msg = "New Journal Entry has been created.";
         return redirect()->back()->with(['msg' => $msg]);
     }
     public function generalLedger(){
@@ -71,7 +73,7 @@ class accountingController extends Controller
     }
 
     public function partnerLedger(){
-        $partner = journal_entry::with(['employee','journal_item' => function($acc){
+        $partner = journal_entry::with(['user','journal_item' => function($acc){
             $acc
                 ->with('account_list');
                 }])

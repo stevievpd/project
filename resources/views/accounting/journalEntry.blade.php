@@ -102,10 +102,20 @@
                                     <!-- <th>Journal</th> -->
                                     <td class="text-center">{{ $journalEntry->user->name }}</td>
                                     <!-- <th>Status</th> -->
-                                    <td class="text-center"><button class="btn btn-warning btn-sm edit btn-flat"
-                                            data-id=""><i class="fa-solid fa-file-pen"></i></button>
-                                        <button class="btn btn-danger btn-sm delete btn-flat" data-id=""><i
-                                                class="fa-solid fa-trash"></i></i></button>
+                                    <td class="text-center">
+
+                                        <div class="dropdown ">
+                                            <button class="btn btn-sm btn-secondary dropdown-toggle " type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-sliders"></i>
+                                            </button>
+                                            <ul class="dropdown-menu text-center border-0 bg-secondary bg-opacity-75">
+                                                <button class="btn btn-warning btn-sm edit btn-flat" data-id=""><i
+                                                            class="fa-solid fa-file-pen"></i></button>
+                                                <button class="btn btn-danger btn-sm delete btn-flat" data-id=""><i
+                                                            class="fa-solid fa-trash"></i></i></button>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
 
@@ -174,7 +184,9 @@
     <script>
         $(document).ready(function() {
             $('#journalTable').DataTable({
-                orderCellsTop: {true,}
+                orderCellsTop: {
+                    true,
+                }
             });
         });
     </script>
