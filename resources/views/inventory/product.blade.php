@@ -26,10 +26,10 @@
             <div class="titleHead">
                 <h2 class="titleh1">Products</h2>
             </div>
-            <div class="card dashboardCardContainer p-3 mb-4">
+            <div class="card dashboardCardContainer shadow p-3 mb-4">
                 <div class="row">
                     <div class="col-4">
-                        <div class="card p-4">
+                        <div class="card p-4 shadow">
                             <div class="container text-center">
                                 <div class="row justify-content-start">
                                     <div class="col-4">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="card p-4">
+                        <div class="card p-4 shadow">
                             <div class="container text-center">
                                 <div class="row justify-content-start">
                                     <div class="col-4">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="card p-4">
+                        <div class="card p-4 shadow">
                             <div class="container text-center">
                                 <div class="row justify-content-start">
                                     <div class="col-4">
@@ -85,7 +85,7 @@
         </div>
 
         <div class="inventoryCardContainer">
-            {{-- Employee Details --}}
+            {{-- Product Details --}}
             @if (Session::has('msg'))
                 <script>
                     $(document).ready(function() {
@@ -116,7 +116,7 @@
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
                     tabindex="0">
 
-                    <div id="inventoryTable" class="card tab-pane fade show active  border-0" role="tabpanel"
+                    <div id="inventoryTable" class="card tab-pane fade show active shadow border-0" role="tabpanel"
                         aria-labelledby="inventoryTableTab" tabindex="0">
                         <div class="card-header text-white" style="background-color: #ffff;">
                             <div class="d-flex justify-content-end pb-4">
@@ -131,7 +131,7 @@
                             </div>
                         </div>
 
-                        <div class="card-body table-responsive ">
+                        <div class="card-body table-responsive shadow ">
                             <table id="inventoryList" class="table">
                                 <thead>
                                     <tr class="text-center">
