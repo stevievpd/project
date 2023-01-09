@@ -55,7 +55,7 @@
                     </button>
                 </div>
                 <div class="card-body ">
-                    <table id="table1" class="table table-responsive-sm table-hover">
+                    <table id="journalTable" class="table table-responsive-sm table-hover">
                         <colgroup>
                             <col width="15%">
                             <col width="15%">
@@ -100,8 +100,7 @@
                                         </div>
                                     </td>
                                     <!-- <th>Journal</th> -->
-                                    <td class="text-center">{{ $journalEntry->employee->first_name }}
-                                        {{ $journalEntry->employee->last_name }}</td>
+                                    <td class="text-center">{{ $journalEntry->user->name }}</td>
                                     <!-- <th>Status</th> -->
                                     <td class="text-center"><button class="btn btn-warning btn-sm edit btn-flat"
                                             data-id=""><i class="fa-solid fa-file-pen"></i></button>
@@ -109,6 +108,7 @@
                                                 class="fa-solid fa-trash"></i></i></button>
                                     </td>
                                 </tr>
+
                                 @foreach ($journalEntry->journal_item as $item)
                                     <tr class="s">
                                         <td></td>
@@ -170,6 +170,15 @@
         }
     </style>
     {{-- scripts --}}
+    {{-- DATA TABLE --}}
+    <script>
+        $(document).ready(function() {
+            $('#journalTable').DataTable({
+                orderCellsTop: {true,}
+            });
+        });
+    </script>
+    {{-- DATA TABLE --}}
     <script>
         // JOURNAL ENTRY MODAL FUNCTIONS
         // calculate journal Debit and Credit
@@ -227,18 +236,18 @@
                 rows.find('input[name="amountType[]"]').val(type)
 
                 @foreach ($accountList as $account)
-                  if(accountId == {{$account->id}}){
-                    rows.find('.accountsD').text('{{$account->account_name}}')//Paste Account Name to table
-                  }
+                    if (accountId == {{ $account->id }}) {
+                        rows.find('.accountsD').text('{{ $account->account_name }}') //Paste Account Name to table
+                    }
                 @endforeach
 
                 @foreach ($groupList as $group)
-                  if(groupId == {{$group->id}}){
-                    rows.find('.groupsD').text('{{$group->group_name}}')//Paste Group Name to table
-                  }
+                    if (groupId == {{ $group->id }}) {
+                        rows.find('.groupsD').text('{{ $group->group_name }}') //Paste Group Name to table
+                    }
                 @endforeach
 
-                
+
                 if (type == '1') {
                     rows.find('.debitAmounts').text(parseFloat(amountx).toLocaleString('en-US', {
                         style: 'decimal'

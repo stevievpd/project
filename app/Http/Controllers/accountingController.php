@@ -20,7 +20,7 @@ class accountingController extends Controller
     
     public function index(){
 
-        $journalEntry = journal_entry::with(['employee','journal_item' => function($acc){
+        $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
                 $acc
                     ->with('account_list');
                     }])->get();
@@ -35,7 +35,7 @@ class accountingController extends Controller
     public function storeJournalEntry(Request $request){
         $journ = new journal_entry;
         $items = new journal_item;
-
+        $code = $request->input('entry_code');
         $journ->employee_id = $request->input('employee_id');
         $journ->entry_code  = $request->input('entry_code');
         $journ->description = $request->input('description');
@@ -47,7 +47,7 @@ class accountingController extends Controller
             journal_item::create([
                 'account_id' => $request->account_ids[$key],
                 'group_id'   => $request->group_ids[$key],
-                'journal_id' => 1,
+                'journ_code' => $code,
                 'amount'     => $request->amounts[$key],
                 'type'       => $request->amountType[$key],
             ]);
@@ -87,9 +87,6 @@ class accountingController extends Controller
                     ->orderBy('description', 'ASC');
                     }])
                     ->get();
-                    
-        
-
         return view('accounting.partner_ledger', compact('partner', 'ledgeritems', 'partneritem'));
     }
 }

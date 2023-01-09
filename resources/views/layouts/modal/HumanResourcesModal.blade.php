@@ -57,8 +57,8 @@
                          <select class="form-control departmentSelection" name="department"
                              aria-label="Select department" required>
                              <option value="0" selected>- Select -</option>
-                             @foreach ($accountList as $account)
-                                 <option value="{{ $account->id }}">{{ $account->account_name}}</option>
+                             @foreach ($depart as $dep)
+                                 <option value="{{ $dep->id }}">{{ $dep->department_name }}</option>
                              @endforeach
 
                          </select>
