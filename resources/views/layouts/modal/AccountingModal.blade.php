@@ -74,16 +74,22 @@
                             </div>
                             <div class="col-6 px-4 py-2 g-2 row align-items-start">
                                 <div class=" form-floating">
-                                    <input type="text" class="description form-control" name="description"
+                                    <input type="text" class="title form-control" name="title"
                                         style="text-transform:uppercase"
                                         onkeyup="this.value = this.value.toUpperCase();" placeholder="Description"
                                         required>
-                                    <label for="">Description</label>
+                                    <label for="" class="text-muted">Title</label>
+                                </div>
+                                <div class=" form-floating">
+                                    <input type="text" class="description form-control" name="description"
+                                        style="text-transform:capitalize"
+                                         placeholder="Description">
+                                    <label for=""class="text-muted">Description</label>
                                 </div>
                                 <div class="form-floating">
                                     <input type="text" class="partner form-control" name="partner"
                                         placeholder="Partner" required>
-                                    <label for="">Partner</label>
+                                    <label for="" class="text-muted">Partner</label>
                                 </div>
 
                             </div>

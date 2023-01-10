@@ -63,70 +63,44 @@
                             <col width="16%">
                             <col width="5%">
                         </colgroup>
-                        <thead class="table-info border ">
+                        <thead class="table-info  ">
 
                             <tr>
-                                <th class="border text-center">Date</th>
-                                <th class="border text-center">Journal Code</th>
+                                <th class="border-0 text-center">Date</th>
+                                <th class="border-0 text-center">Journal Code</th>
                                 <!-- <th>Partners</th> -->
-                                <th class="p-2">
+                                <th class="p-2 border-0">
                                     <div class="d-flex w-100 ">
                                         <div class="col-6 px-2 border ">Description</div>
                                         <div class="col-3 px-2 border text-end">Debit</div>
                                         <div class="col-3 px-2 border text-end">Credit</div>
                                     </div>
                                 </th>
-                                <!-- <th>Journal</th> -->
-                                <th class="border text-center">Added By</th>
-                                <!-- <th>Status</th> -->
-                                <th class="border text-center">Action</th>
+                                <th class="border-0 text-center">Added By</th>
+                                <th class="border-0 text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody class=" ">
                             @foreach ($journalEntry as $journalEntry)
-                                <tr class="bg bg-secondary bg-opacity-10">
+                                <tr class="">
                                     <td class="text-center"><?= date('M d, Y', strtotime($journalEntry->entry_date)) ?></td>
                                     <td class="text-center">{{ $journalEntry->entry_code }}</td>
                                     <!-- <th>Partners</th> -->
                                     <td class="p-2">
                                         <div class="d-flex w-100 ">
-                                            <div class="col-6 px-2 text-center"><b>{{ $journalEntry->description }}</b>
+                                            <div class="col-6 px-2 ">
+                                                <b>{{ $journalEntry->title }}</b>&nbsp;
+                                                <span style="font-size: 14px; font-style: oblique;">                                                       
+                                                    {{ $journalEntry->description ? $journalEntry->description : '' }}
+                                                </span>
                                             </div>
-
                                             <div class="col-3 px-2 "></div>
-
-
                                             <div class="col-3 px-2 "></div>
                                         </div>
-                                    </td>
-                                    <!-- <th>Journal</th> -->
-                                    <td class="text-center">{{ $journalEntry->user->name }}</td>
-                                    <!-- <th>Status</th> -->
-                                    <td class="text-center">
-
-                                        <div class="dropdown ">
-                                            <button class="btn btn-sm btn-secondary dropdown-toggle " type="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="fa-solid fa-sliders"></i>
-                                            </button>
-                                            <ul class="dropdown-menu text-center border-0 bg-secondary bg-opacity-75">
-                                                <button class="btn btn-warning btn-sm edit btn-flat" data-id=""><i
-                                                            class="fa-solid fa-file-pen"></i></button>
-                                                <button class="btn btn-danger btn-sm delete btn-flat" data-id=""><i
-                                                            class="fa-solid fa-trash"></i></i></button>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                @foreach ($journalEntry->journal_item as $item)
-                                    <tr class="s">
-                                        <td></td>
-                                        <td></td>
-                                        <!-- <th>Partners</th> -->
-                                        <td class="p-2">
+                                        {{--  --}}
+                                        @foreach ($journalEntry->journal_item as $item)
                                             <div class="d-flex w-100 ">
-                                                <div class="col-6 px-2">{{ $item->account_list->account_name }}</div>
+                                                <div class=" border-bottom col-6 px-2">{{ $item->account_list->account_name }}</div>
                                                 <?php
                                                 $debit = '';
                                                 $credit = '';
@@ -138,32 +112,35 @@
                                                     $credit = '₱ ' . number_format($credit, 2);
                                                 }
                                                 ?>
-                                                <div class="col-3 px-2 text-end"><?= $debit ?></div>
-                                                <div class="col-3 px-2 text-end"><?= $credit ?></div>
+                                                <div class="border-bottom col-3 px-2 text-end"><?= $debit ?></div>
+                                                <div class="border-bottom col-3 px-2 text-end"><?= $credit ?></div>
                                             </div>
-                                        </td>
-                                        <!-- <th>Journal</th> -->
-                                        <td></td>
-                                        <!-- <th>Status</th> -->
-                                        <td></td>
-                                    </tr>
-                                @endforeach
+                                        @endforeach
+                                        {{--  --}}
+                                    </td>
+
+                                    <td class="text-center">{{ $journalEntry->user->name }}</td>
+
+                                    <td class="text-center">
+
+                                        <div class="dropdown ">
+                                            <button class="btn btn-sm btn-secondary dropdown-toggle " type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-sliders"></i>
+                                            </button>
+                                            <ul class="dropdown-menu text-center border-0 bg-secondary bg-opacity-75">
+                                                <button class="btn btn-warning btn-sm edit btn-flat" data-id=""><i
+                                                        class="fa-solid fa-file-pen"></i></button>
+                                                <button class="btn btn-danger btn-sm delete btn-flat" data-id=""><i
+                                                        class="fa-solid fa-trash"></i></i></button>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <th class="border text-center">Date</th>
-                                <th class="border text-center">Journal Code</th>
-                                <th class="p-2">
-                                    <div class="d-flex w-100 ">
-                                        <div class="col-6 px-2 border ">Description</div>
-                                        <div class="col-3 px-2 border text-end">Debit</div>
-                                        <div class="col-3 px-2 border text-end">Credit</div>
-                                    </div>
-                                </th>
-                                <th class="border text-center">Added By</th>
-                                <th class="border text-center">Action</th>
-                            </tr>
+                            
                         </tfoot>
                     </table>
                 </div>
@@ -184,9 +161,7 @@
     <script>
         $(document).ready(function() {
             $('#journalTable').DataTable({
-                orderCellsTop: {
-                    true,
-                }
+
             });
         });
     </script>

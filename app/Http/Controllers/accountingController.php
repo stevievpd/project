@@ -22,10 +22,11 @@ class accountingController extends Controller
     }
     
     public function index(){
+        
         $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
                 $acc
                     ->with('account_list');
-                    }])whereBetween('')->get();
+                    }])->get();
 
                     $accountList = account_list::orderBy('account_name', 'asc')->get();
                     $groupList = group_list::orderBy('group_name', 'asc')->get();
@@ -40,6 +41,7 @@ class accountingController extends Controller
         $code = $request->input('entry_code');
         $journ->user_id     = Auth::user()->id;
         $journ->entry_code  = $request->input('entry_code');
+        $journ->title = $request->input('title');
         $journ->description = $request->input('description');
         $journ->entry_date  = $request->input('entry_date');
         $journ->partner     = $request->input('partner');

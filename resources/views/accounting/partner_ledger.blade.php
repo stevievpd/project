@@ -111,7 +111,7 @@
                                                         </div>
 
                                                         <div class="col-4 border-bottom text-center">
-                                                            <span class="pl-4">{{ $item->description }}</span>
+                                                            <span class="pl-4">{{ $item->title }}</span>
                                                         </div>
                                                         <div class="col-2 px-2 border-bottom text-end">
                                                             <?= $type1 ?>
@@ -137,10 +137,10 @@
                                             </div>
                                             <div
                                                 class="col-2 border-bottom text-end bg-success p-2 text-dark bg-opacity-10">
-                                                <?php echo '₱ ' . number_format((float) $totaldeb, 2); ?>
+                                                <b><?php echo '₱ ' . number_format((float) $totaldeb, 2); ?></b>
                                             </div>
                                             <div class="col-2 border-bottom text-end bg-danger p-2 text-dark bg-opacity-10">
-                                                <?php echo '₱ ' . number_format((float) $totalcred, 2); ?>
+                                                <b><?php echo '₱ ' . number_format((float) $totalcred, 2); ?></b>
                                             </div>
                                         </div>
                                     </td>

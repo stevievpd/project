@@ -38,7 +38,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('entry_code')->index();
-            $table->string('description');
+            $table->string('title');
+            $table->string('description')->nullable();
             $table->date('entry_date');
             $table->string('partner');
             $table->softDeletes();
