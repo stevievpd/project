@@ -24,7 +24,7 @@ class accountingController extends Controller
     public function index(Request $request){
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
-        if(!empty($dateStart) && !empty($dateStart))
+        if(!empty($dateStart) && !empty($dateEnd))
         {
             $from = date($dateStart);
             $to = date($dateEnd);
@@ -71,20 +71,33 @@ class accountingController extends Controller
         $msg = "New Journal Entry has been created.";
         return redirect()->back()->with(['msg' => $msg]);
     }
-    public function generalLedger(){
-        $from = date('2023-01-01');
-        $to = date('2023-02-02');
+    public function generalLedger(Request $request){
+
+        $dateStart = $request->input('date_start');
+        $dateEnd = $request->input('date_end');
+
+        if(!empty($dateStart) && !empty($dateEnd))
+        {
+            $from = date($dateStart);
+            $to = date($dateEnd);
+            $ledgeritems = journal_entry::with(['journal_item' => function($acc){
+                $acc
+                ->with('account_list');
+                }])->whereBetween('entry_date', [$from, $to])->get();
+        }else{
+            $ledgeritems = journal_entry::with(['journal_item' => function($acc){
+                $acc
+                ->with('account_list');
+                }])->get();
+        }
+        
         $ledger = journal_item::with(['account_list','entry'])      
                 ->groupBy('account_id')
                 ->get();
 
-        $ledgeritems = journal_item::with(['account_list','entry'=> function($journ){
-            $journ
-            ->orderBy('description', 'ASC')->whereBetween('entry_date', [$from, $to]);
-            }])
-        ->get();
+        
 
-        return view('accounting.general_ledger', compact( 'ledger', 'ledgeritems'));
+        return view('accounting.general_ledger', compact( 'ledger', 'ledgeritems' ,'dateStart', 'dateEnd'));
     }
 
     public function partnerLedger(){

@@ -48,8 +48,47 @@
             <div class="card" style="width:98%; margin-left:auto; margin-right:auto;">
 
                 <div class="card-header">
+                    <div class="row">
+                        <div class="col-7"></div>
+                        <div class="col-5">
+                            <form action="/general-ledger" id="journAdd" method="get">
+                                @csrf
+                                <div class="row input-daterange">
+                                    <div class="col-md-4">
+                                        <input type="date" class="form-control dateStart bg-success bg-opacity-10"
+                                            placeholder="Start" name="date_start"id="startdate"
+                                            value="<?php
+                                            $a_date = (new DateTime())->format('Y-m-d');
+                                            $date = new DateTime($a_date);
+                                            $date->modify('first day of this month');
+                                            echo $date->format('Y-m-d'); ?>" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="date" class="form-control dateEnd bg-success bg-opacity-10"
+                                            placeholder="End" name="date_end" value="<?php
+                                            $a_date = (new DateTime())->format('Y-m-d');
+                                            $date = new DateTime($a_date);
+                                            $date->modify('last day of this month');
+                                            echo $date->format('Y-m-d'); ?>" />
+                                    </div>
+                                    <div class="col-md-4">
+
+                                        <button type="submit" name="filter" id="filter"
+                                            class="btn btn-primary">Filter</button>
+                                        <button type="button" name="refreshs" id="refreshs" class="btn btn-default"><a
+                                                href="/general-ledger"><i class="fa-solid fa-rotate-right"> Reset</i></a></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+                
                 <div class="card-body ">
+                    @if ($dateStart && $dateEnd)
+                    <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                            <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
+                @endif
                     <table id="generalTable" class="table table-responsive-sm table-hover">
                         <colgroup>
                             <col width="15%">
@@ -89,45 +128,45 @@
                                             <div class="col-2 "></div>
                                         </div>
                                         @foreach ($ledgeritems as $item)
-                                            @if ($account->account_list->id == $item->account_list->id)
-                                                <?php
-                                                if ($item->type == 1) {
-                                                    $type1 = $item->amount;
-                                                    $totaldeb = (float) $type1 + (float) $totaldeb;
-                                                    $type1 = '₱ ' . number_format($type1, 2);
-                                                } else {
-                                                    $type1 = '';
-                                                }
-                                                if ($item->type == 2) {
-                                                    $type2 = $item->amount;
-                                                    $totalcred = (float) $type2 + (float) $totalcred;
-                                                    $type2 = '₱ ' . number_format($type2, 2);
-                                                } else {
-                                                    $type2 = '';
-                                                }
-                                                ?>
-                                                <div class="d-flex w-100 fgh">
-                                                    <div class="col-1  text-center">
-                                                        <span
-                                                            class="pl-4"><?= date('M d, Y', strtotime($item->entry->entry_date)) ?></span>
+                                            @foreach ($item->journal_item as $items)
+                                                @if ($account->account_list->id == $items->account_list->id)
+                                                    <?php
+                                                    if ($items->type == 1) {
+                                                        $type1 = $items->amount;
+                                                        $totaldeb = (float) $type1 + (float) $totaldeb;
+                                                        $type1 = '₱ ' . number_format($type1, 2);
+                                                    } else {
+                                                        $type1 = '';
+                                                    }
+                                                    if ($items->type == 2) {
+                                                        $type2 = $items->amount;
+                                                        $totalcred = (float) $type2 + (float) $totalcred;
+                                                        $type2 = '₱ ' . number_format($type2, 2);
+                                                    } else {
+                                                        $type2 = '';
+                                                    }
+                                                    ?>
+                                                    <div class="d-flex w-100 fgh">
+                                                        <div class="col-1  text-center">
+                                                            <span
+                                                                class="pl-4"><?= date('M d, Y', strtotime($item->entry_date)) ?></span>
+                                                        </div>
+                                                        <div class="col-2  text-center">
+                                                            {{ $item->entry_code }}
+                                                        </div>
+                                                        <div class="col-3  text-center">
+                                                            {{ $item->title }}
+                                                        </div>
+                                                        <div class="col-2 px-2  text-end">
+                                                            <?= $type1 ?>
+                                                        </div>
+                                                        <div class="col-2 px-2  text-end">
+                                                            <?= $type2 ?>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-2  text-center">
-                                                        {{ $item->entry->entry_code }}
-                                                    </div>
-                                                    <div class="col-3  text-center">
-                                                        {{ $item->entry->title }}
-                                                    </div>
-                                                    <div class="col-2 px-2  text-end">
-                                                        <?= $type1 ?>
-                                                    </div>
-                                                    <div class="col-2 px-2  text-end">
-                                                        <?= $type2 ?>
-                                                    </div>
-                                                </div>
-                                            @endif
+                                                @endif
+                                            @endforeach
                                         @endforeach
-
-
 
                                         <div class="d-flex w-100 fgh">
                                             <div class="col-1 border-top text-center">
@@ -168,9 +207,7 @@
                                                 ?>
                                             </div>
                                         </div>
-
                                     </td>
-
                                 </tr>
                             @endforeach
                         </tbody>

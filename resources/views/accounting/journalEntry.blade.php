@@ -49,17 +49,18 @@
 
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-4"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        <div class="col-8"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#journalEntryModal"><i class="fa-regular fa-pen-to-square"></i>
                                 Add New Journal
                             </button></div>
-                        <div class="col-8">
+                        <div class="col-4">
                             <form action="/journal" id="journAdd" method="get">
                                 @csrf
                                 <div class="row input-daterange">
                                     <div class="col-md-4">
                                         <input type="date" class="form-control dateStart bg-success bg-opacity-10"
-                                            placeholder="Start" name="date_start"id="startdate" value="<?php
+                                            placeholder="Start" name="date_start"id="startdate"
+                                            value="<?php
                                             $a_date = (new DateTime())->format('Y-m-d');
                                             $date = new DateTime($a_date);
                                             $date->modify('first day of this month');
@@ -91,6 +92,13 @@
                 </div>
 
                 <div class="card-body ">
+                    {{-- session --}}
+                        @if($dateStart && $dateEnd)
+                        <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart))?> to <?= date('F d, Y', strtotime($dateEnd))?></b></p>
+                        @endif
+                        
+                 
+                    {{-- session --}}
                     <table id="journalTable" class="table table-responsive-sm table-hover">
                         <colgroup>
                             <col width="15%">
@@ -118,7 +126,7 @@
                         </thead>
                         <tbody class="">
                             @foreach ($journalEntry as $journalEntry)
-                                <tr class="" >
+                                <tr class="">
                                     <td class="text-center"><?= date('M d, Y', strtotime($journalEntry->entry_date)) ?></td>
                                     <td class="text-center">{{ $journalEntry->entry_code }}</td>
                                     <!-- <th>Partners</th> -->
