@@ -48,12 +48,48 @@
             <div class="card" style="width:98%; margin-left:auto; margin-right:auto;">
 
                 <div class="card-header">
+                    <div class="row">
+                        <div class="col-4"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#journalEntryModal"><i class="fa-regular fa-pen-to-square"></i>
+                                Add New Journal
+                            </button></div>
+                        <div class="col-8">
+                            <form action="/journal" id="journAdd" method="get">
+                                @csrf
+                                <div class="row input-daterange">
+                                    <div class="col-md-4">
+                                        <input type="date" class="form-control dateStart bg-success bg-opacity-10"
+                                            placeholder="Start" name="date_start"id="startdate" value="<?php
+                                            $a_date = (new DateTime())->format('Y-m-d');
+                                            $date = new DateTime($a_date);
+                                            $date->modify('first day of this month');
+                                            echo $date->format('Y-m-d'); ?>" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="date" class="form-control dateEnd bg-success bg-opacity-10"
+                                            placeholder="End" name="date_end" value="<?php
+                                            $a_date = (new DateTime())->format('Y-m-d');
+                                            $date = new DateTime($a_date);
+                                            $date->modify('last day of this month');
+                                            echo $date->format('Y-m-d'); ?>" />
+                                    </div>
+                                    <div class="col-md-4">
 
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#journalEntryModal"><i class="fa-regular fa-pen-to-square"></i>
-                        Add New Journal
-                    </button>
+                                        <button type="submit" name="filter" id="filter"
+                                            class="btn btn-primary">Filter</button>
+                                        <button type="button" name="refreshs" id="refreshs" class="btn btn-default"><a
+                                                href="/journal"><i class="fa-solid fa-rotate-right"></i></a></button>
+
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+
                 </div>
+
                 <div class="card-body ">
                     <table id="journalTable" class="table table-responsive-sm table-hover">
                         <colgroup>
@@ -80,9 +116,9 @@
                                 <th class="border-0 text-center">Action</th>
                             </tr>
                         </thead>
-                        <tbody class=" ">
+                        <tbody class="">
                             @foreach ($journalEntry as $journalEntry)
-                                <tr class="">
+                                <tr class="" >
                                     <td class="text-center"><?= date('M d, Y', strtotime($journalEntry->entry_date)) ?></td>
                                     <td class="text-center">{{ $journalEntry->entry_code }}</td>
                                     <!-- <th>Partners</th> -->
@@ -90,7 +126,7 @@
                                         <div class="d-flex w-100 ">
                                             <div class="col-6 px-2 ">
                                                 <b>{{ $journalEntry->title }}</b>&nbsp;
-                                                <span style="font-size: 14px; font-style: oblique;">                                                       
+                                                <span style="font-size: 14px; font-style: oblique;">
                                                     {{ $journalEntry->description ? $journalEntry->description : '' }}
                                                 </span>
                                             </div>
@@ -100,7 +136,8 @@
                                         {{--  --}}
                                         @foreach ($journalEntry->journal_item as $item)
                                             <div class="d-flex w-100 ">
-                                                <div class=" border-bottom col-6 px-2">{{ $item->account_list->account_name }}</div>
+                                                <div class=" border-bottom col-6 px-2">
+                                                    {{ $item->account_list->account_name }}</div>
                                                 <?php
                                                 $debit = '';
                                                 $credit = '';
@@ -140,7 +177,7 @@
                             @endforeach
                         </tbody>
                         <tfoot>
-                            
+
                         </tfoot>
                     </table>
                 </div>
@@ -157,12 +194,20 @@
         }
     </style>
     {{-- scripts --}}
+
     {{-- DATA TABLE --}}
     <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
         $(document).ready(function() {
             $('#journalTable').DataTable({
 
             });
+        });
+        $(document).on('click', '.refreshs', function() {
+            $('.journalTable').DataTable().ajax.reload();
+
         });
     </script>
     {{-- DATA TABLE --}}

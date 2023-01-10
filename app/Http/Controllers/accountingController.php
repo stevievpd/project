@@ -21,18 +21,30 @@ class accountingController extends Controller
         $this->middleware('auth');
     }
     
-    public function index(){
-        
-        $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
-                $acc
+    public function index(Request $request){
+        $dateStart = $request->input('date_start');
+        $dateEnd = $request->input('date_end');
+        if(!empty($dateStart) && !empty($dateStart))
+        {
+            $from = date($dateStart);
+            $to = date($dateEnd);
+            $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
+                    $acc
                     ->with('account_list');
-                    }])->get();
+                    }])->whereBetween('entry_date', [$from, $to])->get();
+        }else{
+            $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
+                $acc
+                ->with('account_list');
+                }])->get();
+        }
+        
 
-                    $accountList = account_list::orderBy('account_name', 'asc')->get();
-                    $groupList = group_list::orderBy('group_name', 'asc')->get();
+        $accountList = account_list::orderBy('account_name', 'asc')->get();
+        $groupList = group_list::orderBy('group_name', 'asc')->get();
         $journCount = journal_entry::count('id');
        
-        return view('accounting.journalEntry', compact('journalEntry','accountList', 'groupList', 'journCount'));
+        return view('accounting.journalEntry', compact('journalEntry','accountList', 'groupList', 'journCount','dateStart','dateEnd'));
     }
     // STORE JOURNAL ENTRIES and ITEMS
     public function storeJournalEntry(Request $request){
@@ -60,14 +72,15 @@ class accountingController extends Controller
         return redirect()->back()->with(['msg' => $msg]);
     }
     public function generalLedger(){
-
+        $from = date('2023-01-01');
+        $to = date('2023-02-02');
         $ledger = journal_item::with(['account_list','entry'])      
                 ->groupBy('account_id')
                 ->get();
 
         $ledgeritems = journal_item::with(['account_list','entry'=> function($journ){
             $journ
-            ->orderBy('description', 'ASC');
+            ->orderBy('description', 'ASC')->whereBetween('entry_date', [$from, $to]);
             }])
         ->get();
 
