@@ -30,13 +30,13 @@ class accountingController extends Controller
             $to = date($dateEnd);
             $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
                     $acc
-                    ->with('account_list');
-                    }])->whereBetween('entry_date', [$from, $to])->get();
+                    ->with('account_list')->whereNull('deleted_at');
+                    }])->whereBetween('entry_date', [$from, $to])->orderBy('entry_date', 'ASC')->get()->whereNull('deleted_at');
         }else{
             $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
                 $acc
                 ->with('account_list');
-                }])->get();
+                }])->orderBy('entry_date', 'ASC')->get()->whereNull('deleted_at');
         }
         
 
@@ -83,12 +83,12 @@ class accountingController extends Controller
             $ledgeritems = journal_entry::with(['journal_item' => function($acc){
                 $acc
                 ->with('account_list');
-                }])->whereBetween('entry_date', [$from, $to])->get();
+                }])->whereBetween('entry_date', [$from, $to])->get()->whereNull('deleted_at');
         }else{
             $ledgeritems = journal_entry::with(['journal_item' => function($acc){
                 $acc
-                ->with('account_list');
-                }])->get();
+                ->with('account_list') ;
+                }])->get()->whereNull('deleted_at');
         }
         
         $ledger = journal_item::with(['account_list','entry'])      
@@ -100,23 +100,55 @@ class accountingController extends Controller
         return view('accounting.general_ledger', compact( 'ledger', 'ledgeritems' ,'dateStart', 'dateEnd'));
     }
 
-    public function partnerLedger(){
-        $partner = journal_entry::with(['user','journal_item' => function($acc){
-            $acc
-                ->with('account_list');
-                }])
-                ->groupBy('partner')
-                ->get();
+    public function partnerLedger(Request $request){
+        $dateStart = $request->input('date_start');
+        $dateEnd = $request->input('date_end');
+        if(!empty($dateStart) && !empty($dateEnd))
+        {
+            $from = date($dateStart);
+            $to = date($dateEnd);
+            $partner = journal_entry::with(['user','journal_item' => function($acc){
+                $acc
+                    ->with('account_list');
+                    }])->whereNull('deleted_at')
+                    ->groupBy('partner')
+                    ->whereBetween('entry_date', [$from, $to])->get();
+        }else{
+            $partner = journal_entry::with(['user','journal_item' => function($acc){
+                $acc
+                    ->with('account_list');
+                    }])->whereNull('deleted_at')
+                    ->groupBy('partner')
+                    ->get();
+        }
+        
         $partneritem = journal_entry::with(['journal_item' => function($sd){
                 $sd
                 ->with('account_list');
                 }])
-                ->get();
+                ->get()->whereNull('deleted_at');
          $ledgeritems = journal_item::with(['account_list','entry'=> function($journ){
                     $journ
                     ->orderBy('description', 'ASC');
                     }])
                     ->get();
-        return view('accounting.partner_ledger', compact('partner', 'ledgeritems', 'partneritem'));
+        return view('accounting.partner_ledger', compact('partner', 'ledgeritems', 'partneritem','dateStart', 'dateEnd'));
+    }
+    // DELETE JOURNAL 
+    public function deleteJournal(Request $request){
+        $id = $request->input('journ_id');
+        $code = $request->input('entry_code');
+
+        journal_entry::where('id', $id)
+            ->update([
+            'deleted_at' => now(),
+         ]);
+         journal_item::where('journ_code', $code)
+            ->update([
+            'deleted_at' => now(),
+         ]);
+        $msg = "Journal $code has been Deleted";
+
+    return redirect()->back()->with(['msgDel' => $msg]);
     }
 }

@@ -76,19 +76,20 @@
                                         <button type="submit" name="filter" id="filter"
                                             class="btn btn-primary">Filter</button>
                                         <button type="button" name="refreshs" id="refreshs" class="btn btn-default"><a
-                                                href="/general-ledger"><i class="fa-solid fa-rotate-right"> Reset</i></a></button>
+                                                href="/general-ledger"><i class="fa-solid fa-rotate-right">
+                                                    Reset</i></a></button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card-body ">
                     @if ($dateStart && $dateEnd)
-                    <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
-                            <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
-                @endif
+                        <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                                <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
+                    @endif
                     <table id="generalTable" class="table table-responsive-sm table-hover">
                         <colgroup>
                             <col width="15%">

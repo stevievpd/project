@@ -6,6 +6,18 @@
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
 
 @section('sidebar_content')
 @section('content')
@@ -49,11 +61,11 @@
 
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-8"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        <div class="col-7"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#journalEntryModal"><i class="fa-regular fa-pen-to-square"></i>
                                 Add New Journal
                             </button></div>
-                        <div class="col-4">
+                        <div class="col-5">
                             <form action="/journal" id="journAdd" method="get">
                                 @csrf
                                 <div class="row input-daterange">
@@ -75,11 +87,10 @@
                                             echo $date->format('Y-m-d'); ?>" />
                                     </div>
                                     <div class="col-md-4">
-
                                         <button type="submit" name="filter" id="filter"
                                             class="btn btn-primary">Filter</button>
                                         <button type="button" name="refreshs" id="refreshs" class="btn btn-default"><a
-                                                href="/journal"><i class="fa-solid fa-rotate-right"></i></a></button>
+                                                href="/journal"><i class="fa-solid fa-rotate-right">reset</i></a></button>
 
                                     </div>
                                 </div>
@@ -93,81 +104,50 @@
 
                 <div class="card-body ">
                     {{-- session --}}
-                        @if($dateStart && $dateEnd)
-                        <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart))?> to <?= date('F d, Y', strtotime($dateEnd))?></b></p>
-                        @endif
-                        
-                 
+                    @if ($dateStart && $dateEnd)
+                        <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                                <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
+                    @endif
+
+
                     {{-- session --}}
                     <table id="journalTable" class="table table-responsive-sm table-hover">
                         <colgroup>
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="20%">
                             <col width="15%">
                             <col width="15%">
-                            <col width="44%">
-                            <col width="16%">
+                            <col width="10%">
                             <col width="5%">
                         </colgroup>
                         <thead class="table-info  ">
-
                             <tr>
-                                <th class="border-0 text-center">Date</th>
-                                <th class="border-0 text-center">Journal Code</th>
-                                <!-- <th>Partners</th> -->
-                                <th class="p-2 border-0">
-                                    <div class="d-flex w-100 ">
-                                        <div class="col-6 px-2 border ">Description</div>
-                                        <div class="col-3 px-2 border text-end">Debit</div>
-                                        <div class="col-3 px-2 border text-end">Credit</div>
-                                    </div>
-                                </th>
-                                <th class="border-0 text-center">Added By</th>
-                                <th class="border-0 text-center">Action</th>
+                                <th class="border-end">Date</th>
+                                <th class="border-end text-center">Journal Code</th>
+                                <th class="border-end">Description</th>
+                                <th class="border-end text-end">Debit</th>
+                                <th class="border-end text-end">Credit</th>
+                                <th class="border-end text-center">Added By</th>
+                                <th class="border-end">Action</th>
+
                             </tr>
+
                         </thead>
                         <tbody class="">
                             @foreach ($journalEntry as $journalEntry)
-                                <tr class="">
-                                    <td class="text-center"><?= date('M d, Y', strtotime($journalEntry->entry_date)) ?></td>
-                                    <td class="text-center">{{ $journalEntry->entry_code }}</td>
-                                    <!-- <th>Partners</th> -->
-                                    <td class="p-2">
-                                        <div class="d-flex w-100 ">
-                                            <div class="col-6 px-2 ">
-                                                <b>{{ $journalEntry->title }}</b>&nbsp;
-                                                <span style="font-size: 14px; font-style: oblique;">
-                                                    {{ $journalEntry->description ? $journalEntry->description : '' }}
-                                                </span>
-                                            </div>
-                                            <div class="col-3 px-2 "></div>
-                                            <div class="col-3 px-2 "></div>
-                                        </div>
-                                        {{--  --}}
-                                        @foreach ($journalEntry->journal_item as $item)
-                                            <div class="d-flex w-100 ">
-                                                <div class=" border-bottom col-6 px-2">
-                                                    {{ $item->account_list->account_name }}</div>
-                                                <?php
-                                                $debit = '';
-                                                $credit = '';
-                                                if ($item->type == 1) {
-                                                    $debit = $item->amount;
-                                                    $debit = '₱ ' . number_format($debit, 2);
-                                                } elseif ($item->type == 2) {
-                                                    $credit = $item->amount;
-                                                    $credit = '₱ ' . number_format($credit, 2);
-                                                }
-                                                ?>
-                                                <div class="border-bottom col-3 px-2 text-end"><?= $debit ?></div>
-                                                <div class="border-bottom col-3 px-2 text-end"><?= $credit ?></div>
-                                            </div>
-                                        @endforeach
-                                        {{--  --}}
+                                <tr class="bg-secondary bg-opacity-10">
+                                    <td class="text-center" style="border-bottom:none;"><?= date('F d, Y', strtotime($journalEntry->entry_date)) ?></td>
+                                    <td class="text-center" style="border-bottom:none;">{{ $journalEntry->entry_code }}</td>
+                                    <td  style="border-bottom:none;"><b>{{ $journalEntry->title }}</b>&nbsp;
+                                        <span style="font-size: 14px; font-style: oblique;">
+                                            {{ $journalEntry->description ? $journalEntry->description : '' }}
+                                        </span>
                                     </td>
-
-                                    <td class="text-center">{{ $journalEntry->user->name }}</td>
-
-                                    <td class="text-center">
-
+                                    <td style="border-bottom:none;"></td>
+                                    <td style="border-bottom:none;"></td>
+                                    <td class="text-center" style="border-bottom:none;">{{ $journalEntry->user->name }}</td>
+                                    <td class="text-center" style="border-bottom:none;">
                                         <div class="dropdown ">
                                             <button class="btn btn-sm btn-secondary dropdown-toggle " type="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -176,17 +156,38 @@
                                             <ul class="dropdown-menu text-center border-0 bg-secondary bg-opacity-75">
                                                 <button class="btn btn-warning btn-sm edit btn-flat" data-id=""><i
                                                         class="fa-solid fa-file-pen"></i></button>
-                                                <button class="btn btn-danger btn-sm delete btn-flat" data-id=""><i
+                                                <button class="btn btn-danger btn-sm btnDeleteJourn btn-flat"
+                                                    data-del="{{ $journalEntry->id }}"
+                                                    data-code="{{ $journalEntry->entry_code }}"><i
                                                         class="fa-solid fa-trash"></i></i></button>
                                             </ul>
                                         </div>
                                     </td>
+                                    @foreach ($journalEntry->journal_item as $item)
+                                <tr>
+                                    <td style="border-bottom:none;"></td>
+                                    <td style="border-bottom:none;"></td>
+                                    <td class="" >{{ $item->account_list->account_name }}</td>
+                                    <?php
+                                    $debit = '';
+                                    $credit = '';
+                                    if ($item->type == 1) {
+                                        $debit = $item->amount;
+                                        $debit = '₱ ' . number_format($debit, 2);
+                                    } elseif ($item->type == 2) {
+                                        $credit = $item->amount;
+                                        $credit = '₱ ' . number_format($credit, 2);
+                                    }
+                                    ?>
+                                    <td class="text-end"><?= $debit ?></td>
+                                    <td class="text-end"><?= $credit ?></td>
+                                    <td style="border-bottom:none;"></td>
+                                    <td style="border-bottom:none;"></td>
                                 </tr>
                             @endforeach
+                            </tr>
+                            @endforeach
                         </tbody>
-                        <tfoot>
-
-                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -208,17 +209,38 @@
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
+
         $(document).ready(function() {
             $('#journalTable').DataTable({
-
+                bSort: false,
+                pageLength: 10,
+                lengthMenu: [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, 'All']
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
             });
-        });
-        $(document).on('click', '.refreshs', function() {
-            $('.journalTable').DataTable().ajax.reload();
-
         });
     </script>
     {{-- DATA TABLE --}}
+    {{-- DELETE JOURNAL ENTRY --}}
+    <script>
+        $(document).ready(function() {
+            $('.btnDeleteJourn').on('click', function() {
+
+                const journ_id = $(this).attr("data-del");
+                const journ_code = $(this).attr("data-code");
+                $('.journId').val(journ_id);
+                $('.journCode').val(journ_code);
+                $("#code").find("p").html(journ_code);
+                $('#deleteJournalModal').modal('show');
+            });
+        });
+    </script>
+    {{-- DELETE JOURNAL ENTRY --}}
     <script>
         // JOURNAL ENTRY MODAL FUNCTIONS
         // calculate journal Debit and Credit

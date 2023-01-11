@@ -1,3 +1,42 @@
+{{-- <!-- Start error modal --> --}}
+<div class="modal fade" id="errorModalAccount" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color:#b30000">ERROR!</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-danger p-2 text-white bg-opacity-75 text-center">
+                <h6>Please Insert Proper Data.</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- <!-- error modal end --> --}}
+{{-- <!-- Start error modal --> --}}
+<div class="modal fade" id="errorModalTrial" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color:#b30000">ERROR!</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-danger p-2 text-white bg-opacity-75 text-center">
+                <h5>Trial Balance is not Equal!</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- <!-- error modal end --> --}}
+
+
 {{-- <!-- modal New Journal Entry ADD--> --}}
 <div class="modal fade w-80" id="journalEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -162,40 +201,37 @@
     </div>
 </div>
 {{-- <!-- modal New Journal Entry END --> --}}
-{{-- <!-- Start error modal --> --}}
-<div class="modal fade" id="errorModalAccount" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+
+{{-- <!-- START DELETE MODAL --> --}}
+<div id="deleteJournalModal" class="modal fade">
+    <div class="modal-dialog modal-confirm">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color:#b30000">ERROR!</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header flex-column">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+                <div class="icon-box">
+                    <i class="material-icons">&#xE5CD;</i>
+                </div>
+                <h4 class="modal-title w-100 text-center">Are you sure?</h4>
+
             </div>
-            <div class="modal-body bg-danger p-2 text-white bg-opacity-75 text-center">
-                <h6>Please Insert Proper Data.</h6>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+            <form class="row g-3" action="/deleteJournal" method="POST" enctype="multipart/form-data"
+                autocomplete="off">
+                @csrf
+                @method('PATCH')
+
+                <div class="modal-body">
+                    <input type="hidden" class="journId" name="journ_id">
+                    <input type="hidden" class="journCode" name="entry_code">
+                    <div id="code"><b><p></p></b></div>
+                    <p>Do you really want to delete these Journal Entry? This process cannot be undone.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+            </form>
+            <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-danger">Delete</button>
         </div>
     </div>
 </div>
-{{-- <!-- error modal end --> --}}
-{{-- <!-- Start error modal --> --}}
-<div class="modal fade" id="errorModalTrial" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color:#b30000">ERROR!</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body bg-danger p-2 text-white bg-opacity-75 text-center">
-                <h5>Trial Balance is not Equal!</h5>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
 </div>
-{{-- <!-- error modal end --> --}}
+{{-- <!-- END DELETE MODAL --> --}}

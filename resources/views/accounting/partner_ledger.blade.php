@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 
 
+
 @section('sidebar_content')
 @section('content')
     @include('layouts.modals')
@@ -48,8 +49,48 @@
             <div class="card" style="width:98%; margin-left:auto; margin-right:auto;">
 
                 <div class="card-header">
+                    <div class="row">
+                        <div class="col-7"></div>
+                        <div class="col-5">
+                            <form action="/partner-ledger" id="journAdd" method="get">
+                                @csrf
+                                <div class="row input-daterange">
+                                    <div class="col-md-4">
+                                        <input type="date" class="form-control dateStart bg-success bg-opacity-10"
+                                            placeholder="Start" name="date_start"id="startdate"
+                                            value="<?php
+                                            $a_date = (new DateTime())->format('Y-m-d');
+                                            $date = new DateTime($a_date);
+                                            $date->modify('first day of this month');
+                                            echo $date->format('Y-m-d'); ?>" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="date" class="form-control dateEnd bg-success bg-opacity-10"
+                                            placeholder="End" name="date_end" value="<?php
+                                            $a_date = (new DateTime())->format('Y-m-d');
+                                            $date = new DateTime($a_date);
+                                            $date->modify('last day of this month');
+                                            echo $date->format('Y-m-d'); ?>" />
+                                    </div>
+                                    <div class="col-md-4">
+
+                                        <button type="submit" name="filter" id="filter"
+                                            class="btn btn-primary">Filter</button>
+                                        <button type="button" name="refreshs" id="refreshs" class="btn btn-default"><a
+                                                href="/partner-ledger">
+                                                <box-icon name='reset' animation='spin' color='#6b1111'></box-icon>
+                                            </a></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body ">
+                    @if ($dateStart && $dateEnd)
+                        <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                                <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
+                    @endif
                     <table id="partnerTable" class="table table-responsive-sm table-hover">
                         <colgroup>
                             <col width="20%">
