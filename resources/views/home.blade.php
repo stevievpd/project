@@ -1,14 +1,16 @@
-@extends('layouts.app')
+
 
 <link rel="stylesheet" href="/css/dashboard/style.dash.css">
 
 
-@section('content')
+
     <div class="container">
-        <div class="text-center titleHead  rounded">
+        {{-- <div class="text-center titleHead  rounded">
             <h1 class=" heading">Dashboard</h1>
             <h5>Howdy, {{ Auth::user()->name }}</h4>
-        </div>
+        </div> --}}
+        <br>
+        <br><br><br><br>
         <div class="gallery-image">
             <div class="img-box rounded">
                 <a href="/employee">
@@ -74,4 +76,4 @@
             background-color: #aecfe5;
         }
     </style>
-@endsection
+

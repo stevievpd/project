@@ -66,6 +66,52 @@ return new class extends Migration
             $table->foreign('job_id')->references('id')->on('job');
             $table->foreign('schedule_id')->references('id')->on('schedule');
         });
+
+        Schema::create('attendance', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('employee_id');
+            $table->date('date');
+            $table->string('time_in');
+            $table->integer('status');
+            $table->string('time_out');
+            $table->float('num_hr');
+            $table->softDeletes();
+
+            $table->timestamps();
+
+            // foreign keys
+            $table->foreign('employee_id')->references('id')->on('employee');
+
+        });
+
+        Schema::create('cashadvance', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('employee_id');
+            $table->string('description');
+            $table->date('date');
+            $table->float('amount');
+            $table->softDeletes();
+            $table->timestamps();
+
+            // foreign keys
+            $table->foreign('employee_id')->references('id')->on('employee');
+
+        });
+
+        Schema::create('deductions', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('employee_id');
+            $table->string('description');
+            $table->date('date');
+            $table->float('amount');
+            $table->softDeletes();
+            $table->timestamps();
+
+            // foreign keys
+            $table->foreign('employee_id')->references('id')->on('employee');
+
+        });
+
     }
 
     /**

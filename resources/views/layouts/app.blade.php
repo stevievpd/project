@@ -73,14 +73,20 @@
                     <span class="text">Accounting</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="{{ Request::is('payroll') ? 'active' : '' }}">
+                <a href="/payroll">
                     <i class='bx bxs-coin-stack'></i>
                     <span class="text">Payroll</span>
                 </a>
             </li>
-            <li class="{{ Request::is('pos') ? 'active' : '' }}">
-                <a href="/pos">
+            <li class="{{ Request::is('pointofsale') ? 'active' : '' }}">
+                <a href="/pointofsale">
+                    <i class='bx bxs-customize'></i>                     
+                    <span class="text">CRM</span>
+                </a>
+            </li>
+            <li class="{{ Request::is('pointofsale') ? 'active' : '' }}">
+                <a href="/pointofsale">
                     <i class='bx bxs-store'></i>
                      <span class="text">Point of Sale</span>
                 </a>

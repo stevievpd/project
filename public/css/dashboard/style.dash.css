@@ -94,9 +94,9 @@ body {
   opacity: 0.5;
 }
 .titleHead{
+    width: 80%;
     background-color: #022135;
     padding: 10px;
-    margin-top: 50px;
-    margin-left: 4.9vw;
-    margin-right: 4.9vw;
+    padding-top: 10;
+    margin: auto;
 }

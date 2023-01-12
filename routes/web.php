@@ -29,6 +29,7 @@ Route::get('/pointofsale', [App\Http\Controllers\PosController::class, 'index'])
 
 // Pages routes
 Route::get('/inventory', [App\Http\Controllers\InventoryController::class, 'dashboard']);
+Route::get('/payroll', [App\Http\Controllers\PayrollController::class, 'index']);
 Route::get('/supplier', [App\Http\Controllers\InventoryController::class, 'supplierIndex']);
 Route::get('/warehouse', [App\Http\Controllers\InventoryController::class, 'warehouseIndex']);
 Route::get('/product', [App\Http\Controllers\InventoryController::class, 'index']);
