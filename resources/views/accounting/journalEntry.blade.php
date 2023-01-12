@@ -85,9 +85,9 @@
         </div>
         <div class="card-body">
             @if ($dateStart && $dateEnd)
-                    <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
-                            <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
-                @endif
+                <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                        <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
+            @endif
             <div class="order">
                 <table id="journalTable" class="table">
                     <colgroup>
@@ -233,18 +233,140 @@
                 $('#deleteJournalModal').modal('show');
             });
 
-            //edit
+            //edit journal
             $(document).on('click', '.btnEditJournal', function() {
                 var journId = $(this).attr("data-id");
                 var url = "/editJournal";
                 $.get(url + '/' + journId, function(data) {
                     //success data
-                    $('#entryCode').val(data.entry_code);
-                    $('#entryDate').val(data.entry_date);
-                    $('#title').val(data.title);
-                    $('#descript').val(data.description);
-                    $('#partner').val(data.partner);
+                    $('#entryCode').val(data.journ.entry_code);
+                    $('#entryDate').val(data.journ.entry_date);
+                    $('#title').val(data.journ.title);
+                    $('#descript').val(data.journ.description);
+                    $('#partner').val(data.journ.partner);
                     $('#editJournalEntryModal').modal('show');
+                    $.each(data.items, function(items, items) {
+
+                        var account = items.account_id;
+                        var group = items.group_id;
+                        var amount = items.amount;
+                        var types = items.type;
+
+                        
+
+                        function editForeach() {
+                            var accountId = account;
+                            var groupId = group;
+                            var amountx = amount;
+                            var type = types;
+                            if (groupId == '' || accountId == '' || amountx == '' || type ==
+                                '') {
+                                $("#errorModalAccount").modal('show');
+                            } else {
+                                document.getElementById("accountListJournEdit").value = "";
+                                document.getElementById("groupListJournEdit").value = "";
+                                document.getElementById("amountJournEdit").value = "";
+                                document.getElementById("typeIdEdit").value = "";
+
+                                var rows = $($('noscript#cloneThis').html()).clone()
+                                    .appendTo("tbody#bodysEdit")
+                                rows.find('input[name="account_ids[]"]').val(
+                                    accountId) // add to input field
+                                rows.find('input[name="group_ids[]"]').val(groupId)
+                                rows.find('input[name="amounts[]"]').val(amountx)
+                                rows.find('input[name="amountType[]"]').val(type)
+
+                                @foreach ($accountList as $account)
+                                    if (accountId == {{ $account->id }}) {
+                                        rows.find('.accountsDEdit').text(
+                                            '{{ $account->account_name }}'
+                                        ) //Paste Account Name to table
+                                    }
+                                @endforeach
+
+                                @foreach ($groupList as $group)
+                                    if (groupId == {{ $group->id }}) {
+                                        rows.find('.groupsDEdit').text(
+                                            '{{ $group->group_name }}'
+                                        ) //Paste Group Name to table
+                                    }
+                                @endforeach
+
+
+                                if (type == 1) {
+                                    rows.find('.debitAmountsEdit').text(parseFloat(amountx)
+                                        .toLocaleString('en-US', {
+                                            style: 'decimal'
+                                        }))
+                                }
+                                if (type == 2) {
+                                    rows.find('.creditAmountsEdit').text(parseFloat(amountx)
+                                        .toLocaleString('en-US', {
+                                            style: 'decimal'
+                                        }))
+                                }
+                                if (type == '') {
+                                    alert("NEED AMOUNT TYPE")
+                                    rows.find('.debitAmountsEdit').text("NO VALUE")
+                                    rows.find('.debitAmountsEdit').text("NO VALUE")
+                                }
+                                editcalcuAmount()
+                                $('#tableJournEdit').append(tr)
+                            }
+                        }
+
+                        function editcalcuAmount() {
+                            var debitAmount = 0;
+                            var creditAmount = 0;
+                            $('#tableJournEdit tbody tr').each(function() {
+                                if ($(this).find('.debitAmountsEdit').text() !=
+                                    "") {
+                                    debitAmount += parseFloat(($(this).find(
+                                            '.debitAmountsEdit').text())
+                                        .replace(
+                                            /,/gi, ''));
+                                }
+                                if ($(this).find('.creditAmountsEdit').text() !=
+                                    "") {
+                                    creditAmount += parseFloat(($(this).find(
+                                            '.creditAmountsEdit').text())
+                                        .replace(
+                                            /,/gi, ''));
+                                }
+                            })
+                            var totalamount = debitAmount - creditAmount;
+                            $('#tableJournEdit').find('.totalDebitEdit').text(parseFloat(
+                                debitAmount).toLocaleString('en-US', {
+                                style: 'decimal'
+                            }))
+                            $('#tableJournEdit').find('.totalCreditEdit').text(parseFloat(
+                                creditAmount).toLocaleString('en-US', {
+                                style: 'decimal'
+                            }))
+                            document.getElementById('totalcatchEdit').value = totalamount;
+
+                            //for text color only
+                            if (totalamount >= 0) {
+                                $('#tableJournEdit').find('.totalBalanceJournEdit').text(
+                                    parseFloat(
+                                        totalamount).toLocaleString('en-US', {
+                                        style: 'decimal'
+                                    }))
+                                document.getElementById("totalColEdit").style.color =
+                                    "#196811"
+                            } else if (totalamount < 0) {
+                                $('#tableJournEdit').find('.totalBalanceJournEdit').text(
+                                    parseFloat(
+                                        totalamount).toLocaleString('en-US', {
+                                        style: 'decimal'
+                                    }))
+                                document.getElementById("totalColEdit").style.color =
+                                    "#9E1B18"
+                            }
+                        }
+                        editForeach();
+                    });
+
                 })
             });
         });
@@ -338,64 +460,69 @@
                 $('#tableJourn').append(tr)
             }
         })
-        
-        function editForeach(){
-            var accountId = $('#accountListJourn').val()
-            var groupId = $('#groupListJourn').val()
-            var amountx = $('#amountJourn').val()
-            var type = $('#typeId').val()
-            if (groupId == '' || accountId == '' || amountx == '' || type == '') {
-                $("#errorModalAccount").modal('show');
-            } else {
-                document.getElementById("accountListJourn").value = "";
-                document.getElementById("groupListJourn").value = "";
-                document.getElementById("amountJourn").value = "";
-                document.getElementById("typeId").value = "";
-
-                var rows = $($('noscript#cloneThis').html()).clone().appendTo("tbody#bodys")
-                rows.find('input[name="account_ids[]"]').val(accountId) // add to input field
-                rows.find('input[name="group_ids[]"]').val(groupId)
-                rows.find('input[name="amounts[]"]').val(amountx)
-                rows.find('input[name="amountType[]"]').val(type)
-
-                @foreach ($accountList as $account)
-                    if (accountId == {{ $account->id }}) {
-                        rows.find('.accountsD').text('{{ $account->account_name }}') //Paste Account Name to table
-                    }
-                @endforeach
-
-                @foreach ($groupList as $group)
-                    if (groupId == {{ $group->id }}) {
-                        rows.find('.groupsD').text('{{ $group->group_name }}') //Paste Group Name to table
-                    }
-                @endforeach
-
-
-                if (type == '1') {
-                    rows.find('.debitAmounts').text(parseFloat(amountx).toLocaleString('en-US', {
-                        style: 'decimal'
-                    }))
-                }
-                if (type == 2) {
-                    rows.find('.creditAmounts').text(parseFloat(amountx).toLocaleString('en-US', {
-                        style: 'decimal'
-                    }))
-                }
-                if (type == '') {
-                    alert("NEED AMOUNT TYPE")
-                    rows.find('.creditAmounts').text("NO VALUE")
-                    rows.find('.debitAmounts').text("NO VALUE")
-                }
-                calcuAmount()
-                $('#tableJourn').append(tr)
-            }
-        }
 
         $('#tableJourn').on('click', ".delRow", function(e) {
             e.preventDefault();
             $(this).closest('tr').remove();
             calcuAmount()
         });
+
+        // for edit journal
+        function editcalcuAmount() {
+            var debitAmount = 0;
+            var creditAmount = 0;
+            $('#tableJournEdit tbody tr').each(function() {
+                if ($(this).find('.debitAmountsEdit').text() !=
+                    "") {
+                    debitAmount += parseFloat(($(this).find(
+                            '.debitAmountsEdit').text())
+                        .replace(
+                            /,/gi, ''));
+                }
+                if ($(this).find('.creditAmountsEdit').text() !=
+                    "") {
+                    creditAmount += parseFloat(($(this).find(
+                            '.creditAmountsEdit').text())
+                        .replace(
+                            /,/gi, ''));
+                }
+            })
+            var totalamount = debitAmount - creditAmount;
+            $('#tableJournEdit').find('.totalDebitEdit').text(parseFloat(
+                debitAmount).toLocaleString('en-US', {
+                style: 'decimal'
+            }))
+            $('#tableJournEdit').find('.totalCreditEdit').text(parseFloat(
+                creditAmount).toLocaleString('en-US', {
+                style: 'decimal'
+            }))
+            document.getElementById('totalcatchEdit').value = totalamount;
+
+            //for text color only
+            if (totalamount >= 0) {
+                $('#tableJournEdit').find('.totalBalanceJournEdit').text(
+                    parseFloat(
+                        totalamount).toLocaleString('en-US', {
+                        style: 'decimal'
+                    }))
+                document.getElementById("totalColEdit").style.color =
+                    "#196811"
+            } else if (totalamount < 0) {
+                $('#tableJournEdit').find('.totalBalanceJournEdit').text(
+                    parseFloat(
+                        totalamount).toLocaleString('en-US', {
+                        style: 'decimal'
+                    }))
+                document.getElementById("totalColEdit").style.color =
+                    "#9E1B18"
+            }
+        }
+        $('#tableJournEdit').on('click', ".delRowEdit", function(e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
+            editcalcuAmount()
+        });
+        // for edit journal
 
         //catch 
         $('#journAdd').submit(function(e) {
