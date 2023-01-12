@@ -155,7 +155,7 @@ class accountingController extends Controller
     public function editJournal($id){
         $journ = new journal_entry;
         
-        $journ1 = $emp::find($id);
+        $journ1 = $journ::find($id);
         return response()->json($journ1);
 
     }

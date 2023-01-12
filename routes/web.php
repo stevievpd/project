@@ -25,6 +25,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/loginv2', [App\Http\Controllers\HomeController::class, 'logiv2']);
+Route::get('/pointofsale', [App\Http\Controllers\PosController::class, 'index']);
 
 // Pages routes
 Route::get('/inventory', [App\Http\Controllers\InventoryController::class, 'dashboard']);
@@ -79,6 +80,6 @@ Route::patch('/deleteCategory', [App\Http\Controllers\InventoryController::class
 Route::post('/addJournalEntry', [App\Http\Controllers\accountingController::class, 'storeJournalEntry'])->name('addJournalEntry.store');
 // Route::post('/filterJournalEntry', [App\Http\Controllers\accountingController::class, 'index']);
 Route::patch('/deleteJournal', [App\Http\Controllers\accountingController::class, 'deleteJournal'])->name('deleteJournal.update');
-Route::get('/editJournal/{id}', [App\Http\Controllers\InventoryController::class, 'editJournal'])->name('editJournal.edit');
+Route::get('/editJournal/{id}', [App\Http\Controllers\accountingController::class, 'editJournal'])->name('editJournal.edit');
 
 
