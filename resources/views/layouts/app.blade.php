@@ -44,6 +44,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.colVis.min.js"></script>
 
 </head>
 
@@ -54,19 +55,19 @@
             <span class="text">Bulla Crave</span>
         </a>
         <ul class="side-menu top">
-            <li class="active">
+            <li class="{{ ((Request::is('employee')) ? 'active' : '') }}">
                 <a href="/employee">
                     <i class='bx bxs-group'></i>
                     <span class="text">Human Resources</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ ((Request::is('product')) ? 'active' : '') }}">
                 <a href="/product">
                     <i class='bx bxs-shopping-bag-alt'></i>
                     <span class="text">Inventory</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ ((Request::is('journal')) ? 'active' : '') }}">
                 <a href="/journal">
                     <i class='bx bxs-doughnut-chart'></i>
                     <span class="text">Accounting</span>
