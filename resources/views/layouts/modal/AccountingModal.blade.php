@@ -243,24 +243,23 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="fa-solid fa-book"></i> Create Journal
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="fa-solid fa-book"></i> Edit Journal
                     Entry</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/addJournalEntry" id="journAdd" method="POST">
+                <form action="" id="journAdd" method="POST">
                     @csrf
                     <div class="">
                         <div class="row py-2 align-items-start">
                             <div class="col input-group">
                                 <span class="input-group-text" id="basic-addon1">JOURNAL CODE</span>
-                                <input type="text" class="form-control code text-dark bg bg-white" name="entry_code"
-                                    value="JRE-<?php echo (new DateTime())->format('mY'); ?>-00{{$journCount}}" style="--bs-text-opacity: .5;" readonly>
+                                <input type="text" class="form-control code text-dark bg bg-white" name="entry_code" id="entryCode"
+                                     style="--bs-text-opacity: .5;" readonly>
                             </div>
                             <div class="col input-group">
                                 <span class="input-group-text" id="basic-addon1">Date</span>
-                                <input type="date" class="form-control journDate" name="entry_date"
-                                    value="<?php echo (new DateTime())->format('Y-m-d'); ?>">
+                                <input type="date" class="form-control journDate" name="entry_date" id="entryDate">
                             </div>
                         </div>
                         <div class=" p-2 row align-items-start">
@@ -313,20 +312,20 @@
                             </div>
                             <div class="col-6 px-4 py-2 g-2 row align-items-start">
                                 <div class=" form-floating">
-                                    <input type="text" class="title form-control" name="title"
+                                    <input type="text" class="title form-control" name="title" id="title"
                                         style="text-transform:uppercase"
                                         onkeyup="this.value = this.value.toUpperCase();" placeholder="Description"
                                         required>
                                     <label for="" class="text-muted">Title</label>
                                 </div>
                                 <div class=" form-floating">
-                                    <input type="text" class="description form-control" name="description"
+                                    <input type="text" class="description form-control" name="description" id="descript"
                                         style="text-transform:capitalize"
                                          placeholder="Description">
                                     <label for=""class="text-muted">Description</label>
                                 </div>
                                 <div class="form-floating">
-                                    <input type="text" class="partner form-control" name="partner"
+                                    <input type="text" class="partner form-control" name="partner" id="partner"
                                         placeholder="Partner" required>
                                     <label for="" class="text-muted">Partner</label>
                                 </div>
