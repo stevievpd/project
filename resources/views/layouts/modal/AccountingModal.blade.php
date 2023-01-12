@@ -36,7 +36,6 @@
 </div>
 {{-- <!-- error modal end --> --}}
 
-
 {{-- <!-- modal New Journal Entry ADD--> --}}
 <div class="modal fade w-80" id="journalEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 2023">
@@ -202,6 +201,7 @@
 </div>
 {{-- <!-- modal New Journal Entry END --> --}}
 
+
 {{-- <!-- START DELETE MODAL --> --}}
 <div id="deleteJournalModal" class="modal fade">
     <div class="modal-dialog modal-confirm">
@@ -243,7 +243,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="fa-solid fa-book"></i> Edit Journal
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="fa-solid fa-book"></i> Edit  Journal
                     Entry</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -269,7 +269,7 @@
                                         <label for="account" class="">Creator</label>
                                 </div>
                                 <div class="col-6 form-floating ">
-                                    <select class="form-control bg-info account" name="account" id="accountListJourn"
+                                    <select class="form-control bg-info account" name="account" id="accountListJournEdit"
                                         style="--bs-bg-opacity: .25;">
                                         <option value=""> </option>
                                         @foreach ($accountList as $account)
@@ -279,7 +279,7 @@
                                     <label for="account" class="">Account</label>
                                 </div>
                                 <div class="col-6 form-floating">
-                                    <select class="form-control bg-warning group" name="group" id="groupListJourn"
+                                    <select class="form-control bg-warning group" name="group" id="groupListJournEdit"
                                         style="--bs-bg-opacity: .25;">
                                         <option value=""> </option>
                                         @foreach ($groupList as $group)
@@ -289,13 +289,13 @@
                                     <label for="account" class="">Group</label>
                                 </div>
                                 <div class="col-6 form-floating">
-                                    <input type="number" class="form-control amount bg-success" id="amountJourn"
+                                    <input type="number" class="form-control amount bg-success" id="amountJournEdit"
                                         onchange="this.value = Math.abs(this.value)" style="--bs-bg-opacity: .25;">
                                     <label for="" class="">Amount</label>
                                 </div>
 
                                 <div class="col-3 form-floating">
-                                    <select class="form-control type" name="type" id="typeId"
+                                    <select class="form-control type" name="type" id="typeIdEdit"
                                         style="--bs-bg-opacity: .25;">
                                         <option value=""> </option>
                                         <option value="1">DEBIT</option>
@@ -333,7 +333,7 @@
                             </div>
                         </div>
 
-                        <table id="tableJourn" class="table table-stripped table-bordered gx-3">
+                        <table id="tableJournEdit" class="table table-stripped table-bordered gx-3">
                             <colgroup>
 
                                 <col width="30%">
@@ -351,24 +351,24 @@
                                     <th>Tool</th>
                                 </tr>
                             </thead>
-                            <tbody id="bodys"></tbody>
+                            <tbody id="bodysEdit"></tbody>
                             <tfoot>
                                 <tr class="bg-gradient-secondary">
                                 </tr>
                                 <tr class=" border">
                                     <th></th>
                                     <th class="text-center">Total</th>
-                                    <th class="text-right totalDebit">0.00</th>
-                                    <th class="text-right totalCredit">0.00</th>
+                                    <th class="text-right totalDebitEdit">0.00</th>
+                                    <th class="text-right totalCreditEdit">0.00</th>
                                 </tr>
 
                                 <tr class=" border">
                                     <th colspan="2" class="text-center"></th>
-                                    <th colspan="2" class="text-center totalBalanceJourn" id="totalCol">0</th>
+                                    <th colspan="2" class="text-center totalBalanceJournEdit" id="totalColEdit"></th>
                                 </tr>
 
                             </tfoot>
-                            <input type="hidden" name="totalcatch" id="totalcatch" readonly value="0">
+                            <input type="hidden" name="totalcatchEdit" id="totalcatchEdit" readonly value="0">
                         </table>
 
                         <noscript id="cloneThis">
@@ -378,13 +378,13 @@
                                     <input type="hidden" class="groupName" name="group_ids[]" value="">
                                     <input type="hidden" class="amount" name="amounts[]" value="">
                                     <input type="hidden" class="amountType" name="amountType[]" value="">
-                                    <span class="accountsD" id="accD"></span>
+                                    <span class="accountsDEdit" id="accD"></span>
                                 </td>
-                                <td class="groupsD"></td>
-                                <td class="debitAmounts text-right"></td>
-                                <td class="creditAmounts text-right"></td>
+                                <td class="groupsDEdit"></td>
+                                <td class="debitAmountsEdit text-right"></td>
+                                <td class="creditAmountsEdit text-right"></td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-outline btn-danger btn-flat delRow" id="deleteRow"
+                                    <button class="btn btn-sm btn-outline btn-danger btn-flat delRowEdit" id="deleteRow"
                                         type="button"><i class="fa-solid fa-trash"></i></button>
                                 </td>
                             </tr>
