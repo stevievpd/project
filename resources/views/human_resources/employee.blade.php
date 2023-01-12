@@ -27,21 +27,21 @@
             <li>
                 <i class='bx bxs-building-house'></i>
                 <span class="text">
-                    <h3>20</h3>
+                    <h3>{{$departCount}}</h3>
                     <p>Total Department</p>
                 </span>
             </li>
             <li>
                 <i class='bx bxs-briefcase'></i>
                 <span class="text">
-                    <h3>125</h3>
+                    <h3>{{$jobCount}}</h3>
                     <p>Total Jobs</p>
                 </span>
             </li>
             <li>
                 <i class='bx bx-user'></i>
                 <span class="text">
-                    <h3>482</h3>
+                    <h3>{{$empCount}}</h3>
                     <p>Total Employees</p>
                 </span>
             </li>
@@ -104,7 +104,7 @@
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
                                 </div>
-                                <table>
+                                <table id="employeelist" class="table">
                                     <thead>
                                         <tr class="">
                                             <th scope="col">Employee Code</th>
@@ -196,8 +196,6 @@
                                                 Add New Department
                                             </span>
                                         </button></h3>
-                                    <i class='bx bx-search'></i>
-                                    <i class='bx bx-filter'></i>
                                 </div>
                                 <table>
                                     <thead>
@@ -270,6 +268,13 @@
             </div>
         </div>
     </main>
+    {{-- DATA TABLE --}}
+    <script>
+        $(document).ready(function() {
+            $('#employeeList').DataTable();
+        });
+    </script>
+    {{-- DATA TABLE --}}
 
     {{-- TAB PANE SCRIPTS --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -410,43 +415,4 @@
             });
         });
     </script>
-
-    {{-- DATA TABLE --}}
-    <script>
-        $(document).ready(function() {
-            $('#employeelist').DataTable({
-                pageLength: 5,
-                lengthMenu: [
-                    [5, 10, 20, -1],
-                    [5, 10, 20, 'All']
-                ],
-
-            });
-            $('#empschedule').DataTable({
-                pageLength: 5,
-                lengthMenu: [
-                    [5, 10, 20, -1],
-                    [5, 10, 20, 'All']
-                ],
-
-            });
-            $('#jobList').DataTable({
-                pageLength: 5,
-                lengthMenu: [
-                    [5, 10, 20, -1],
-                    [5, 10, 20, 'All']
-                ],
-
-            });
-            $('#deptList').DataTable({
-                pageLength: 5,
-                lengthMenu: [
-                    [5, 10, 20, -1],
-                    [5, 10, 20, 'All']
-                ],
-
-            });
-        });
-    </script>
-    {{-- DATA TABLE --}}
 @endsection

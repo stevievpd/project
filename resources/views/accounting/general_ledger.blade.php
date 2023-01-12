@@ -1,18 +1,6 @@
 @extends('layouts.app')
-@extends('layouts.sidebar')
-<link rel="stylesheet" href="/css/humanresources/style.employee.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-
-
-@section('sidebar_content')
 @section('content')
     @include('layouts.modals')
-    {{-- @include('layouts/modal.HumanResourcesModal') --}}
-
-
     <div id="container cont-mains empMenu" class=" mx-4" id="main">
         <div id="content" class="" style="width: 80%; margin:auto;">
 
@@ -232,5 +220,4 @@
             $('#generalTable').DataTable();
         });
     </script>
-@endsection
 @endsection
