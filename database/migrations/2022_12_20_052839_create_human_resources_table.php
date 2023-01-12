@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('job_name');
             $table->string('description');
+            $table->integer('manager')->default('0');
             $table->float('rate');
             $table->softDeletes();
 
@@ -40,6 +41,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+
         Schema::create('employee', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('department_id');
@@ -48,6 +50,7 @@ return new class extends Migration
             $table->string('employee_code')->unique();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('manager')->nullable();
             $table->string('email')->unique();
             $table->string('address');
             $table->date('birthdate');

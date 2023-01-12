@@ -16,7 +16,7 @@
                      @csrf
                      <div class="col-12 form-floating">
                          <input type="text" class="form-control empCode text-center"
-                             value="VPD-<?php echo (new DateTime())->format('my'); ?>-00{{ $empCount + 1 }}" name="emp_code" required
+                             value="VPD-<?php echo (new DateTime())->format('my'); ?>-00{{ $empCount}}" name="emp_code" required
                              style="opacity: 50%;" readonly="true">
                          <label for="firstName">Employee Code</label>
                      </div>
@@ -82,6 +82,18 @@
                              @endforeach
                          </select>
                          <label for="scheduleSelection">Schedule</label>
+                     </div>
+                     <div class="col-12 form-floating">
+                         <select class="form-control -Selection" name="manager" aria-label="Select schedule" required>
+                             <option value="0" selected>- Select -</option>
+                             @foreach ($employee as $emp)
+                                 @if ($emp->job->manager == 1)
+                                     <option value="{{ $emp->id }}">{{ $emp->first_name }} {{ $emp->last_name }}
+                                     </option>
+                                 @endif
+                             @endforeach
+                         </select>
+                         <label for="scheduleSelection">Manager</label>
                      </div>
                      <div class="col-md-12">
                          <label for="filename">Photo</label>
@@ -188,6 +200,18 @@
                              @endforeach
                          </select>
                          <label for="scheduleSelection">Schedule</label>
+                     </div>
+                     <div class="col-12 form-floating managerSelect">
+                         <select class="form-control -Selection" name="manager" aria-label="Select manager">
+                             @foreach ($employee as $emp)
+                                 @if ($emp->job->manager == 1)
+                                     <option value="{{ $emp->id }}">{{ $emp->first_name }}
+                                         {{ $emp->last_name }}
+                                     </option>
+                                 @endif
+                             @endforeach
+                         </select>
+                         <label for="scheduleSelection">manager</label>
                      </div>
                      <div class="mb-2">
                          <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Cancel</button>
@@ -442,6 +466,14 @@
                          <label for="Job Name">Job</label>
                      </div>
                      <div class="col-md-6 form-floating">
+                         <select class="form-control managerSelection" name="manager" aria-label="Manager" required>
+                             <option value="0" selected> Employee</option>
+                             <option value="1"> Manager</option>
+                         </select>
+                         <label for="managerSelection">Manager</label>
+                     </div>
+
+                     <div class="col-md-6 form-floating">
                          <input type="number" step="0.01" class="form-control rate" name="rate" required>
                          <label for="Rate">Rate</label>
                      </div>
@@ -483,6 +515,13 @@
                          <input type="hidden" id="jobId" name="id">
                          <input type="text" class="form-control jobName" name="job_name" id="jobName" required>
                          <label for="Job Name">Job</label>
+                     </div>
+                     <div class="col-md-6 form-floating managerSelect">
+                         <select class="form-control managerSelection" name="manager" aria-label="Manager" required>
+                             <option value="0" selected> Employee</option>
+                             <option value="1"> Manager</option>
+                         </select>
+                         <label for="managerSelection">Manager</label>
                      </div>
                      <div class="col-md-6 form-floating">
                          <input type="number" step="0.01" class="form-control rate" name="rate"
@@ -590,10 +629,11 @@
                  <form class="row g-3" action="/updateDepartment" method="POST" enctype="multipart/form-data"
                      autocomplete="off">
                      @csrf
-                    @method('PATCH')
+                     @method('PATCH')
                      <div class="col-md-12 form-floating">
-                        <input type="hidden" name="depart_id" id="departId">
-                         <input type="text" class="form-control depart" id="departName" name="department_name" required>
+                         <input type="hidden" name="depart_id" id="departId">
+                         <input type="text" class="form-control depart" id="departName" name="department_name"
+                             required>
                          <label for="Department">Description</label>
                      </div>
 
@@ -610,35 +650,35 @@
  </div>
  <!-- End EDIT DEPARTMENT -->
 
-  {{-- START DELETE MODAL --}}
-  <div id="deleteDepartmentModal" class="modal fade">
-    <div class="modal-dialog modal-confirm">
-        <div class="modal-content">
-            <div class="modal-header flex-column">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                </button>
-                <div class="icon-box">
-                    <i class="material-icons">&#xE5CD;</i>
-                </div>
-                <h4 class="modal-title w-100 text-center">Are you sure?</h4>
+ {{-- START DELETE MODAL --}}
+ <div id="deleteDepartmentModal" class="modal fade">
+     <div class="modal-dialog modal-confirm">
+         <div class="modal-content">
+             <div class="modal-header flex-column">
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                 </button>
+                 <div class="icon-box">
+                     <i class="material-icons">&#xE5CD;</i>
+                 </div>
+                 <h4 class="modal-title w-100 text-center">Are you sure?</h4>
 
-            </div>
-            <form class="row g-3" action="/deleteDepartment" method="POST" enctype="multipart/form-data"
-                autocomplete="off">
-                @csrf
-                @method('PATCH')
+             </div>
+             <form class="row g-3" action="/deleteDepartment" method="POST" enctype="multipart/form-data"
+                 autocomplete="off">
+                 @csrf
+                 @method('PATCH')
 
-                <div class="modal-body">
-                    <input type="hidden" class="departId" name="department_id">
-                    <p>Do you really want to delete these Job? This process cannot be undone.</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-            </form>
-            <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button>
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </div>
-    </div>
-</div>
-</div>
-{{-- END DELETE MODAL --}}
+                 <div class="modal-body">
+                     <input type="hidden" class="departId" name="department_id">
+                     <p>Do you really want to delete these Job? This process cannot be undone.</p>
+                 </div>
+                 <div class="modal-footer justify-content-center">
+             </form>
+             <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cancel</button>
+             <button type="submit" class="btn btn-danger">Delete</button>
+         </div>
+     </div>
+ </div>
+ </div>
+ {{-- END DELETE MODAL --}}
  {{-- =============================================== DEPARTMENT MODAL ================================================================ --}}

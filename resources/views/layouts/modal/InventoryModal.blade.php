@@ -70,7 +70,7 @@
                      @csrf
                      @method('PATCH')
                      <div class="col-md-12 form-floating">
-                         <input type="text" name="prod_id" id="prodId">
+                         <input type="hidden" name="prod_id" id="prodId">
                          <input type="text" class="form-control productName" id="productName" name="product_name"
                              required>
                          <label for="productName">Product name</label>

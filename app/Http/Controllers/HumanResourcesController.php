@@ -23,12 +23,8 @@ class HumanResourcesController extends Controller
         $sched = DB::table('schedule')->get()->whereNull('deleted_at');
         $job = DB::table('job')->get()->whereNull('deleted_at');
         $depart = DB::table('department')->get()->whereNull('deleted_at');
-        // $emp = DB::table('employee as e')
-        //     ->select('e.id', 'e.first_name', 'e.last_name', 'e.department_id', 'e.job_id', 'e.schedule_id', 'job.job_name')
-        //     ->join('job', 'job.id', '=', 'e.job_id')
-        //     ->get()->whereNull('employee.deleted_at');
 
-        $employee = employee::with('job')->get();
+        $employee = employee::with('job', 'department')->get()->whereNull('deleted_at');
 
         $workformat = DB::table('employee')
                     ->join('department', 'employee.department_id', '=', 'department.id')
@@ -103,6 +99,7 @@ class HumanResourcesController extends Controller
         $job = new job;
 
         $job->job_name = $request->input('job_name');
+        $job->manager = $request->input('manager');
         $job->description = $request->input('description');
         $job->rate = $request->input('rate');
         $job->save();
@@ -123,6 +120,7 @@ class HumanResourcesController extends Controller
         $id = $request->input('id');
 
         $job_name = $request->input('job_name');
+        $manager = $request->input('manager');
         $rate = $request->input('rate');
         $description = $request->input('description');
 
@@ -131,6 +129,7 @@ class HumanResourcesController extends Controller
             ->update([
                 'job_name' => $job_name,
                 'rate' => $rate,
+                'manager' => $manager,
                 'description' => $description,
             ]);
             $msg = "$job_name has been Updated";
@@ -215,6 +214,7 @@ class HumanResourcesController extends Controller
         $emp->department_id = $request->input('department');
         $emp->job_id = $request->input('job');
         $emp->schedule_id = $request->input('schedule');
+        $emp->manager = $request->input('manager');
         $emp->save();
 
         $msg = "$emp->first_name $emp->last_name has been Added";
@@ -245,6 +245,7 @@ class HumanResourcesController extends Controller
         $department_id = $request->input('department');
         $job_id = $request->input('job');
         $schedule_id = $request->input('schedule');
+        $manager = $request->input('manager');
 
         DB::table('employee')
             ->where('id', $id)
@@ -260,6 +261,7 @@ class HumanResourcesController extends Controller
                 'department_id' => $department_id,
                 'job_id' => $job_id,
                 'schedule_id' => $schedule_id,
+                'manager' => $manager,
             ]);
             $msg = "$employee_code has been Updated";
 

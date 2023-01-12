@@ -347,6 +347,7 @@ body {
 	padding: 20px 12px;
 	font-family: var(--poppins);
 	max-height: calc(100vh - 56px);
+	/* overflow-y: auto; */
 
 }
 

@@ -28,13 +28,26 @@ class InventoryController extends Controller
     // Product Index
     public function index()
     {
+
         $products = Product::with('category', 'supplier')
             ->whereNull('deleted_at')
             ->get();
         $category = Category::with('product')
             ->whereNull('deleted_at')
             ->get();
-        return view('inventory.product', compact(['products', 'category']));
+        $supplier = Supplier::with('debtSupplier')
+            ->whereNull('deleted_at')
+            ->get();
+        $debtSupplier = Debts_Supplier::with('supplier')
+            ->whereNull('deleted_at')
+            ->get();
+        $warehouse = Warehouse::with('products')
+            ->get()
+            ->whereNull('deleted_at');
+        $warehouseProduct = Product_in_WareHouse::with('product', 'warehouse')
+            ->get()
+            ->whereNull('deleted_at');
+        return view('inventory.product', compact(['products', 'category', 'supplier', 'debtSupplier', 'warehouse', 'warehouseProduct']));
     }
     // Supplier Index
     public function supplierIndex()
@@ -46,10 +59,7 @@ class InventoryController extends Controller
             ->whereNull('deleted_at')
             ->get();
 
-        return view(
-            'inventory.supplier',
-            compact(['supplier', 'debtSupplier'])
-        );
+        return view('inventory.supplier', compact(['supplier', 'debtSupplier']));
     }
 
     // Warehouse Index
