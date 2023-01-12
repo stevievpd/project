@@ -84,6 +84,10 @@
             </div>
         </div>
         <div class="card-body">
+            @if ($dateStart && $dateEnd)
+                    <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                            <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
+                @endif
             <div class="order">
                 <table id="journalTable" class="table">
                     <colgroup>
@@ -235,11 +239,12 @@
                 var url = "/editJournal";
                 $.get(url + '/' + journId, function(data) {
                     //success data
-                    $('#jobId').val(data.id);
-                    $('#jobName').val(data.job_name);
-                    $('#rate').val(data.rate);
-                    $('#description').val(data.description);
-                    $('#jobEditModal').modal('show');
+                    $('#entryCode').val(data.entry_code);
+                    $('#entryDate').val(data.entry_date);
+                    $('#title').val(data.title);
+                    $('#descript').val(data.description);
+                    $('#partner').val(data.partner);
+                    $('#editJournalEntryModal').modal('show');
                 })
             });
         });
@@ -333,6 +338,58 @@
                 $('#tableJourn').append(tr)
             }
         })
+        
+        function editForeach(){
+            var accountId = $('#accountListJourn').val()
+            var groupId = $('#groupListJourn').val()
+            var amountx = $('#amountJourn').val()
+            var type = $('#typeId').val()
+            if (groupId == '' || accountId == '' || amountx == '' || type == '') {
+                $("#errorModalAccount").modal('show');
+            } else {
+                document.getElementById("accountListJourn").value = "";
+                document.getElementById("groupListJourn").value = "";
+                document.getElementById("amountJourn").value = "";
+                document.getElementById("typeId").value = "";
+
+                var rows = $($('noscript#cloneThis').html()).clone().appendTo("tbody#bodys")
+                rows.find('input[name="account_ids[]"]').val(accountId) // add to input field
+                rows.find('input[name="group_ids[]"]').val(groupId)
+                rows.find('input[name="amounts[]"]').val(amountx)
+                rows.find('input[name="amountType[]"]').val(type)
+
+                @foreach ($accountList as $account)
+                    if (accountId == {{ $account->id }}) {
+                        rows.find('.accountsD').text('{{ $account->account_name }}') //Paste Account Name to table
+                    }
+                @endforeach
+
+                @foreach ($groupList as $group)
+                    if (groupId == {{ $group->id }}) {
+                        rows.find('.groupsD').text('{{ $group->group_name }}') //Paste Group Name to table
+                    }
+                @endforeach
+
+
+                if (type == '1') {
+                    rows.find('.debitAmounts').text(parseFloat(amountx).toLocaleString('en-US', {
+                        style: 'decimal'
+                    }))
+                }
+                if (type == 2) {
+                    rows.find('.creditAmounts').text(parseFloat(amountx).toLocaleString('en-US', {
+                        style: 'decimal'
+                    }))
+                }
+                if (type == '') {
+                    alert("NEED AMOUNT TYPE")
+                    rows.find('.creditAmounts').text("NO VALUE")
+                    rows.find('.debitAmounts').text("NO VALUE")
+                }
+                calcuAmount()
+                $('#tableJourn').append(tr)
+            }
+        }
 
         $('#tableJourn').on('click', ".delRow", function(e) {
             e.preventDefault();
