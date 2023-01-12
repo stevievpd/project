@@ -25,6 +25,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/loginv2', [App\Http\Controllers\HomeController::class, 'logiv2']);
+Route::get('/pointofsale', [App\Http\Controllers\PosController::class, 'index']);
 
 // Pages routes
 Route::get('/inventory', [App\Http\Controllers\InventoryController::class, 'dashboard']);
