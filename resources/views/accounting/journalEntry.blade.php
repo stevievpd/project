@@ -3,7 +3,7 @@
     @include('layouts.modals')
     @include('layouts/modal.AccountingModal')
 
-    <main>
+    <main id="main-data">
         <div class="head-title">
             <div class="left">
                 <h1>Accounting</h1>
@@ -216,110 +216,6 @@
                     },
                     // 'colvis'
                 ]
-                <div class="card-body">
-                    <div class="order">
-                        <table id="journalTable" class="table">
-                            <colgroup>
-                                <col width="10%">
-                                <col width="10%">
-                                <col width="20%">
-                                <col width="15%">
-                                <col width="15%">
-                                <col width="10%">
-                                <col width="5%">
-                            </colgroup>
-                            <thead class="table">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Journal Code</th>
-                                    <th>Description</th>
-                                    <th>Debit</th>
-                                    <th>Credit</th>
-                                    <th>Added By</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($journalEntry as $journalEntry)
-                                    <tr class="bg-secondary bg-opacity-10">
-                                        <td class="text-center" style="border-bottom:none;">
-                                            <?= date('F d, Y', strtotime($journalEntry->entry_date)) ?></td>
-                                        <td class="text-center" style="border-bottom:none;">
-                                            {{ $journalEntry->entry_code }}</td>
-                                        <td style="border-bottom:none;"><b>{{ $journalEntry->title }}</b>&nbsp;
-                                            <span style="font-size: 14px; font-style: oblique;">
-                                                {{ $journalEntry->description ? $journalEntry->description : '' }}
-                                            </span>
-                                        </td>
-                                        <td style="border-bottom:none;"></td>
-                                        <td style="border-bottom:none;"></td>
-                                        <td class="text-center" style="border-bottom:none;">
-                                            {{ $journalEntry->user->name }}</td>
-                                        <td class="text-center" style="border-bottom:none;">
-                                            <div class="dropdown ">
-                                                <button class="btn btn-sm btn-secondary dropdown-toggle " type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa-solid fa-sliders"></i>
-                                                </button>
-                                                <ul class="dropdown-menu text-center border-0 bg-secondary bg-opacity-75">
-                                                    <button class="btn btn-warning btn-sm btnEditJournal btn-flat"
-                                                        data-id="{{ $journalEntry->id }}"><i
-                                                            class="fa-solid fa-file-pen"></i></button>
-                                                    <button class="btn btn-danger btn-sm btnDeleteJourn btn-flat"
-                                                        data-del="{{ $journalEntry->id }}"
-                                                        data-code="{{ $journalEntry->entry_code }}"><i
-                                                            class="fa-solid fa-trash"></i></i></button>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                        @foreach ($journalEntry->journal_item as $item)
-                                    <tr>
-                                        <td style="border-bottom:none;"></td>
-                                        <td style="border-bottom:none;"></td>
-                                        <td class="">{{ $item->account_list->account_name }}</td>
-                                        <?php
-                                        $debit = '';
-                                        $credit = '';
-                                        if ($item->type == 1) {
-                                            $debit = $item->amount;
-                                            $debit = '₱ ' . number_format($debit, 2);
-                                        } elseif ($item->type == 2) {
-                                            $credit = $item->amount;
-                                            $credit = '₱ ' . number_format($credit, 2);
-                                        }
-                                        ?>
-                                        <td class="text-end"><?= $debit ?></td>
-                                        <td class="text-end"><?= $credit ?></td>
-                                        <td style="border-bottom:none;"></td>
-                                        <td style="border-bottom:none;"></td>
-                                    </tr>
-                                @endforeach
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- DATA TABLE --}}
-        <script>
-            if (window.history.replaceState) {
-                window.history.replaceState(null, null, window.location.href);
-            }
-            $(document).ready(function() {
-                $('#journalTable').DataTable({
-                    bSort: false,
-                    pageLength: 10,
-                    lengthMenu: [
-                        [5, 10, 20, -1],
-                        [5, 10, 20, 'All']
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
-                    ],
-                });
             });
         });
     </script>
