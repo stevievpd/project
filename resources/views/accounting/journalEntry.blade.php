@@ -154,7 +154,7 @@
                                                 <i class="fa-solid fa-sliders"></i>
                                             </button>
                                             <ul class="dropdown-menu text-center border-0 bg-secondary bg-opacity-75">
-                                                <button class="btn btn-warning btn-sm edit btn-flat" data-id=""><i
+                                                <button class="btn btn-warning btn-sm btnEditJournal btn-flat" data-id="{{ $journalEntry->id }}"><i
                                                         class="fa-solid fa-file-pen"></i></button>
                                                 <button class="btn btn-danger btn-sm btnDeleteJourn btn-flat"
                                                     data-del="{{ $journalEntry->id }}"
@@ -237,6 +237,20 @@
                 $('.journCode').val(journ_code);
                 $("#code").find("p").html(journ_code);
                 $('#deleteJournalModal').modal('show');
+            });
+
+            //edit
+            $(document).on('click', '.btnEditJournal', function() {
+                var journId = $(this).attr("data-id");
+                var url = "/editJournal";
+                $.get(url + '/' + journId, function(data) {
+                    //success data
+                    $('#jobId').val(data.id);
+                    $('#jobName').val(data.job_name);
+                    $('#rate').val(data.rate);
+                    $('#description').val(data.description);
+                    $('#jobEditModal').modal('show');
+                })
             });
         });
     </script>

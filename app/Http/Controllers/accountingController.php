@@ -151,4 +151,12 @@ class accountingController extends Controller
 
     return redirect()->back()->with(['msgDel' => $msg]);
     }
+    // edit journal entry
+    public function editJournal($id){
+        $journ = new journal_entry;
+        
+        $journ1 = $emp::find($id);
+        return response()->json($journ1);
+
+    }
 }
