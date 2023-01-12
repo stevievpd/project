@@ -55,34 +55,34 @@
             <span class="text">Bulla Crave</span>
         </a>
         <ul class="side-menu top">
-            <li class="{{ ((Request::is('employee')) ? 'active' : '') }}">
+            <li class="{{ Request::is('employee') ? 'active' : '' }}">
                 <a href="/employee">
                     <i class='bx bxs-group'></i>
                     <span class="text">Human Resources</span>
                 </a>
             </li>
-            <li class="{{ ((Request::is('product')) ? 'active' : '') }}">
+            <li class="{{ Request::is('product') ? 'active' : '' }}">
                 <a href="/product">
-                    <i class='bx bxs-shopping-bag-alt'></i>
+                    <i class='bx bxs-package'></i>
                     <span class="text">Inventory</span>
                 </a>
             </li>
-            <li class="{{ ((Request::is('journal')) ? 'active' : '') }}">
+            <li class="{{ Request::is('journal') ? 'active' : '' }}">
                 <a href="/journal">
-                    <i class='bx bxs-doughnut-chart'></i>
+                    <i class='bx bxs-calculator'></i>
                     <span class="text">Accounting</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class='bx bxs-message-dots'></i>
+                    <i class='bx bxs-coin-stack'></i>
                     <span class="text">Payroll</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-group'></i>
-                    <span class="text">Point of Sale</span>
+            <li class="{{ Request::is('pos') ? 'active' : '' }}">
+                <a href="/pos">
+                    <i class='bx bxs-store'></i>
+                     <span class="text">Point of Sale</span>
                 </a>
             </li>
         </ul>

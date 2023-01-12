@@ -38,6 +38,7 @@ Route::get('/partner-ledger', [App\Http\Controllers\accountingController::class,
 
 
 
+
 // CRUD HUMAN RESOURCESphoto.store
 Route::post('/addSchedule', [App\Http\Controllers\HumanResourcesController::class, 'storeSchedule'])->name('addSchedule.store');
 Route::post('/addJob', [App\Http\Controllers\HumanResourcesController::class, 'storeJob'])->name('addJob.store');
