@@ -105,17 +105,35 @@
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
                                 </div>
-                                <table id="" class="table">
+
+                                <table id="employeeList">
                                     <thead>
-                                        <tr class="">
-                                            <th scope="col">Account Name</th>
-                                            <th scope="col">Description</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Actions</th>
+                                        <tr>
+                                            <th class="text-center">Account Name</th>
+                                            <th class="text-center">Description</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      
+                                        @foreach ($accountList as $acc)
+                                            <?php
+                                            $status = $acc->status ? '<span class ="badge text-bg-success bg-opacity-25 percent" style="color: green !important">Active</span>' : '<span class ="badge text-bg-danger bg-opacity-25 percent" style="color: red !important">Inactive</span>';
+                                            ?>
+                                            <tr>
+                                                <td class="text-center">{{ $acc->account_name }}</td>
+                                                <td class="text-center">{{ $acc->description }}</td>
+                                                <td class="text-center"><?= $status ?></td>
+                                                <td class="text-center">
+                                                    <div id="wrapper">
+                                                        <button class="dropdownBtnEdit btnEditJournal" data-id=""><i
+                                                                class="fa-solid fa-file-pen"></i></button>
+                                                        <button class="dropdownBtn btnDeleteJourn" data-del=""><i
+                                                                class="fa-solid fa-trash"></i></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -133,7 +151,7 @@
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
                                 </div>
-                                <table>
+                                <table >
                                     <thead>
                                         <tr>
                                             <th>Job Name</th>
@@ -143,7 +161,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      
+
                                     </tbody>
                                 </table>
                             </div>
@@ -167,7 +185,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      
+
                                     </tbody>
                                 </table>
                             </div>
@@ -175,8 +193,8 @@
                         <div class="tab-pane" id="settings">
                             <div class="order">
                                 <div class="head">
-                                    <h3> <button type="button" class="btn btn-primary rounded-pill"
-                                            data-bs-toggle="modal" data-bs-target="#newSchedule">
+                                    <h3> <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal"
+                                            data-bs-target="#newSchedule">
                                             <span>
                                                 <i class='bx bxs-plus-circle'></i>
                                                 Add New Schedule
@@ -195,7 +213,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       
+
                                     </tbody>
                                 </table>
                             </div>
@@ -227,6 +245,4 @@
             });
         });
     </script>
-
-
 @endsection

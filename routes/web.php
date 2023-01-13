@@ -87,6 +87,9 @@ Route::patch('/deleteJournal', [App\Http\Controllers\accountingController::class
 Route::get('/editJournal/{id}', [App\Http\Controllers\accountingController::class, 'editJournal'])->name('editJournal.edit');
 Route::patch('/updateJournal', [App\Http\Controllers\accountingController::class, 'updateJournal'])->name('updateJournal.edit');
 
+Route::post('/addAccountList', [App\Http\Controllers\accountingController::class, 'addAccountList'])->name('addAccountList.store');
+
+
 
 // CRUD CASHADVANCE
 Route::post('/addCashAdvance', [App\Http\Controllers\PayrollController::class, 'storeCashAdvance'])->name('addCashAdvance.store');

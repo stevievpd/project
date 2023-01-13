@@ -1,5 +1,5 @@
 {{-- ADD NEW ACCOUNT LIST MODAL --}}
-<!-- Start Add Schedule -->
+
 <div class="modal fade" id="newAccountListModal" tabindex="-1" role="dialog" aria-labelledby="employeeTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">
 
-                <form class="row g-3" action="/addSchedule" method="POST" enctype="multipart/form-data"
+                <form class="row g-3" action="/addAccountList" method="POST" enctype="multipart/form-data"
                     autocomplete="off">
                     @csrf
                     <div class="col-md-6 form-floating">
@@ -35,12 +35,12 @@
                         <button type="button" data-bs-dismiss="modal"
                             class="btn btn-danger opacity-75">Cancel</button>
                         <button type="submit" class="btn btn-success opacity-75 float-end"
-                            name="addSchedule">Submit</button>
+                            name="addAccountList">Submit</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<!-- End Add SCHEDULE -->
+
 {{-- ADD NEW ACCOUNT LIST MODAL END --}}

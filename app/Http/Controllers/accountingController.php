@@ -21,7 +21,9 @@ class accountingController extends Controller
         $this->middleware('auth');
     }
     public function accounting(){
-        return view('accounting.dashboard');
+        $accountList = account_list::whereNull('deleted_at')->get();
+
+        return view('accounting.dashboard', compact('accountList'));
     }
     public function index(Request $request){
         $dateStart = $request->input('date_start');
@@ -204,4 +206,22 @@ class accountingController extends Controller
         $msg = "Journal Entry $code has been updated.";
         return redirect()->back()->with(['msg' => $msg]);
         }
+        
+        // Account List CRUD
+    public function addAccountList(Request $request){
+
+        $account_name = $request->input('account_name');
+        $status = $request->input('status');
+        $description = $request->input('description');
+
+        account_list::create([
+            'account_name'  => $account_name,
+            'description'   => $description,
+            'status'        => $status,
+        ]);
+
+        $msg = "New $account_name Account has been Added.";
+        return redirect()->back()->with(['msg' => $msg]);
+    }
+
 }
