@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @include('layouts.modals')
-    @include('layouts/modal.AccountingModal')
+    @include('layouts/modal/accountingModals.JournalModal')
     <link rel="stylesheet" href="/css/accounting/style.accounting.css">
 
     <main id="main-data">

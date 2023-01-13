@@ -20,7 +20,9 @@ class accountingController extends Controller
     {
         $this->middleware('auth');
     }
-    
+    public function accounting(){
+        return view('accounting.dashboard');
+    }
     public function index(Request $request){
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
