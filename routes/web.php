@@ -84,5 +84,6 @@ Route::post('/addJournalEntry', [App\Http\Controllers\accountingController::clas
 // Route::post('/filterJournalEntry', [App\Http\Controllers\accountingController::class, 'index']);
 Route::patch('/deleteJournal', [App\Http\Controllers\accountingController::class, 'deleteJournal'])->name('deleteJournal.update');
 Route::get('/editJournal/{id}', [App\Http\Controllers\accountingController::class, 'editJournal'])->name('editJournal.edit');
+Route::patch('/updateJournal', [App\Http\Controllers\accountingController::class, 'updateJournal'])->name('updateJournal.edit');
 
 

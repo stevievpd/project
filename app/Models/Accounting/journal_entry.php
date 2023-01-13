@@ -14,8 +14,9 @@ class journal_entry extends Model
     use HasFactory;
     protected $table = 'journal_entry';
     protected $fillable = [
-        'employee_id ',
+        'user_id',
         'entry_code',
+        'title',
         'description',
         'entry_date',
         'partner',

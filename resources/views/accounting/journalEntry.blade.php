@@ -243,12 +243,13 @@
                 var url = "/editJournal";
                 $.get(url + '/' + journId, function(data) {
                     //success data
-                    $('#entryCode').val(data.journ.entry_code);
-                    $('#entryDate').val(data.journ.entry_date);
-                    $('#title').val(data.journ.title);
-                    $('#descript').val(data.journ.description);
-                    $('#partner').val(data.journ.partner);
-                    $('#editJournalEntryModal').modal('show');
+                    $('#journIdEdit').val(data.journ.id);
+                    $('#entryCodeEdit').val(data.journ.entry_code);
+                    $('#entryDateEdit').val(data.journ.entry_date);
+                    $('#titleEdit').val(data.journ.title);
+                    $('#descriptEdit').val(data.journ.description);
+                    $('#partnerEdit').val(data.journ.partner);
+
                     var entry = data.journ.entry_code;
 
 
@@ -359,12 +360,10 @@
                                         "#9E1B18"
                                 }
                                 // caculate total
-
                             }
-
                         }
                     @endforeach
-
+                    $('#editJournalEntryModal').modal('show');
                 })
             });
         });
@@ -482,6 +481,24 @@
             el.addClass("pop-msg alert")
             el.hide()
             if ($('#tableJourn tbody tr').length <= 0) {
+                el.addClass('alert-danger').text(" Account Table is empty.")
+                _this.prepend(el)
+                el.show('slow')
+                return false;
+            }
+            if (total != 0) {
+                $("#errorModalTrial").modal('show');
+                return false;
+            }
+        });
+        $('#journEdit').submit(function(e) {
+            var total = document.getElementById('totalcatchEdit').value;
+            var _this = $(this)
+            $('.pop-msg').remove()
+            var el = $('<div>')
+            el.addClass("pop-msg alert")
+            el.hide()
+            if ($('#tableJournEdit tbody tr').length <= 0) {
                 el.addClass('alert-danger').text(" Account Table is empty.")
                 _this.prepend(el)
                 el.show('slow')
