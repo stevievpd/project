@@ -1,6 +1,6 @@
 {{-- <!-- Start error modal --> --}}
-<div class="modal fade" id="errorModalAccount" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style="z-index: 3000">
+<div class="modal fade" id="errorModalAccount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="z-index: 4000">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -18,8 +18,9 @@
 </div>
 {{-- <!-- error modal end --> --}}
 {{-- <!-- Start error modal --> --}}
-<div class="modal fade" id="errorModalTrial" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="z-index: 3000">
+<div class="modal fade" id="errorModalTrial" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="z-index: 2050">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel" style="color:#b30000">ERROR!</h1>
@@ -54,7 +55,8 @@
                             <div class="col input-group">
                                 <span class="input-group-text" id="basic-addon1">JOURNAL CODE</span>
                                 <input type="text" class="form-control code text-dark bg bg-white" name="entry_code"
-                                    value="JRE-<?php echo (new DateTime())->format('mY'); ?>-00{{$journCount}}" style="--bs-text-opacity: .5;" readonly>
+                                    value="JRE-<?php echo (new DateTime())->format('mY'); ?>-00{{ $journCount }}" style="--bs-text-opacity: .5;"
+                                    readonly>
                             </div>
                             <div class="col input-group">
                                 <span class="input-group-text" id="basic-addon1">Date</span>
@@ -65,8 +67,9 @@
                         <div class=" p-2 row align-items-start">
                             <div class="col-6 g-2 py-2 row border rounded-1">
                                 <div class="form-floating">
-                                        <input type="text" class="form-control user" id="username" value="{{ Auth::user()->name }}" readonly>
-                                        <label for="account" class="">Creator</label>
+                                    <input type="text" class="form-control user" id="username"
+                                        value="{{ Auth::user()->name }}" readonly>
+                                    <label for="account" class="">Creator</label>
                                 </div>
                                 <div class="col-6 form-floating ">
                                     <select class="form-control bg-info account" name="account" id="accountListJourn"
@@ -120,8 +123,7 @@
                                 </div>
                                 <div class=" form-floating">
                                     <input type="text" class="description form-control" name="description"
-                                        style="text-transform:capitalize"
-                                         placeholder="Description">
+                                        style="text-transform:capitalize" placeholder="Description">
                                     <label for=""class="text-muted">Description</label>
                                 </div>
                                 <div class="form-floating">
@@ -223,7 +225,9 @@
                 <div class="modal-body">
                     <input type="hidden" class="journId" name="journ_id">
                     <input type="hidden" class="journCode" name="entry_code">
-                    <div id="code"><b><p></p></b></div>
+                    <div id="code"><b>
+                            <p></p>
+                        </b></div>
                     <p>Do you really want to delete these Journal Entry? This process cannot be undone.</p>
                 </div>
                 <div class="modal-footer justify-content-center">
@@ -238,39 +242,43 @@
 
 
 {{-- <!-- modal EDIT JOURNAL ENTRY --> --}}
-<div class="modal fade w-80" id="editJournalEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+<div class="modal fade w-80" id="editJournalEntryModal" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 2025;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="fa-solid fa-book"></i> Edit  Journal
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="fa-solid fa-book"></i> Edit Journal
                     Entry</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form action="" id="journAdd" method="POST">
+            <div class="modal-bodyEdit">
+                <form action="/updateJournal" id="journEdit" method="POST">
                     @csrf
+                    @method('PATCH')
                     <div class="">
+                        <input type="hidden" id="journIdEdit" name="journ_id" readonly>
                         <div class="row py-2 align-items-start">
                             <div class="col input-group">
                                 <span class="input-group-text" id="basic-addon1">JOURNAL CODE</span>
-                                <input type="text" class="form-control code text-dark bg bg-white" name="entry_code" id="entryCode"
-                                     style="--bs-text-opacity: .5;" readonly>
+                                <input type="text" class="form-control code text-dark bg bg-white"
+                                    name="entry_code" id="entryCodeEdit" style="--bs-text-opacity: .5;" readonly>
                             </div>
                             <div class="col input-group">
                                 <span class="input-group-text" id="basic-addon1">Date</span>
-                                <input type="date" class="form-control journDate" name="entry_date" id="entryDate">
+                                <input type="date" class="form-control journDate" name="entry_date"
+                                    id="entryDateEdit">
                             </div>
                         </div>
                         <div class=" p-2 row align-items-start">
                             <div class="col-6 g-2 py-2 row border rounded-1">
                                 <div class="form-floating">
-                                        <input type="text" class="form-control user" id="username" value="{{ Auth::user()->name }}" readonly>
-                                        <label for="account" class="">Creator</label>
+                                    <input type="text" class="form-control user" id="username"
+                                        value="{{ Auth::user()->name }}" readonly>
+                                    <label for="account" class="">Creator</label>
                                 </div>
                                 <div class="col-6 form-floating ">
-                                    <select class="form-control bg-info account" name="account" id="accountListJournEdit"
-                                        style="--bs-bg-opacity: .25;">
+                                    <select class="form-control bg-info account" name="account"
+                                        id="accountListJournEdit" style="--bs-bg-opacity: .25;">
                                         <option value=""> </option>
                                         @foreach ($accountList as $account)
                                             <option value="{{ $account->id }}">{{ $account->account_name }}</option>
@@ -279,8 +287,8 @@
                                     <label for="account" class="">Account</label>
                                 </div>
                                 <div class="col-6 form-floating">
-                                    <select class="form-control bg-warning group" name="group" id="groupListJournEdit"
-                                        style="--bs-bg-opacity: .25;">
+                                    <select class="form-control bg-warning group" name="group"
+                                        id="groupListJournEdit" style="--bs-bg-opacity: .25;">
                                         <option value=""> </option>
                                         @foreach ($groupList as $group)
                                             <option value="{{ $group->id }}">{{ $group->group_name }}</option>
@@ -305,28 +313,28 @@
                                 </div>
                                 <div class="col-3">
                                     <button type="button" class=" btn btn-success p-3  amount form-control"
-                                        name="amount" id="myButton"><i class="fa-solid fa-file-circle-plus"></i>
+                                        name="amount" id="myButtonEdit"><i class="fa-solid fa-file-circle-plus"></i>
                                         ADD</button>
                                 </div>
 
                             </div>
                             <div class="col-6 px-4 py-2 g-2 row align-items-start">
                                 <div class=" form-floating">
-                                    <input type="text" class="title form-control" name="title" id="title"
+                                    <input type="text" class="title form-control" name="title" id="titleEdit"
                                         style="text-transform:uppercase"
                                         onkeyup="this.value = this.value.toUpperCase();" placeholder="Description"
                                         required>
                                     <label for="" class="text-muted">Title</label>
                                 </div>
                                 <div class=" form-floating">
-                                    <input type="text" class="description form-control" name="description" id="descript"
-                                        style="text-transform:capitalize"
-                                         placeholder="Description">
+                                    <input type="text" class="description form-control" name="description"
+                                        id="descriptEdit" style="text-transform:capitalize"
+                                        placeholder="Description">
                                     <label for=""class="text-muted">Description</label>
                                 </div>
                                 <div class="form-floating">
-                                    <input type="text" class="partner form-control" name="partner" id="partner"
-                                        placeholder="Partner" required>
+                                    <input type="text" class="partner form-control" name="partner"
+                                        id="partnerEdit" placeholder="Partner" required>
                                     <label for="" class="text-muted">Partner</label>
                                 </div>
 
@@ -364,35 +372,39 @@
 
                                 <tr class=" border">
                                     <th colspan="2" class="text-center"></th>
-                                    <th colspan="2" class="text-center totalBalanceJournEdit" id="totalColEdit"></th>
+                                    <th colspan="2" class="text-center totalBalanceJournEdit" id="totalColEdit">
+                                    </th>
                                 </tr>
 
                             </tfoot>
                             <input type="hidden" name="totalcatchEdit" id="totalcatchEdit" readonly value="0">
                         </table>
 
-                        <noscript id="cloneThis">
+                        <noscript id="cloneThisEdit">
                             <tr>
                                 <td class="">
-                                    <input type="hidden" class="accountName" name="account_ids[]" value="">
-                                    <input type="hidden" class="groupName" name="group_ids[]" value="">
-                                    <input type="hidden" class="amount" name="amounts[]" value="">
-                                    <input type="hidden" class="amountType" name="amountType[]" value="">
+                                    <input type="hidden" class="accountNameEdit" name="account_idsEdit[]"
+                                        value="">
+                                    <input type="hidden" class="groupNameEdit" name="group_idsEdit[]"
+                                        value="">
+                                    <input type="hidden" class="amountEdit" name="amountsEdit[]" value="">
+                                    <input type="hidden" class="amountTypeEdit" name="amountTypeEdit[]"
+                                        value="">
                                     <span class="accountsDEdit" id="accD"></span>
                                 </td>
                                 <td class="groupsDEdit"></td>
                                 <td class="debitAmountsEdit text-right"></td>
                                 <td class="creditAmountsEdit text-right"></td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-outline btn-danger btn-flat delRowEdit" id="deleteRow"
-                                        type="button"><i class="fa-solid fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-outline btn-danger btn-flat delRowEdit"
+                                        id="deleteRow" type="button"><i class="fa-solid fa-trash"></i></button>
                                 </td>
                             </tr>
                         </noscript>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary closeModal" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary" name="journAddnewEntry">SAVE</button>
             </div>
             </form>
@@ -400,3 +412,42 @@
     </div>
 </div>
 {{-- <!-- modal EDIT JOURNAL ENTRY --> --}}
+
+{{-- ADD NEW ACCOUNT LIST MODAL --}}
+<!-- Start Add Schedule -->
+<div class="modal fade" id="newAccountListModal" tabindex="-1" role="dialog" aria-labelledby="employeeTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="employeeTitle">Add Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form class="row g-3" action="/addSchedule" method="POST" enctype="multipart/form-data"
+                    autocomplete="off">
+                    @csrf
+                    <div class="col-md-6 form-floating">
+                        <input type="time" class="form-control timeIn" name="time_in" required>
+                        <label for="Time In">Time In</label>
+                    </div>
+                    <div class="col-md-6 form-floating">
+                        <input type="time" class="form-control timeOut" name="time_out" required>
+                        <label for="Time Out">Time Out</label>
+                    </div>
+
+                    <div class="mb-2">
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-danger opacity-75">Cancel</button>
+                        <button type="submit" class="btn btn-success opacity-75 float-end"
+                            name="addSchedule">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Add SCHEDULE -->
+{{-- ADD NEW ACCOUNT LIST MODAL END --}}

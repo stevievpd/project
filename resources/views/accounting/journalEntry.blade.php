@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
     @include('layouts.modals')
-    @include('layouts/modal.AccountingModal')
+    @include('layouts/modal/accountingModals.JournalModal')
+    <link rel="stylesheet" href="/css/accounting/style.accounting.css">
 
     <main id="main-data">
         <div class="head-title">
@@ -9,7 +10,7 @@
                 <h1>Accounting</h1>
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Dashboard</a>
+                        <a href="#">Accounting</a>
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
@@ -17,10 +18,10 @@
                     </li>
                 </ul>
             </div>
-            <a href="#" class="btn-download">
+            {{-- <a href="#" class="btn-download">
                 <i class='bx bxs-cloud-download'></i>
                 <span class="text">Download PDF</span>
-            </a>
+            </a> --}}
         </div>
 
         {{-- session --}}
@@ -46,7 +47,7 @@
                 <div class="card-header" style="background-color: #ffff;">
                     <div class="row">
                         <div class="col-5">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            <button type="button" class="journBtn " data-bs-toggle="modal"
                                 data-bs-target="#journalEntryModal"><i class="fa-regular fa-pen-to-square"></i>
                                 Add New Journal
                             </button>
@@ -71,12 +72,15 @@
                                             $date->modify('last day of this month');
                                             echo $date->format('Y-m-d'); ?>" />
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4" id="wrapper">
                                         <button type="submit" name="filter" id="filter"
-                                            class="btn btn-primary">Filter</button>
-                            </form>
-                            <button type="button" name="refreshs" id="refreshs" class="btn btn-default"><a
-                                    href=""><i class="fa-solid fa-rotate-right"> Reset</i></a></button>
+                                            class="journBtn"><i class="fa-solid fa-filter"></i>Filter</button>
+                                        </form>
+                                        <button type="button" name="refreshs" id="refreshs" class="journBtnInverse"><a
+                                                href="/journal"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
+                                    </div>
+                            
+
                         </div>
                     </div>
 
@@ -133,13 +137,15 @@
                                             <i class="fa-solid fa-sliders"></i>
                                         </button>
                                         <ul class="dropdown-menu text-center border-0 bg-secondary bg-opacity-75">
-                                            <button class="btn btn-warning btn-sm btnEditJournal btn-flat"
-                                                data-id="{{ $journalEntry->id }}"><i
-                                                    class="fa-solid fa-file-pen"></i></button>
-                                            <button class="btn btn-danger btn-sm btnDeleteJourn btn-flat"
-                                                data-del="{{ $journalEntry->id }}"
-                                                data-code="{{ $journalEntry->entry_code }}"><i
-                                                    class="fa-solid fa-trash"></i></i></button>
+                                            <div id="wrapper">
+                                                <button class="dropdownBtnEdit btnEditJournal"
+                                                    data-id="{{ $journalEntry->id }}"><i
+                                                        class="fa-solid fa-file-pen"></i></button>
+                                                <button class="dropdownBtn btnDeleteJourn"
+                                                    data-del="{{ $journalEntry->id }}"
+                                                    data-code="{{ $journalEntry->entry_code }}"><i
+                                                        class="fa-solid fa-trash"></i></i></button>
+                                            </div>
                                         </ul>
                                     </div>
                                 </td>
@@ -222,7 +228,11 @@
     {{-- DATA TABLE --}}
     {{-- DELETE JOURNAL ENTRY --}}
     <script>
+        $('#editJournalEntryModal').on('hidden.bs.modal', function() {
+            $("tbody#bodysEdit tr").remove()
+        })
         $(document).ready(function() {
+
             $('.btnDeleteJourn').on('click', function() {
 
                 const journ_id = $(this).attr("data-del");
@@ -239,57 +249,52 @@
                 var url = "/editJournal";
                 $.get(url + '/' + journId, function(data) {
                     //success data
-                    $('#entryCode').val(data.journ.entry_code);
-                    $('#entryDate').val(data.journ.entry_date);
-                    $('#title').val(data.journ.title);
-                    $('#descript').val(data.journ.description);
-                    $('#partner').val(data.journ.partner);
-                    $('#editJournalEntryModal').modal('show');
-                    $.each(data.items, function(items, items) {
+                    $('#journIdEdit').val(data.journ.id);
+                    $('#entryCodeEdit').val(data.journ.entry_code);
+                    $('#entryDateEdit').val(data.journ.entry_date);
+                    $('#titleEdit').val(data.journ.title);
+                    $('#descriptEdit').val(data.journ.description);
+                    $('#partnerEdit').val(data.journ.partner);
 
-                        var account = items.account_id;
-                        var group = items.group_id;
-                        var amount = items.amount;
-                        var types = items.type;
+                    var entry = data.journ.entry_code;
 
-                        
 
-                        function editForeach() {
-                            var accountId = account;
-                            var groupId = group;
-                            var amountx = amount;
-                            var type = types;
+                    @foreach ($journal_item as $items)
+                        var code = '{{ $items->journ_code }}';
+                        if (code == entry) {
+                            var accountId = {{ $items->account_id }};
+                            var groupId = {{ $items->group_id }};
+                            var amountx = {{ $items->amount }};
+                            var type = {{ $items->type }};
+
+                            // append to row edit modal journal items
                             if (groupId == '' || accountId == '' || amountx == '' || type ==
                                 '') {
                                 $("#errorModalAccount").modal('show');
                             } else {
-                                document.getElementById("accountListJournEdit").value = "";
-                                document.getElementById("groupListJournEdit").value = "";
-                                document.getElementById("amountJournEdit").value = "";
-                                document.getElementById("typeIdEdit").value = "";
 
-                                var rows = $($('noscript#cloneThis').html()).clone()
+                                var rows = $($('noscript#cloneThisEdit').html()).clone()
                                     .appendTo("tbody#bodysEdit")
-                                rows.find('input[name="account_ids[]"]').val(
-                                    accountId) // add to input field
-                                rows.find('input[name="group_ids[]"]').val(groupId)
-                                rows.find('input[name="amounts[]"]').val(amountx)
-                                rows.find('input[name="amountType[]"]').val(type)
+                                rows.find('input[name="account_idsEdit[]"]').val(
+                                    accountId); // add to input field
+                                rows.find('input[name="group_idsEdit[]"]').val(groupId);
+                                rows.find('input[name="amountsEdit[]"]').val(amountx);
+                                rows.find('input[name="amountTypeEdit[]"]').val(type);
 
                                 @foreach ($accountList as $account)
                                     if (accountId == {{ $account->id }}) {
                                         rows.find('.accountsDEdit').text(
                                             '{{ $account->account_name }}'
-                                        ) //Paste Account Name to table
-                                    }
+                                        ); //Paste Account Name to table
+                                    };
                                 @endforeach
 
                                 @foreach ($groupList as $group)
                                     if (groupId == {{ $group->id }}) {
                                         rows.find('.groupsDEdit').text(
                                             '{{ $group->group_name }}'
-                                        ) //Paste Group Name to table
-                                    }
+                                        ); //Paste Group Name to table
+                                    };
                                 @endforeach
 
 
@@ -297,76 +302,74 @@
                                     rows.find('.debitAmountsEdit').text(parseFloat(amountx)
                                         .toLocaleString('en-US', {
                                             style: 'decimal'
-                                        }))
+                                        }));
                                 }
                                 if (type == 2) {
                                     rows.find('.creditAmountsEdit').text(parseFloat(amountx)
                                         .toLocaleString('en-US', {
                                             style: 'decimal'
-                                        }))
+                                        }));
                                 }
                                 if (type == '') {
                                     alert("NEED AMOUNT TYPE")
-                                    rows.find('.debitAmountsEdit').text("NO VALUE")
-                                    rows.find('.debitAmountsEdit').text("NO VALUE")
+                                    rows.find('.debitAmountsEdit').text("NO VALUE");
+                                    rows.find('.debitAmountsEdit').text("NO VALUE");
                                 }
-                                editcalcuAmount()
-                                $('#tableJournEdit').append(tr)
+                                // append to row edit modal journal items
+
+                                // caculate total
+                                var debitAmount = 0;
+                                var creditAmount = 0;
+                                $('#tableJournEdit tbody tr').each(function() {
+                                    if ($(this).find('.debitAmountsEdit').text() !=
+                                        "") {
+                                        debitAmount += parseFloat(($(this).find(
+                                                '.debitAmountsEdit').text())
+                                            .replace(
+                                                /,/gi, ''));
+                                    }
+                                    if ($(this).find('.creditAmountsEdit').text() !=
+                                        "") {
+                                        creditAmount += parseFloat(($(this).find(
+                                                '.creditAmountsEdit').text())
+                                            .replace(
+                                                /,/gi, ''));
+                                    }
+                                })
+                                var totalamount = debitAmount - creditAmount;
+                                $('#tableJournEdit').find('.totalDebitEdit').text(parseFloat(
+                                    debitAmount).toLocaleString('en-US', {
+                                    style: 'decimal'
+                                }))
+                                $('#tableJournEdit').find('.totalCreditEdit').text(parseFloat(
+                                    creditAmount).toLocaleString('en-US', {
+                                    style: 'decimal'
+                                }))
+                                document.getElementById('totalcatchEdit').value = totalamount;
+
+                                //for text color only
+                                if (totalamount >= 0) {
+                                    $('#tableJournEdit').find('.totalBalanceJournEdit').text(
+                                        parseFloat(
+                                            totalamount).toLocaleString('en-US', {
+                                            style: 'decimal'
+                                        }))
+                                    document.getElementById("totalColEdit").style.color =
+                                        "#196811"
+                                } else if (totalamount < 0) {
+                                    $('#tableJournEdit').find('.totalBalanceJournEdit').text(
+                                        parseFloat(
+                                            totalamount).toLocaleString('en-US', {
+                                            style: 'decimal'
+                                        }))
+                                    document.getElementById("totalColEdit").style.color =
+                                        "#9E1B18"
+                                }
+                                // caculate total
                             }
                         }
-
-                        function editcalcuAmount() {
-                            var debitAmount = 0;
-                            var creditAmount = 0;
-                            $('#tableJournEdit tbody tr').each(function() {
-                                if ($(this).find('.debitAmountsEdit').text() !=
-                                    "") {
-                                    debitAmount += parseFloat(($(this).find(
-                                            '.debitAmountsEdit').text())
-                                        .replace(
-                                            /,/gi, ''));
-                                }
-                                if ($(this).find('.creditAmountsEdit').text() !=
-                                    "") {
-                                    creditAmount += parseFloat(($(this).find(
-                                            '.creditAmountsEdit').text())
-                                        .replace(
-                                            /,/gi, ''));
-                                }
-                            })
-                            var totalamount = debitAmount - creditAmount;
-                            $('#tableJournEdit').find('.totalDebitEdit').text(parseFloat(
-                                debitAmount).toLocaleString('en-US', {
-                                style: 'decimal'
-                            }))
-                            $('#tableJournEdit').find('.totalCreditEdit').text(parseFloat(
-                                creditAmount).toLocaleString('en-US', {
-                                style: 'decimal'
-                            }))
-                            document.getElementById('totalcatchEdit').value = totalamount;
-
-                            //for text color only
-                            if (totalamount >= 0) {
-                                $('#tableJournEdit').find('.totalBalanceJournEdit').text(
-                                    parseFloat(
-                                        totalamount).toLocaleString('en-US', {
-                                        style: 'decimal'
-                                    }))
-                                document.getElementById("totalColEdit").style.color =
-                                    "#196811"
-                            } else if (totalamount < 0) {
-                                $('#tableJournEdit').find('.totalBalanceJournEdit').text(
-                                    parseFloat(
-                                        totalamount).toLocaleString('en-US', {
-                                        style: 'decimal'
-                                    }))
-                                document.getElementById("totalColEdit").style.color =
-                                    "#9E1B18"
-                            }
-                        }
-                        editForeach();
-                    });
-
+                    @endforeach
+                    $('#editJournalEntryModal').modal('show');
                 })
             });
         });
@@ -468,6 +471,54 @@
         });
 
         // for edit journal
+        $('#tableJournEdit').on('click', ".delRowEdit", function(e) {
+            e.preventDefault();
+            $(this).closest('tr').remove();
+            editcalcuAmount()
+        });
+        // for edit journal
+
+        //catch 
+        $('#journAdd').submit(function(e) {
+            var total = document.getElementById('totalcatch').value;
+            var _this = $(this)
+            $('.pop-msg').remove()
+            var el = $('<div>')
+            el.addClass("pop-msg alert")
+            el.hide()
+            if ($('#tableJourn tbody tr').length <= 0) {
+                el.addClass('alert-danger').text(" Account Table is empty.")
+                _this.prepend(el)
+                el.show('slow')
+                return false;
+            }
+            if (total != 0) {
+                $("#errorModalTrial").modal('show');
+                return false;
+            }
+        });
+        $('#journEdit').submit(function(e) {
+            var total = document.getElementById('totalcatchEdit').value;
+            var _this = $(this)
+            $('.pop-msg').remove()
+            var el = $('<div>')
+            el.addClass("pop-msg alert")
+            el.hide()
+            if ($('#tableJournEdit tbody tr').length <= 0) {
+                el.addClass('alert-danger').text(" Account Table is empty.")
+                _this.prepend(el)
+                el.show('slow')
+                return false;
+            }
+            if (total != 0) {
+                $("#errorModalTrial").modal('show');
+                return false;
+            }
+        });
+        //catch
+        // JOURNAL ENTRY MODAL FUNCTIONS end
+        // =================for edit modal script====================//
+        //calculate amount
         function editcalcuAmount() {
             var debitAmount = 0;
             var creditAmount = 0;
@@ -517,33 +568,66 @@
                     "#9E1B18"
             }
         }
-        $('#tableJournEdit').on('click', ".delRowEdit", function(e) {
-            e.preventDefault();
-            $(this).closest('tr').remove();
-            editcalcuAmount()
-        });
-        // for edit journal
+        $('#myButtonEdit').click(function() {
+            var accountId = $('#accountListJournEdit').val()
+            var groupId = $('#groupListJournEdit').val()
+            var amountx = $('#amountJournEdit').val()
+            var type = $('#typeIdEdit').val()
+            if (groupId == '' || accountId == '' || amountx == '' || type ==
+                '') {
+                $("#errorModalAccount").modal('show');
+            } else {
+                document.getElementById("accountListJournEdit").value = "";
+                document.getElementById("groupListJournEdit").value = "";
+                document.getElementById("amountJournEdit").value = "";
+                document.getElementById("typeIdEdit").value = "";
 
-        //catch 
-        $('#journAdd').submit(function(e) {
-            var total = document.getElementById('totalcatch').value;
-            var _this = $(this)
-            $('.pop-msg').remove()
-            var el = $('<div>')
-            el.addClass("pop-msg alert")
-            el.hide()
-            if ($('#tableJourn tbody tr').length <= 0) {
-                el.addClass('alert-danger').text(" Account Table is empty.")
-                _this.prepend(el)
-                el.show('slow')
-                return false;
+                var rows = $($('noscript#cloneThisEdit').html()).clone()
+                    .appendTo("tbody#bodysEdit")
+                rows.find('input[name="account_idsEdit[]"]').val(
+                    accountId); // add to input field
+                rows.find('input[name="group_idsEdit[]"]').val(groupId);
+                rows.find('input[name="amountsEdit[]"]').val(amountx);
+                rows.find('input[name="amountTypeEdit[]"]').val(type);
+
+                @foreach ($accountList as $account)
+                    if (accountId == {{ $account->id }}) {
+                        rows.find('.accountsDEdit').text(
+                            '{{ $account->account_name }}'
+                        ); //Paste Account Name to table
+                    };
+                @endforeach
+
+                @foreach ($groupList as $group)
+                    if (groupId == {{ $group->id }}) {
+                        rows.find('.groupsDEdit').text(
+                            '{{ $group->group_name }}'
+                        ); //Paste Group Name to table
+                    };
+                @endforeach
+
+
+                if (type == 1) {
+                    rows.find('.debitAmountsEdit').text(parseFloat(amountx)
+                        .toLocaleString('en-US', {
+                            style: 'decimal'
+                        }));
+                }
+                if (type == 2) {
+                    rows.find('.creditAmountsEdit').text(parseFloat(amountx)
+                        .toLocaleString('en-US', {
+                            style: 'decimal'
+                        }));
+                }
+                if (type == '') {
+                    alert("NEED AMOUNT TYPE")
+                    rows.find('.debitAmountsEdit').text("NO VALUE");
+                    rows.find('.debitAmountsEdit').text("NO VALUE");
+                }
+                editcalcuAmount();
+                $('#tableJournEdit').append(tr);
             }
-            if (total != 0) {
-                $("#errorModalTrial").modal('show');
-                return false;
-            }
-        });
-        //catch
-        // JOURNAL ENTRY MODAL FUNCTIONS end
+        })
+        // =================for edit modal script====================//
     </script>
 @endsection

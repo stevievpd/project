@@ -20,7 +20,9 @@ class accountingController extends Controller
     {
         $this->middleware('auth');
     }
-    
+    public function accounting(){
+        return view('accounting.dashboard');
+    }
     public function index(Request $request){
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
@@ -43,8 +45,9 @@ class accountingController extends Controller
         $accountList = account_list::orderBy('account_name', 'asc')->get();
         $groupList = group_list::orderBy('group_name', 'asc')->get();
         $journCount = journal_entry::count('id');
+        $journal_item = journal_item::whereNull('deleted_at')->get();
        
-        return view('accounting.journalEntry', compact('journalEntry','accountList', 'groupList', 'journCount','dateStart','dateEnd'));
+        return view('accounting.journalEntry', compact('journalEntry','journal_item','accountList', 'groupList', 'journCount','dateStart','dateEnd'));
     }
     // STORE JOURNAL ENTRIES and ITEMS
     public function storeJournalEntry(Request $request){
@@ -165,4 +168,40 @@ class accountingController extends Controller
         ]);
 
     }
+    public function updateJournal(Request $request){
+        $id = $request->input('journ_id');
+        $code = $request->input('entry_code');
+        $entry_date = $request->input('entry_date');
+        $user_id = Auth::user()->id;
+        $title = $request->input('title');
+        $description = $request->input('description');
+        $partner = $request->input('partner');
+
+
+        journal_entry::where('id', $id)
+                       ->update([
+                        'user_id' => $user_id,
+                        'title' => $title,
+                        'description' => $description,
+                        'entry_date' => $entry_date,
+                        'partner' => $partner,
+                    ]);
+
+        // update journal items
+        $flight = journal_item::where('journ_code', $code);
+        $flight->delete();
+
+        foreach($request->account_idsEdit as $key => $value){
+            journal_item::create([
+                'account_id' => $request->account_idsEdit[$key],
+                'group_id'   => $request->group_idsEdit[$key],
+                'journ_code' => $code,
+                'amount'     => $request->amountsEdit[$key],
+                'type'       => $request->amountTypeEdit[$key],
+            ]);
+        }
+
+        $msg = "Journal Entry $code has been updated.";
+        return redirect()->back()->with(['msg' => $msg]);
+        }
 }

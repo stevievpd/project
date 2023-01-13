@@ -1,0 +1,80 @@
+.journBtn{
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 36px;
+	background: var(--blue);
+	color: var(--light);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 800;
+    border-color: white;
+}
+.journBtnInverse{
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 36px;
+	background: rgb(221, 219, 233);
+	color:rgb(32, 25, 71);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 800;
+    border-color: white;
+}
+.dropdownBtn{
+    margin-left: 5px;
+    margin-right: 5px;
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 36px;
+	background: var(--red);
+	color: var(--light);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 800;
+    border-color: white;
+}
+.dropdownBtnEdit{
+    margin-left: 5px;
+    margin-right: 5px;
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 36px;
+	background: #3C6255;
+	color: var(--light);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 800;
+    border-color: white;
+}
+#wrapper {
+    display: flex;
+    justify-content: center;
+  }
+.journBtn:hover{
+    transition: 700ms;
+    background-color: rgb(221, 219, 233);
+    color: rgb(32, 25, 71);
+    }
+.journBtnInverse:hover{
+    transition: 700ms;
+    background-color:var(--red);
+    color: var(--light);
+    }
+.dropdownBtn:hover{
+    transition: 700ms;
+    background-color: rgb(221, 219, 233);
+    color: rgb(32, 25, 71);
+    }
+.dropdownBtnEdit:hover{
+    transition: 700ms;
+    background-color: rgb(184, 187, 148);
+    color: rgb(32, 25, 71);
+    }
