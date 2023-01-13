@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\HumanResources\job;
 use App\Models\HumanResources\department;
+use App\Models\Payroll\cashadvance;
+
 
 class employee extends Model
 {
@@ -35,5 +37,9 @@ class employee extends Model
     {
         return $this->hasone(department::class, 'id', 'department_id');
     }
+
+    // public function cashadvance(){
+    //     return $this->hasMany(cashadvance::class, 'employee_id', 'id');
+    // }
 
 }

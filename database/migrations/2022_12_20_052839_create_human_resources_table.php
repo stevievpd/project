@@ -67,7 +67,7 @@ return new class extends Migration
             $table->foreign('schedule_id')->references('id')->on('schedule');
         });
 
-        Schema::create('attendance', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('employee_id');
             $table->date('date');
@@ -84,7 +84,7 @@ return new class extends Migration
 
         });
 
-        Schema::create('cashadvance', function (Blueprint $table) {
+        Schema::create('cashadvances', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('employee_id');
             $table->string('description');
@@ -100,16 +100,10 @@ return new class extends Migration
 
         Schema::create('deductions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('employee_id');
             $table->string('description');
-            $table->date('date');
             $table->float('amount');
             $table->softDeletes();
             $table->timestamps();
-
-            // foreign keys
-            $table->foreign('employee_id')->references('id')->on('employee');
-
         });
 
     }

@@ -34,7 +34,7 @@ body {
   width: 350px;
   transform: scale(1.0);
   transition: transform 0.4s ease;
-  object-fit:none;
+  object-fit: contain;
 }
 
 .img-box {
