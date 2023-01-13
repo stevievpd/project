@@ -2,6 +2,7 @@
 @section('content')
     @include('layouts.modals')
     @include('layouts/modal.AccountingModal')
+    <link rel="stylesheet" href="/css/accounting/style.accounting.css">
 
     <main id="main-data">
         <div class="head-title">
@@ -9,7 +10,7 @@
                 <h1>Accounting</h1>
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Dashboard</a>
+                        <a href="#">Accounting</a>
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
@@ -17,10 +18,10 @@
                     </li>
                 </ul>
             </div>
-            <a href="#" class="btn-download">
+            {{-- <a href="#" class="btn-download">
                 <i class='bx bxs-cloud-download'></i>
                 <span class="text">Download PDF</span>
-            </a>
+            </a> --}}
         </div>
 
         {{-- session --}}
@@ -46,7 +47,7 @@
                 <div class="card-header" style="background-color: #ffff;">
                     <div class="row">
                         <div class="col-5">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            <button type="button" class="journBtn " data-bs-toggle="modal"
                                 data-bs-target="#journalEntryModal"><i class="fa-regular fa-pen-to-square"></i>
                                 Add New Journal
                             </button>
@@ -71,12 +72,15 @@
                                             $date->modify('last day of this month');
                                             echo $date->format('Y-m-d'); ?>" />
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4" id="wrapper">
                                         <button type="submit" name="filter" id="filter"
-                                            class="btn btn-primary">Filter</button>
-                            </form>
-                            <button type="button" name="refreshs" id="refreshs" class="btn btn-default"><a
-                                    href=""><i class="fa-solid fa-rotate-right"> Reset</i></a></button>
+                                            class="journBtn"><i class="fa-solid fa-filter"></i>Filter</button>
+                                        </form>
+                                        <button type="button" name="refreshs" id="refreshs" class="journBtnInverse"><a
+                                                href="/journal"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
+                                    </div>
+                            
+
                         </div>
                     </div>
 
@@ -133,13 +137,15 @@
                                             <i class="fa-solid fa-sliders"></i>
                                         </button>
                                         <ul class="dropdown-menu text-center border-0 bg-secondary bg-opacity-75">
-                                            <button class="btn btn-warning btn-sm btnEditJournal btn-flat"
-                                                data-id="{{ $journalEntry->id }}"><i
-                                                    class="fa-solid fa-file-pen"></i></button>
-                                            <button class="btn btn-danger btn-sm btnDeleteJourn btn-flat"
-                                                data-del="{{ $journalEntry->id }}"
-                                                data-code="{{ $journalEntry->entry_code }}"><i
-                                                    class="fa-solid fa-trash"></i></i></button>
+                                            <div id="wrapper">
+                                                <button class="dropdownBtnEdit btnEditJournal"
+                                                    data-id="{{ $journalEntry->id }}"><i
+                                                        class="fa-solid fa-file-pen"></i></button>
+                                                <button class="dropdownBtn btnDeleteJourn"
+                                                    data-del="{{ $journalEntry->id }}"
+                                                    data-code="{{ $journalEntry->entry_code }}"><i
+                                                        class="fa-solid fa-trash"></i></i></button>
+                                            </div>
                                         </ul>
                                     </div>
                                 </td>
