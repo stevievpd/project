@@ -79,8 +79,8 @@
                     <span class="text">Payroll</span>
                 </a>
             </li>
-            <li class="{{ Request::is('pointofsale') ? 'active' : '' }}">
-                <a href="/pointofsale">
+            <li class="{{ Request::is('crm') ? 'active' : '' }}">
+                <a href="/crm">
                     <i class='bx bxs-customize'></i>                     
                     <span class="text">CRM</span>
                 </a>
