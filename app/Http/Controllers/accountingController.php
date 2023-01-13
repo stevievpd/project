@@ -43,8 +43,9 @@ class accountingController extends Controller
         $accountList = account_list::orderBy('account_name', 'asc')->get();
         $groupList = group_list::orderBy('group_name', 'asc')->get();
         $journCount = journal_entry::count('id');
+        $journal_item = journal_item::whereNull('deleted_at')->get();
        
-        return view('accounting.journalEntry', compact('journalEntry','accountList', 'groupList', 'journCount','dateStart','dateEnd'));
+        return view('accounting.journalEntry', compact('journalEntry','journal_item','accountList', 'groupList', 'journCount','dateStart','dateEnd'));
     }
     // STORE JOURNAL ENTRIES and ITEMS
     public function storeJournalEntry(Request $request){
