@@ -2,6 +2,8 @@
 
 @section('content')
     @include('layouts.modals')
+    @include('layouts/modal.PayrollModal')
+
     <main>
         <div class="head-title">
             <div class="left">
@@ -24,21 +26,21 @@
 
         <ul class="box-info">
             <li>
-                <i class='bx bxs-coin-stack' ></i>
+                <i class='bx bxs-coin-stack'></i>
                 <span class="text">
                     <h3>1</h3>
                     <p>Total Salary</p>
                 </span>
             </li>
             <li>
-                <i class='bx bxs-coin-stack' ></i>
+                <i class='bx bxs-coin-stack'></i>
                 <span class="text">
                     <h3>1</h3>
                     <p>Total Cash Advance</p>
                 </span>
             </li>
             <li>
-                <i class='bx bxs-coin-stack' ></i>
+                <i class='bx bxs-coin-stack'></i>
                 <span class="text">
                     <h3>1</h3>
                     <p>Total Deductions</p>
@@ -115,7 +117,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($attendance as $att)
+                                        <tr>
+                                            <td>{{ $att->date }}</td>
+                                            <td>{{ $att->employee->employee_code }}</td>
+                                            <td>{{ $att->employee->first_name }}{{ $att->employee->last_name }}</td>
+                                            <td>{{ $att->time_in }}</td>
+                                            <td>{{ $att->time_out }}</td>
+                                            <td><a data-id="{{ $att->id }}"
+                                                    class="btn btn-sm btn-success btnEditCashAdvance"><i
+                                                        class="fa-solid fa-user-pen"></i></a>
 
+                                                <a data-del="{{ $att->id }}"
+                                                    class="btn btn-sm btn-danger btnDeleteCashAdvance"><i
+                                                        class="fa-solid fa-delete-left"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -124,7 +142,7 @@
                             <div class="order">
                                 <div class="head">
                                     <h3> <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal"
-                                            data-bs-target="#newJob">
+                                            data-bs-target="#newDeduction">
                                             <span>
                                                 <i class='bx bxs-plus-circle'></i>
                                                 Add new deduction
@@ -136,13 +154,26 @@
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
                                             <th>Description</th>
                                             <th>Amount</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($deduction as $de)
+                                            <tr>
+                                                <td>{{ $de->description }}</td>
+                                                <td>{{ $de->amount }}</td>
+                                                <td><a data-id="{{ $de->id }}"
+                                                        class="btn btn-sm btn-success btnEditDeduction"><i
+                                                            class="fa-solid fa-user-pen"></i></a>
+
+                                                    <a data-del="{{ $de->id }}"
+                                                        class="btn btn-sm btn-danger btnDeleteDeduction"><i
+                                                            class="fa-solid fa-delete-left"></i></a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
 
                                     </tbody>
                                 </table>
@@ -152,7 +183,7 @@
                             <div class="order">
                                 <div class="head">
                                     <h3> <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal"
-                                            data-bs-target="#newDepartment">
+                                            data-bs-target="#newCashAdvance">
                                             <span>
                                                 <i class='bx bxs-plus-circle'></i>
                                                 Add new cash advance
@@ -162,6 +193,8 @@
                                 <table>
                                     <thead>
                                         <tr>
+                                            <th>Date</th>
+                                            <th>Employee ID</th>
                                             <th>Name</th>
                                             <th>Description</th>
                                             <th>Amount</th>
@@ -169,7 +202,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($cashadvance as $ca)
+                                            <tr>
+                                                <td>{{ $ca->date }}</td>
+                                                <td>{{ $ca->employee->employee_code }}</td>
+                                                <td>{{ $ca->employee->first_name }}{{ $ca->employee->last_name }}</td>
+                                                <td>{{ $ca->description }}</td>
+                                                <td>{{ $ca->amount }}</td>
+                                                <td><a data-id="{{ $ca->id }}"
+                                                        class="btn btn-sm btn-success btnEditCashAdvance"><i
+                                                            class="fa-solid fa-user-pen"></i></a>
 
+                                                    <a data-del="{{ $ca->id }}"
+                                                        class="btn btn-sm btn-danger btnDeleteCashAdvance"><i
+                                                            class="fa-solid fa-delete-left"></i></a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -215,6 +264,54 @@
                 $(".tab, .tab-pane").removeClass("active");
                 $(this).addClass("active");
                 $("#" + categoryId).addClass("active");
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            // EDIT scripts for modals
+            $(document).on('click', '.btnEditCashAdvance', function() {
+                var cashAdvanceId = $(this).attr("data-id");
+                var url = "/editCashAdvance";
+                $.get(url + '/' + cashAdvanceId, function(data) {
+                    //success data
+                    $('#cashAdvanceId').val(data.cashAd.id);
+                    $('#employee').val(data.emp.first_name + ' ' + data.emp.last_name);
+                    $('#date').val(data.cashAd.date);
+                    $('#amount').val(data.cashAd.amount);
+                    $('#description').val(data.cashAd.description);
+                    $('#CashAdvanceEditModal').modal('show');
+                })
+            });
+
+            $(document).on('click', '.btnEditDeduction', function() {
+                var deductionId = $(this).attr("data-id");
+                var url = "/editDeduction";
+                $.get(url + '/' + deductionId, function(data) {
+                    //success data
+                    $('#deductionId').val(data.id);
+                    $('#deductionAmount').val(data.amount);
+                    $('#deductionDescription').val(data.description);
+                    $('#DeductionEditModal').modal('show');
+                })
+            });
+
+            // DELETE MODAL
+            $('.btnDeleteCashAdvance').on('click', function() {
+                const cashadvance_id = $(this).attr("data-del");
+                $('.cashAdvanceId').val(cashadvance_id);
+                $('#deleteCashAdvanceModal').modal('show');
+            });
+            $('.btnDeleteDeduction').on('click', function() {
+                const deduction_id = $(this).attr("data-del");
+                $('.deductionId').val(deduction_id);
+                $('#deleteDeductionModal').modal('show');
             });
         });
     </script>

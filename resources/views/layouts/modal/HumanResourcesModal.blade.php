@@ -16,7 +16,7 @@
                      @csrf
                      <div class="col-12 form-floating">
                          <input type="text" class="form-control empCode text-center"
-                             value="VPD-<?php echo (new DateTime())->format('my'); ?>-00{{ $empCount}}" name="emp_code" required
+                             value="VPD-<?php echo (new DateTime())->format('my'); ?>-00{{ $empCount }}" name="emp_code" required
                              style="opacity: 50%;" readonly="true">
                          <label for="firstName">Employee Code</label>
                      </div>

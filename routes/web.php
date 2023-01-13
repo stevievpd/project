@@ -86,3 +86,14 @@ Route::patch('/deleteJournal', [App\Http\Controllers\accountingController::class
 Route::get('/editJournal/{id}', [App\Http\Controllers\accountingController::class, 'editJournal'])->name('editJournal.edit');
 
 
+// CRUD CASHADVANCE
+Route::post('/addCashAdvance', [App\Http\Controllers\PayrollController::class, 'storeCashAdvance'])->name('addCashAdvance.store');
+Route::get('/editCashAdvance/{id}', [App\Http\Controllers\PayrollController::class, 'editCashAdvance'])->name('editCashAdvance.edit');
+Route::patch('/updateCashAdvance', [App\Http\Controllers\PayrollController::class, 'updateCashAdvance'])->name('updateCashAdvance.update');
+Route::patch('/deleteCashAdvance', [App\Http\Controllers\PayrollController::class, 'deleteCashAdvance'])->name('deleteCashAdvance.update');
+
+// CRUD DEDUCTION
+Route::post('/addDeduction', [App\Http\Controllers\PayrollController::class, 'storeDeduction'])->name('addDeduction.store');
+Route::get('/editDeduction/{id}', [App\Http\Controllers\PayrollController::class, 'editDeduction'])->name('editDeduction.edit');
+Route::patch('/updateDeduction', [App\Http\Controllers\PayrollController::class, 'updateDeduction'])->name('updateDeduction.update');
+Route::patch('/deleteDeduction', [App\Http\Controllers\PayrollController::class, 'deleteDeduction'])->name('deleteDeduction.update');
