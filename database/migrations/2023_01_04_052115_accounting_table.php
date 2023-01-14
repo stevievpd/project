@@ -68,6 +68,38 @@ return new class extends Migration
             $table->foreign('group_id')->references('id')->on('group_list');
             $table->foreign('journ_code')->references('entry_code')->on('journal_entry');
         });
+
+        Schema::create('bank_meta_data', function (Blueprint $table) {
+            
+            $table->bigIncrements('id');
+            $table->string('bank_name');
+            $table->string('bank_branch');
+            $table->string('bank_image');
+            $table->softDeletes();
+
+            $table->timestamps();
+
+        });
+
+        Schema::create('bank_account', function (Blueprint $table) {
+            
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('bank_meta_id');
+            $table->string('account_number');
+            $table->string('account_holder');
+            $table->string('email');
+            $table->string('contact');
+            $table->string('address')->nullable();
+            $table->string('country');
+            $table->string('company')->nullable();
+            $table->integer('zip');
+            $table->softDeletes();
+
+            $table->timestamps();
+
+            // foreign keys
+            $table->foreign('bank_meta_id')->references('id')->on('bank_meta_data');
+        });
     }
 
     /**
