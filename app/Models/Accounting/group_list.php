@@ -10,7 +10,7 @@ class group_list extends Model
     use HasFactory;
     protected $table = 'group_list';
     protected $fillable = [
-        'group_name ',
+        'group_name',
         'description',
         'type',
         'status',

@@ -8,6 +8,8 @@ use App\Models\Accounting\account_list;
 use App\Models\Accounting\group_list;
 use App\Models\Accounting\journal_entry;
 use App\Models\Accounting\journal_item;
+use App\Models\Accounting\bank_meta_data;
+use App\Models\Accounting\bank_account;
 use App\Models\HumanResources\employee;
 use App\Models\User;
 
@@ -21,7 +23,15 @@ class accountingController extends Controller
         $this->middleware('auth');
     }
     public function accounting(){
-        return view('accounting.dashboard');
+        $accountList = account_list::whereNull('deleted_at')->get();
+        $groupList = group_list::whereNull('deleted_at')->get();
+        $bankMeta = bank_meta_data::whereNull('deleted_at')->get();
+        $bankAccount = bank_account::with('bank_meta')->get()->whereNull('deleted_at');
+
+        $accountCount = $accountList->count();
+        $groupCount = $groupList->count();
+        $bankCount = $bankAccount->count();
+        return view('accounting.dashboard', compact('accountList', 'groupList', 'bankMeta', 'bankAccount', 'accountCount', 'groupCount','bankCount'));
     }
     public function index(Request $request){
         $dateStart = $request->input('date_start');
@@ -204,4 +214,171 @@ class accountingController extends Controller
         $msg = "Journal Entry $code has been updated.";
         return redirect()->back()->with(['msg' => $msg]);
         }
+        
+    // ========================ACCOUNT LIST=============================//
+    public function addAccountList(Request $request){
+
+        $account_name = $request->input('account_name');
+        $status = $request->input('status');
+        $description = $request->input('description');
+
+        account_list::create([
+            'account_name'  => $account_name,
+            'description'   => $description,
+            'status'        => $status,
+        ]);
+
+        $msg = "New $account_name Account has been Added.";
+        return redirect()->back()->with(['msg' => $msg]);
+    }
+    public function editAccountList($id){
+        $account = account_list::find($id);
+        return response()->json($account);
+    }
+
+    public function updateAccountList(Request $request){
+        $id = $request->input('account_id');
+        $account_name = $request->input('account_name');
+        $status = $request->input('status');
+        $description = $request->input('description');
+
+        account_list::where('id', $id)
+                    ->update([
+                        'account_name' => $account_name,
+                        'status'       => $status,
+                        'description'  => $description,
+                    ]);
+        $msg = "$account_name has been Updated.";
+        return redirect()->back()->with(['msg' => $msg]);
+    }
+    public function deleteAccountList(Request $request){
+        $id = $request->input('account_id');
+        account_list::where('id', $id)
+            ->update([
+            'deleted_at' => now(),
+         ]);
+        $msg = "Account has been Deleted";
+
+    return redirect()->back()->with(['msgDel' => $msg]);
+    }
+    // ========================ACCOUNT LIST=============================//
+    
+    // ========================GROUP LIST=============================//
+    public function storeGroupList(Request $request){
+
+        $group_name = $request->input('group_name');
+        $description = $request->input('description');
+        $status = $request->input('status');
+        $type = $request->input('type');
+
+        group_list::create([
+            'group_name'    => $group_name,
+            'description'   => $description,
+            'status'        => $status,
+            'type'          => $type,
+        ]);
+        $msg = "$group_name has been Added.";
+        return redirect()->back()->with(['msg' => $msg]);
+    }
+    public function editGroupList($id){
+        $group = group_list::find($id);
+        return response()->json($group);
+    }
+    public function updateGroupList(Request $request){
+        $id = $request->input('group_id');
+        $group_name = $request->input('group_name');
+        $status = $request->input('status');
+        $type = $request->input('type');
+        $description = $request->input('description');
+
+        group_list::where('id', $id)
+                    ->update([
+                        'group_name'   => $group_name,
+                        'status'       => $status,
+                        'type'         => $type,
+                        'description'  => $description,
+                    ]);
+        $msg = "$group_name has been Updated.";
+        return redirect()->back()->with(['msg' => $msg]);
+    }
+    public function deleteGroupList(Request $request){
+        $id = $request->input('group_id');
+        group_list::where('id', $id)
+            ->update([
+            'deleted_at' => now(),
+         ]);
+        $msg = "Group has been Deleted";
+
+    return redirect()->back()->with(['msgDel' => $msg]);
+    }
+     // ========================Bank Account=============================//
+     public function storeBankAccount(Request $request){
+
+        $meta_id        = $request->input('bank_id');
+        $account_number = $request->input('account_number');
+        $account_holder = $request->input('account_holder');
+        $email          = $request->input('email');
+        $company        = $request->input('company');
+        $contact        = $request->input('contact');
+        $zip            = $request->input('zip');
+        $address        = $request->input('address');
+        $country        = $request->input('country');
+
+        bank_account::create([
+            'bank_meta_id'   => $meta_id,
+            'account_number' => $account_number,
+            'account_holder' => $account_holder,
+            'email'          => $email,
+            'contact'        => $contact,
+            'address'        => $address,
+            'country'        => $country,
+            'company'        => $company,
+            'zip'            => $zip,
+        ]);
+
+        $msg = "Bank Account Account has been Added.";
+        return redirect()->back()->with(['msg' => $msg]);
+     }
+
+     public function editBankAccount($id){
+        $bank = bank_account::find($id);
+        return response()->json($bank);
+     }
+     public function updateBankAccount(Request $request){
+        $id = $request->input('bank_id');
+        $account_number = $request->input('account_number');
+        $account_holder = $request->input('account_holder');
+        $email = $request->input('email');
+        $company = $request->input('company');
+        $contact = $request->input('contact');
+        $zip = $request->input('zip');
+        $address = $request->input('address');
+        $country = $request->input('country');
+        bank_account::where('id', $id)
+                    ->update([
+                        'account_number' => $account_number,
+                        'account_holder' => $account_holder,
+                        'email'          => $email,
+                        'contact'        => $contact,
+                        'address'        => $address,
+                        'country'        => $country,
+                        'company'        => $company,
+                        'zip'            => $zip,
+                    ]);
+        $msg = "Bank Account has been Updated.";
+        return redirect()->back()->with(['msg' => $msg]);
+     }
+
+     public function deleteBankList(Request $request){
+        $id = $request->input('bank_id');
+        bank_account::where('id', $id)
+            ->update([
+            'deleted_at' => now(),
+         ]);
+        $msg = "Bank Account has been Deleted";
+
+    return redirect()->back()->with(['msgDel' => $msg]);
+    }
+     // ========================BANK ACCOUNT=============================//
+
 }

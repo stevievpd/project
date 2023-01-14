@@ -1,4 +1,4 @@
-.journBtn{
+.journBtn {
 	height: 36px;
 	padding: 0 16px;
 	border-radius: 36px;
@@ -9,24 +9,26 @@
 	align-items: center;
 	grid-gap: 10px;
 	font-weight: 800;
-    border-color: white;
+	border-color: white;
 }
-.journBtnInverse{
+
+.journBtnInverse {
 	height: 36px;
 	padding: 0 16px;
 	border-radius: 36px;
 	background: rgb(221, 219, 233);
-	color:rgb(32, 25, 71);
+	color: rgb(32, 25, 71);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	grid-gap: 10px;
 	font-weight: 800;
-    border-color: white;
+	border-color: white;
 }
-.dropdownBtn{
-    margin-left: 5px;
-    margin-right: 5px;
+
+.dropdownBtn {
+	margin-left: 5px;
+	margin-right: 5px;
 	height: 36px;
 	padding: 0 16px;
 	border-radius: 36px;
@@ -37,11 +39,12 @@
 	align-items: center;
 	grid-gap: 10px;
 	font-weight: 800;
-    border-color: white;
+	border-color: white;
 }
-.dropdownBtnEdit{
-    margin-left: 5px;
-    margin-right: 5px;
+
+.dropdownBtnEdit {
+	margin-left: 5px;
+	margin-right: 5px;
 	height: 36px;
 	padding: 0 16px;
 	border-radius: 36px;
@@ -52,29 +55,41 @@
 	align-items: center;
 	grid-gap: 10px;
 	font-weight: 800;
-    border-color: white;
+	border-color: white;
 }
+
 #wrapper {
-    display: flex;
-    justify-content: center;
-  }
-.journBtn:hover{
-    transition: 700ms;
-    background-color: rgb(221, 219, 233);
-    color: rgb(32, 25, 71);
-    }
-.journBtnInverse:hover{
-    transition: 700ms;
-    background-color:var(--red);
-    color: var(--light);
-    }
-.dropdownBtn:hover{
-    transition: 700ms;
-    background-color: rgb(221, 219, 233);
-    color: rgb(32, 25, 71);
-    }
-.dropdownBtnEdit:hover{
-    transition: 700ms;
-    background-color: rgb(184, 187, 148);
-    color: rgb(32, 25, 71);
-    }
+	display: flex;
+	justify-content: center;
+}
+
+.journBtn:hover {
+	transition: 700ms;
+	background-color: rgb(221, 219, 233);
+	color: rgb(32, 25, 71);
+}
+
+.journBtnInverse:hover {
+	transition: 700ms;
+	background-color: var(--yellow);
+	color: whitesmoke;
+}
+
+.dropdownBtn:hover {
+	transition: 700ms;
+	background-color: rgb(221, 219, 233);
+	color: rgb(32, 25, 71);
+}
+
+.dropdownBtnEdit:hover {
+	transition: 700ms;
+	background-color: rgb(184, 187, 148);
+	color: rgb(32, 25, 71);
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
