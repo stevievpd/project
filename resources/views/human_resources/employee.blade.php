@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<link rel="stylesheet" href="/css/humanresources/style.employee.css">
 @section('content')
     @include('layouts.modals')
     @include('layouts/modal.HumanResourcesModal')
@@ -94,13 +94,13 @@
                         <div class="tab-pane active" id="home">
                             <div class="order">
                                 <div class="head">
-                                    <h3> <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal"
+                                    <button type="button" class="addnewEmpButton" data-bs-toggle="modal"
                                             data-bs-target="#newEmployee">
                                             <span>
                                                 <i class='bx bxs-plus-circle'></i>
                                                 Add new employee
                                             </span>
-                                        </button></h3>
+                                        </button>
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
                                 </div>
@@ -147,13 +147,13 @@
                         <div class="tab-pane" id="profile">
                             <div class="order">
                                 <div class="head">
-                                    <h3> <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal"
+                                   <button type="button" class="addnewEmpButton" data-bs-toggle="modal"
                                             data-bs-target="#newJob">
                                             <span>
                                                 <i class='bx bxs-plus-circle'></i>
                                                 Add New Job
                                             </span>
-                                        </button></h3>
+                                        </button>
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
                                 </div>
@@ -189,13 +189,15 @@
                         <div class="tab-pane" id="messages">
                             <div class="order">
                                 <div class="head">
-                                    <h3> <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal"
+                                    <button type="button" class="addnewEmpButton" data-bs-toggle="modal"
                                             data-bs-target="#newDepartment">
                                             <span>
                                                 <i class='bx bxs-plus-circle'></i>
                                                 Add New Department
                                             </span>
-                                        </button></h3>
+                                        </button>
+                                        <i class='bx bx-search'></i>
+                                        <i class='bx bx-filter'></i>
                                 </div>
                                 <table>
                                     <thead>
@@ -225,13 +227,13 @@
                         <div class="tab-pane" id="settings">
                             <div class="order">
                                 <div class="head">
-                                    <h3> <button type="button" class="btn btn-primary rounded-pill"
+                                  <button type="button" class="addnewEmpButton"
                                             data-bs-toggle="modal" data-bs-target="#newSchedule">
                                             <span>
                                                 <i class='bx bxs-plus-circle'></i>
                                                 Add New Schedule
                                             </span>
-                                        </button></h3>
+                                        </button>
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
                                 </div>

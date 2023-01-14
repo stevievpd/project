@@ -193,19 +193,21 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($supplier as $sup)
-                                            <td>{{ $sup->supplier_name }}</td>
-                                            <td>{{ $sup->supplier_phone }}</td>
-                                            <td>{{ $sup->supplier_email }}</td>
-                                            <td>{{ $sup->supplier_address }}</td>
-                                            <td>{{ $sup->note }}</td>
-                                            <td>Active</td>
-                                            <td> <a data-id="{{ $sup->id }}"
-                                                    class="btn btn-sm btn-success btnEditProd"><i
-                                                        class="fa-solid fa-user-pen"></i></a>
-                                                <a data-del="{{ $sup->id }}"
-                                                    class="btn btn-sm btn-danger btnDeleteProd"><i
-                                                        class="fa-solid fa-delete-left"></i></a>
-                                            </td>
+                                            <tr>
+                                                <td>{{ $sup->supplier_name }}</td>
+                                                <td>{{ $sup->supplier_phone }}</td>
+                                                <td>{{ $sup->supplier_email }}</td>
+                                                <td>{{ $sup->supplier_address }}</td>
+                                                <td>{{ $sup->note }}</td>
+                                                <td>Active</td>
+                                                <td> <a data-id="{{ $sup->id }}"
+                                                        class="btn btn-sm btn-success btnEditProd"><i
+                                                            class="fa-solid fa-user-pen"></i></a>
+                                                    <a data-del="{{ $sup->id }}"
+                                                        class="btn btn-sm btn-danger btnDeleteProd"><i
+                                                            class="fa-solid fa-delete-left"></i></a>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -215,7 +217,7 @@
                             <div class="order">
                                 <div class="head">
                                     <h3> <button type="button" class="btn btn-primary rounded-pill"
-                                            data-bs-toggle="modal" data-bs-target="#newSchedule">
+                                            data-bs-toggle="modal" data-bs-target="#newWarehouse">
                                             <span>
                                                 <i class='bx bxs-plus-circle'></i>
                                                 Add New Warehouse
@@ -236,20 +238,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         @foreach ($warehouse as $wh)
-                                            <td>{{ $wh->id }}</td>
-                                            <td>{{ $wh->warehouse_name }}</td>
-                                            <td>{{ $wh->warehouse_description }}</td>
-                                            <td>{{ $wh->abrr }}</td>
-                                            <td>Active</td>
-                                            <td> <a data-id="{{ $wh->id }}"
-                                                    class="btn btn-sm btn-success btnEditProd"><i
-                                                        class="fa-solid fa-user-pen"></i></a>
-                                                <a data-del="{{ $wh->id }}"
-                                                    class="btn btn-sm btn-danger btnDeleteProd"><i
-                                                        class="fa-solid fa-delete-left"></i></a>
-                                            </td>
+                                            <tr>
+                                                <td>{{ $wh->id }}</td>
+                                                <td>{{ $wh->warehouse_name }}</td>
+                                                <td>{{ $wh->warehouse_description }}</td>
+                                                <td>{{ $wh->abrr }}</td>
+                                                <td>Active</td>
+                                                <td> <a data-id="{{ $wh->id }}"
+                                                        class="btn btn-sm btn-success btnEditWarehouse"><i
+                                                            class="fa-solid fa-user-pen"></i></a>
+                                                    <a data-del="{{ $wh->id }}"
+                                                        class="btn btn-sm btn-danger btnDeleteWarehouse"><i
+                                                            class="fa-solid fa-delete-left"></i></a>
+                                                </td>
+                                            </tr>
                                         @endforeach
+
                                     </tbody>
                                 </table>
                             </div>
@@ -312,6 +318,19 @@
                 })
             });
 
+            $(document).on('click', '.btnEditWarehouse', function() {
+                var warehouseId = $(this).attr("data-id");
+                var url = "/editWarehouse";
+                $.get(url + '/' + warehouseId, function(data) {
+                    //success data
+                    $('#warehouseId').val(data.id);
+                    $('#warehouseName').val(data.warehouse_name);
+                    $('#warehouseDescription').val(data.warehouse_description);
+                    $('#Abrr').val(data.abrr);
+                    $('#editWarehouseModal').modal('show');
+                })
+            });
+
             // DELETE SCRIPTS
             $('.btnDeleteCat').on('click', function() {
                 const cat_id = $(this).attr("data-del");
@@ -324,6 +343,12 @@
                 $('.prodId').val(prod_id);
                 $('#deleteProductModal').modal('show');
             });
+            $('.btnDeleteWarehouse').on('click', function() {
+                const warehouse_id = $(this).attr("data-del");
+                $('.warehouseId').val(warehouse_id);
+                $('#deleteWarehouseModal').modal('show');
+            });
+
 
             $(document).ready(function() {
                 $('#inventoryList').DataTable({
@@ -353,7 +378,6 @@
 
                 });
             });
-
 
         });
     </script>

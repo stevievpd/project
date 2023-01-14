@@ -25,6 +25,7 @@ class InventoryController extends Controller
         return view('inventory.dashboard');
     }
 
+
     // Product Index
     public function index()
     {
@@ -73,6 +74,60 @@ class InventoryController extends Controller
             ->get()
             ->whereNull('deleted_at');
         return view('inventory.warehouse', compact(['warehouseProduct', 'warehouse']));
+    }
+
+    public function storeWarehouse(Request $request)
+    
+    {
+        $warehouse = new Warehouse();
+
+        $warehouse->warehouse_name = $request->input('warehouse_name');
+        $warehouse->warehouse_description = $request->input('warehouse_description');
+        $warehouse->abrr = $request->input('abrr');
+        $warehouse->save();
+
+        $msg = "New $warehouse->warehouse_name Warehouse has been Added.";
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
+    }
+
+    public function editWarehouse($id)
+    {
+        $warehouse = Warehouse::find($id);
+        return response()->json($warehouse);
+    }
+
+    public function updateWarehouse(Request $request)
+    {
+        $id = $request->input('warehouse_id');
+        $warehouse_name = $request->input('warehouse_name');
+        $warehouse_description = $request->input('warehouse_description');
+        $abrr = $request->input('abrr');
+
+        warehouse::where('id', $id)
+            ->update([
+                'warehouse_name' => $warehouse_name,
+                'warehouse_description' => $warehouse_description,
+                'abrr' => $abrr,
+            ]);
+        $msg = 'Warehouse has been Updated';
+
+        return redirect()
+            ->back()
+            ->with(['msg' => $msg]);
+    }
+
+    public function deleteWarehouse(Request $request){
+        $id = $request->input('warehouse_id');
+
+        warehouse::where('id', $id)
+        ->update([
+            'deleted_at' => now(),
+        ]);
+        $msg = "Warehouse has been Deleted";
+
+    return redirect()->back()->with(['msgDel' => $msg]);
     }
 
     // Product Section

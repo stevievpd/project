@@ -21,6 +21,8 @@ Route::get('admin/users', function () {
     return view('users')->with('users', Users::all());
 });
 
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -79,6 +81,13 @@ Route::post('/addCategory', [App\Http\Controllers\InventoryController::class, 's
 Route::get('/editCategory/{id}', [App\Http\Controllers\InventoryController::class, 'editCategory'])->name('editCategory.edit');
 Route::patch('/updateCategory', [App\Http\Controllers\InventoryController::class, 'updateCategory'])->name('updateCategory.update');
 Route::patch('/deleteCategory', [App\Http\Controllers\InventoryController::class, 'deleteCategory'])->name('deleteCategory.update');
+
+Route::post('/addWarehouse', [App\Http\Controllers\InventoryController::class, 'storeWarehouse'])->name('addWarehouse.store');
+Route::get('/editWarehouse/{id}', [App\Http\Controllers\InventoryController::class, 'editWarehouse'])->name('editWarehouse.edit');
+Route::patch('/updateWarehouse', [App\Http\Controllers\InventoryController::class, 'updateWarehouse'])->name('updateWarehouse.update');
+Route::patch('/deleteWarehouse', [App\Http\Controllers\InventoryController::class, 'deleteWarehouse'])->name('deleteWarehouse.update');
+
+
 
 // CRUD ACCOUNTING
 Route::post('/addJournalEntry', [App\Http\Controllers\accountingController::class, 'storeJournalEntry'])->name('addJournalEntry.store');

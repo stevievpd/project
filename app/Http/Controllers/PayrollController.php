@@ -37,7 +37,7 @@ class PayrollController extends Controller
         $cashadvance->amount = $request->input('amount');
         $cashadvance->save();
         $msg = "$cashadvance->first_name $cashadvance->last_name cash advance has been Added";
-        return redirect()
+        return redirect() 
             ->back()
             ->with(['msg' => $msg]);
     }
