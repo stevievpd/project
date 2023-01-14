@@ -91,11 +91,25 @@ Route::patch('/deleteWarehouse', [App\Http\Controllers\InventoryController::clas
 
 // CRUD ACCOUNTING
 Route::post('/addJournalEntry', [App\Http\Controllers\accountingController::class, 'storeJournalEntry'])->name('addJournalEntry.store');
-// Route::post('/filterJournalEntry', [App\Http\Controllers\accountingController::class, 'index']);
 Route::patch('/deleteJournal', [App\Http\Controllers\accountingController::class, 'deleteJournal'])->name('deleteJournal.update');
 Route::get('/editJournal/{id}', [App\Http\Controllers\accountingController::class, 'editJournal'])->name('editJournal.edit');
-Route::patch('/updateJournal', [App\Http\Controllers\accountingController::class, 'updateJournal'])->name('updateJournal.edit');
+Route::patch('/updateJournal', [App\Http\Controllers\accountingController::class, 'updateJournal'])->name('updateJournal.update');
 
+
+Route::post('/addAccountList', [App\Http\Controllers\accountingController::class, 'addAccountList'])->name('addAccountList.store');
+Route::get('/editAccountList/{id}', [App\Http\Controllers\accountingController::class, 'editAccountList'])->name('editAccountList.edit');
+Route::patch('/updateAccountList', [App\Http\Controllers\accountingController::class, 'updateAccountList'])->name('updateAccountList.update');
+Route::patch('/deleteAccountList', [App\Http\Controllers\accountingController::class, 'deleteAccountList'])->name('deleteAccountList.update');
+
+Route::post('/addGroupList', [App\Http\Controllers\accountingController::class, 'storeGroupList'])->name('addGroupList.store');
+Route::get('/editGroupList/{id}', [App\Http\Controllers\accountingController::class, 'editGroupList'])->name('editGroupList.edit');
+Route::patch('/updateGroupList', [App\Http\Controllers\accountingController::class, 'updateGroupList'])->name('updateGroupList.update');
+Route::patch('/deletegroupList', [App\Http\Controllers\accountingController::class, 'deletegroupList'])->name('deletegroupList.update');
+
+Route::post('/addBankAccount', [App\Http\Controllers\accountingController::class, 'storeBankAccount'])->name('addBankAccount.store');
+Route::get('/editBankAccount/{id}', [App\Http\Controllers\accountingController::class, 'editBankAccount'])->name('editBankAccount.edit');
+Route::patch('/updateBankAccount', [App\Http\Controllers\accountingController::class, 'updateBankAccount'])->name('updateBankAccount.update');
+Route::patch('/deleteBankList', [App\Http\Controllers\accountingController::class, 'deleteBankList'])->name('deleteBankList.update');
 
 // CRUD CASHADVANCE
 Route::post('/addCashAdvance', [App\Http\Controllers\PayrollController::class, 'storeCashAdvance'])->name('addCashAdvance.store');

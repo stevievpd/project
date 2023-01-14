@@ -10,7 +10,7 @@ class account_list extends Model
     use HasFactory;
     protected $table = 'account_list';
     protected $fillable = [
-        'account_name ',
+        'account_name',
         'description',
         'status',
     ];
