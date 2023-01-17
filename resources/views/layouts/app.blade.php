@@ -29,23 +29,29 @@
         rel="stylesheet" />
     <!-- Font Awesome CDN Link -->
 
-    <!-- Datatables CDN Link -->
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.colVis.min.js"></script>
+    <!--Import jQuery before export.js-->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
+
+    <!--Data Table-->
+    
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+
+
+
+    <!--Export table buttons-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.colVis.min.js"></script>
+
+
+    <!--Export table button CSS-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
 </head>
 
 <body>
@@ -68,7 +74,7 @@
                 </a>
             </li>
             <li class="{{ Request::is('journal') ? 'active' : '' }}">
-                <a href="/journal">
+                <a href="/accounting">
                     <i class='bx bxs-calculator'></i>
                     <span class="text">Accounting</span>
                 </a>
@@ -81,14 +87,14 @@
             </li>
             <li class="{{ Request::is('crm') ? 'active' : '' }}">
                 <a href="/crm">
-                    <i class='bx bxs-customize'></i>                     
+                    <i class='bx bxs-customize'></i>
                     <span class="text">CRM</span>
                 </a>
             </li>
             <li class="{{ Request::is('pointofsale') ? 'active' : '' }}">
                 <a href="/pointofsale">
                     <i class='bx bxs-store'></i>
-                     <span class="text">Point of Sale</span>
+                    <span class="text">Point of Sale</span>
                 </a>
             </li>
         </ul>
@@ -100,7 +106,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="logout">
+                <a href="{{ route('logout') }}" class="logout">
                     <i class='bx bxs-log-out-circle'></i>
                     <span class="text">Logout</span>
                 </a>
@@ -111,7 +117,7 @@
         <!-- NAVBAR -->
         <nav>
             <i class='bx bx-menu'></i>
-            <a href="#" class="nav-link">Categories</a>
+            {{-- <a href="#" class="nav-link">Categories</a> --}}
             <form action="#">
                 <div class="form-input">
                     <input type="search" placeholder="Search...">

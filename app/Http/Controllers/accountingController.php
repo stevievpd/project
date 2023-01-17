@@ -22,7 +22,7 @@ class accountingController extends Controller
     {
         $this->middleware('auth');
     }
-    public function accounting(){
+    public function account(){
         $accountList = account_list::whereNull('deleted_at')->get();
         $groupList = group_list::whereNull('deleted_at')->get();
         $bankMeta = bank_meta_data::whereNull('deleted_at')->get();
@@ -31,7 +31,10 @@ class accountingController extends Controller
         $accountCount = $accountList->count();
         $groupCount = $groupList->count();
         $bankCount = $bankAccount->count();
-        return view('accounting.dashboard', compact('accountList', 'groupList', 'bankMeta', 'bankAccount', 'accountCount', 'groupCount','bankCount'));
+        return view('accounting.account', compact('accountList', 'groupList', 'bankMeta', 'bankAccount', 'accountCount', 'groupCount','bankCount'));
+    }
+    public function dashboard(){
+        return view('accounting.dashboard');
     }
     public function index(Request $request){
         $dateStart = $request->input('date_start');
@@ -52,8 +55,12 @@ class accountingController extends Controller
         }
         
 
-        $accountList = account_list::orderBy('account_name', 'asc')->get();
-        $groupList = group_list::orderBy('group_name', 'asc')->get();
+        $accountList = account_list::orderBy('account_name', 'asc')
+                                    ->where('status', 1)
+                                    ->get()->whereNull('deleted_at');
+        $groupList = group_list::orderBy('group_name', 'asc')
+                                    ->where('status', 1)
+                                    ->get()->whereNull('deleted_at');
         $journCount = journal_entry::count('id');
         $journal_item = journal_item::whereNull('deleted_at')->get();
        

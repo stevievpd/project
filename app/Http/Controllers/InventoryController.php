@@ -138,8 +138,8 @@ class InventoryController extends Controller
         $prod->product_name = $request->input('product_name');
         $prod->product_description = $request->input('product_description');
         $prod->category_id = $request->input('category');
-        $prod->price = $request->input('price');
-        $prod->quantity = $request->input('quantity');
+        $prod->product_retail_price = $request->input('price');
+        $prod->product_qoh = $request->input('quantity');
         $prod->save();
 
         $msg = "New $prod->product_name Product has been Added.";

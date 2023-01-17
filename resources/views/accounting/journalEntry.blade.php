@@ -108,9 +108,9 @@
                             <th>Date</th>
                             <th>Journal Code</th>
                             <th>Description</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
-                            <th>Added By</th>
+                            <th class="text-end">Debit</th>
+                            <th class="text-end">Credit</th>
+                            <th class="text-center">Added By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -121,10 +121,7 @@
                                     <?= date('F d, Y', strtotime($journalEntry->entry_date)) ?></td>
                                 <td class="text-center" style="border-bottom:none;">
                                     {{ $journalEntry->entry_code }}</td>
-                                <td style="border-bottom:none;"><b>{{ $journalEntry->title }}</b>&nbsp;
-                                    <span style="font-size: 14px; font-style: oblique;">
-                                        {{ $journalEntry->description ? $journalEntry->description : '' }}
-                                    </span>
+                                <td style="border-bottom:none;"><b>{{ $journalEntry->title }}</b> | {{ $journalEntry->description ? $journalEntry->description : '' }}
                                 </td>
                                 <td style="border-bottom:none;"></td>
                                 <td style="border-bottom:none;"></td>
@@ -134,7 +131,7 @@
                                     <div class="dropdown ">
                                         <button class="btn btn-sm btn-secondary dropdown-toggle " type="button"
                                             data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa-solid fa-sliders"></i>
+                                            <i class="fa-solid fa-gears"></i>
                                         </button>
                                         <ul class="dropdown-menu text-center border-0 bg-secondary bg-opacity-75">
                                             <div id="wrapper">
@@ -196,7 +193,7 @@
         $(document).ready(function() {
             $('#journalTable').DataTable({
                 bSort: false,
-                pageLength: 10,
+                pageLength: 20,
                 lengthMenu: [
                     [5, 10, 20, -1],
                     [5, 10, 20, 'All']

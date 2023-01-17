@@ -511,7 +511,7 @@ body {
 }
 
 #content main .table-data .order table tr td:first-child {
-	display: flex;
+	/* display: flex; */
 	align-items: center;
 	grid-gap: 12px;
 	padding-left: 6px;
