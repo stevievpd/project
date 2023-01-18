@@ -15,22 +15,32 @@
                     autocomplete="off">
                     @csrf
                     <div class="col-md-6 form-floating">
+                        <input type="number" class="form-control accCode" name="code" required>
+                        <label for="Code">Code</label>
+                    </div>
+                    <div class="col-md-6 form-floating">
                         <input type="text" class="form-control accountName" name="account_name" required>
                         <label for="Account Name">Account Name</label>
                     </div>
+                    <div class="col-md-12 form-floating">
+                        <input type="text" class="form-control description" name="description" required>
+                        <label for="Account Name">Description</label>
+                    </div>
                     <div class="col-md-6 form-floating">
-
+                        <select class="form-control type" name="type" required>
+                            @foreach ($groupList as $type)
+                                <option value="{{$type->id}}" style="color:gray;">{{ $type->group_name }}</option>
+                            @endforeach
+                        </select>
+                        <label for="Account Name">Type</label>
+                    </div>
+                    <div class="col-md-6 form-floating">
                         <select class="form-control status" name="status" required>
                             <option value="1" style="color:green;">Active</option>
                             <option value="2" style="color:red;">Inactive</option>
                         </select>
                         <label for="Account Name">Status</label>
                     </div>
-                    <div class="col-md-12 form-floating">
-                        <input type="text" class="form-control description" name="description" required>
-                        <label for="Account Name">Description</label>
-                    </div>
-
                     <div class="mb-2">
                         <button type="button" data-bs-dismiss="modal" class="btn btn-danger opacity-75">Cancel</button>
                         <button type="submit" class="btn btn-success opacity-75 float-end"
@@ -81,7 +91,8 @@
                     </div>
 
                     <div class="mb-2">
-                        <button type="button" data-bs-dismiss="modal" class="btn btn-danger opacity-75">Cancel</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-danger opacity-75">Cancel</button>
                         <button type="submit" class="btn btn-success opacity-75 float-end"
                             name="addAccountList">Submit</button>
                     </div>
@@ -289,7 +300,7 @@
                         <select class="form-select bankSelection" name="bank_id" aria-label="Select Bank" required>
                             <option value="" style="color:gray;">Select Bank</option>
                             @foreach ($bankMeta as $meta)
-                                <option value="{{$meta->id}}">{{$meta->bank_name}}</option>
+                                <option value="{{ $meta->id }}">{{ $meta->bank_name }}</option>
                             @endforeach
                         </select>
                         <label for="Bank Selection">Bank Name</label>
@@ -318,21 +329,24 @@
                         <input type="number" class="form-control zip" name="zip" required>
                         <label for="contactInfo">Zip Code</label>
                     </div>
-                    
+
                     <div class="col-md-12 form-floating">
                         <input type="text" class="form-control Address" name="address" required>
                         <label for="Address">Address</label>
                     </div>
                     <div class="col-md-12 form-floating">
-                        <select class="form-select countrySelection" name="country" aria-label="Select country" required>
+                        <select class="form-select countrySelection" name="country" aria-label="Select country"
+                            required>
                             <option value="" style="color:gray;">Select Country</option>
                             <option value="Philippines">Philippines</option>
                         </select>
                         <label for="Bank Selection">Country</label>
                     </div>
                     <div class="mb-2">
-                        <button type="button" data-bs-dismiss="modal" class="btn btn-danger opacity-75">Cancel</button>
-                        <button type="submit" class="btn btn-primary opacity-75 float-end" name="addBankAccount">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-danger opacity-75">Cancel</button>
+                        <button type="submit" class="btn btn-primary opacity-75 float-end"
+                            name="addBankAccount">Submit</button>
                     </div>
                 </form>
             </div>
@@ -360,18 +374,20 @@
                     <div class="col-md-12 form-floating">
                         <select class="form-select bankSelection" name="bank_id" aria-label="Select Bank" required>
                             @foreach ($bankMeta as $meta)
-                                <option value="{{$meta->id}}">{{$meta->bank_name}}</option>
+                                <option value="{{ $meta->id }}">{{ $meta->bank_name }}</option>
                             @endforeach
                         </select>
                         <label for="Bank Selection">Bank Name</label>
                     </div>
                     <input type="hidden" name="bank_id" id="bankId">
                     <div class="col-md-6 form-floating">
-                        <input type="number" class="form-control accountNum" name="account_number" id="accountNumber" required>
+                        <input type="number" class="form-control accountNum" name="account_number"
+                            id="accountNumber" required>
                         <label for="account number">Account Number</label>
                     </div>
                     <div class="col-md-6 form-floating">
-                        <input type="text" class="form-control accountHolder" name="account_holder" id="accountHolder" required>
+                        <input type="text" class="form-control accountHolder" name="account_holder"
+                            id="accountHolder" required>
                         <label for="lastName">Account Holder</label>
                     </div>
                     <div class="col-md-6 form-floating">
@@ -383,28 +399,32 @@
                         <label for="Address">Company</label>
                     </div>
                     <div class="col-md-6 form-floating">
-                        <input type="number" class="form-control contactInfo" name="contact" id="contact" required>
+                        <input type="number" class="form-control contactInfo" name="contact" id="contact"
+                            required>
                         <label for="contactInfo">Contact Info</label>
                     </div>
                     <div class="col-md-6 form-floating">
                         <input type="number" class="form-control zip" name="zip" id="zip" required>
                         <label for="contactInfo">Zip Code</label>
                     </div>
-                    
+
                     <div class="col-md-12 form-floating">
                         <input type="text" class="form-control Address" name="address" id="address" required>
                         <label for="Address">Address</label>
                     </div>
                     <div class="col-md-12 form-floating countrySelect">
-                        <select class="form-select countrySelection" name="country" aria-label="Select country" id="country" required>
+                        <select class="form-select countrySelection" name="country" aria-label="Select country"
+                            id="country" required>
                             <option value="" style="color:gray;">Select Country</option>
                             <option value="Philippines">Philippines</option>
                         </select>
                         <label for="Bank Selection">Country</label>
                     </div>
                     <div class="mb-2">
-                        <button type="button" data-bs-dismiss="modal" class="btn btn-danger opacity-75">Cancel</button>
-                        <button type="submit" class="btn btn-primary opacity-75 float-end" name="addBankAccount">Submit</button>
+                        <button type="button" data-bs-dismiss="modal"
+                            class="btn btn-danger opacity-75">Cancel</button>
+                        <button type="submit" class="btn btn-primary opacity-75 float-end"
+                            name="addBankAccount">Submit</button>
                     </div>
                 </form>
             </div>
