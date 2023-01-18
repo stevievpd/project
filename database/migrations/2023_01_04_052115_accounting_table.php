@@ -56,7 +56,7 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('group_id');
             $table->string('journ_code');
-            $table->float('amount');
+            $table->float('amount', 10, 2);
             $table->tinyInteger('type');
             $table->softDeletes();
 
