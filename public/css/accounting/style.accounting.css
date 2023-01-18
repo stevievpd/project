@@ -94,7 +94,7 @@ input::-webkit-inner-spin-button {
 	margin: 0;
 }
 
-.percent {
+.item{
 	color: rgb(2, 2, 2) !important;
 	margin-left: auto;
 	display: table;

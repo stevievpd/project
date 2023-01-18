@@ -23,7 +23,8 @@ class accountingController extends Controller
         $this->middleware('auth');
     }
     public function account(){
-        $accountList = account_list::whereNull('deleted_at')->get();
+        $accountList = account_list::with('group')
+                                    ->whereNull('deleted_at')->get();
         $groupList = group_list::whereNull('deleted_at')->get();
         $bankMeta = bank_meta_data::whereNull('deleted_at')->get();
         $bankAccount = bank_account::with('bank_meta')->get()->whereNull('deleted_at');
@@ -55,7 +56,8 @@ class accountingController extends Controller
         }
         
 
-        $accountList = account_list::orderBy('account_name', 'asc')
+        $accountList = account_list::with('group')
+                                    ->orderBy('account_name', 'asc')
                                     ->where('status', 1)
                                     ->get()->whereNull('deleted_at');
         $groupList = group_list::orderBy('group_name', 'asc')
@@ -73,7 +75,7 @@ class accountingController extends Controller
         $code = $request->input('entry_code');
         $journ->user_id     = Auth::user()->id;
         $journ->entry_code  = $request->input('entry_code');
-        $journ->title = $request->input('title');
+        $journ->title       = $request->input('title');
         $journ->description = $request->input('description');
         $journ->entry_date  = $request->input('entry_date');
         $journ->partner     = $request->input('partner');
@@ -226,11 +228,15 @@ class accountingController extends Controller
     public function addAccountList(Request $request){
 
         $account_name = $request->input('account_name');
+        $code = $request->input('code');
+        $type = $request->input('type');
         $status = $request->input('status');
         $description = $request->input('description');
 
         account_list::create([
+            'code'          => $code,
             'account_name'  => $account_name,
+            'type'          => $type,
             'description'   => $description,
             'status'        => $status,
         ]);

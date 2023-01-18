@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('account_list', function (Blueprint $table) {
+        Schema::create('group_list', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('account_name');
+            $table->string('group_name');
             $table->string('description');
             $table->tinyInteger('status');
             $table->softDeletes();
@@ -23,15 +23,19 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('group_list', function (Blueprint $table) {
+        Schema::create('account_list', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('group_name');
-            $table->string('description');
-            $table->tinyInteger('type');
+            $table->unsignedBigInteger('type');
+            $table->string('account_name');
+            $table->bigInteger('code');
+            $table->string('description')->nullable();
             $table->tinyInteger('status');
             $table->softDeletes();
 
             $table->timestamps();
+
+            // foreign Key
+            $table->foreign('type')->references('id')->on('group_list');
         });
 
         Schema::create('journal_entry', function (Blueprint $table) {

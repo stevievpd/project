@@ -106,7 +106,9 @@
                                 <table id="journalTable'">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">Code</th>
                                             <th class="text-center">Account Name</th>
+                                            <th class="text-center">Account Type</th>
                                             <th class="text-center">Description</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Action</th>
@@ -126,8 +128,10 @@
                                             ?>
                                             <tr>
 
+                                                <td class="text-center" >{{ $acc->code }}</td>
                                                 <td class="text-center" >{{ $acc->account_name }}</td>
-                                                <td class="text-center" style="">{{ $acc->description }}</td>
+                                                <td class="text-center" >{{ $acc->group->group_name }}</td>
+                                                <td class="text-center" >{{ $acc->description }}</td>
                                                 <td class="text-center"><?= $status ?> </td>
                                                 <td class="text-center">
                                                     <div id="wrapper">

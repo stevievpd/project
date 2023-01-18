@@ -73,19 +73,19 @@
                                             echo $date->format('Y-m-d'); ?>" />
                                     </div>
                                     <div class="col-md-4" id="wrapper">
-                                        <button type="submit" name="filter" id="filter"
-                                            class="journBtn"><i class="fa-solid fa-filter"></i>Filter</button>
-                                        </form>
-                                        <button type="button" name="refreshs" id="refreshs" class="journBtnInverse"><a
-                                                href="/journal"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
-                                    </div>
-                            
-
+                                        <button type="submit" name="filter" id="filter" class="journBtn"><i
+                                                class="fa-solid fa-filter"></i>Filter</button>
+                            </form>
+                            <button type="button" name="refreshs" id="refreshs" class="journBtnInverse"><a
+                                    href="/journal"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
                         </div>
-                    </div>
 
+
+                    </div>
                 </div>
+
             </div>
+        </div>
         </div>
         <div class="card-body">
             @if ($dateStart && $dateEnd)
@@ -107,7 +107,7 @@
                         <tr>
                             <th>Date</th>
                             <th>Journal Code</th>
-                            <th>Description</th>
+                            <th>Transaction Title</th>
                             <th class="text-end">Debit</th>
                             <th class="text-end">Credit</th>
                             <th class="text-center">Added By</th>
@@ -117,11 +117,11 @@
                     <tbody>
                         @foreach ($journalEntry as $journalEntry)
                             <tr class="bg-secondary bg-opacity-10">
-                                <td class="text-center" style="border-bottom:none;">
+                                <td class="" style="border-bottom:none;">
                                     <?= date('F d, Y', strtotime($journalEntry->entry_date)) ?></td>
-                                <td class="text-center" style="border-bottom:none;">
+                                <td class="" style="border-bottom:none;">
                                     {{ $journalEntry->entry_code }}</td>
-                                <td style="border-bottom:none;"><b>{{ $journalEntry->title }}</b> | {{ $journalEntry->description ? $journalEntry->description : '' }}
+                                <td style="border-bottom:none;"><b>{{ $journalEntry->title }}</b>|{{ $journalEntry->description ? $journalEntry->description : '' }}
                                 </td>
                                 <td style="border-bottom:none;"></td>
                                 <td style="border-bottom:none;"></td>
@@ -150,7 +150,8 @@
                             <tr>
                                 <td style="border-bottom:none;"></td>
                                 <td style="border-bottom:none;"></td>
-                                <td class="">{{ $item->account_list->account_name }}</td>
+                                <td class="">{{ $item->account_list->code }} {{ $item->account_list->account_name }}
+                                </td>
                                 <?php
                                 $debit = '';
                                 $credit = '';
@@ -208,7 +209,7 @@
                     {
                         extend: 'excelHtml5',
                         exportOptions: {
-                            columns: ':visible'
+                            columns: [0, 1, 2, 3, 4, 5]
                         }
                     },
                     {
@@ -223,8 +224,9 @@
         });
     </script>
     {{-- DATA TABLE --}}
-    {{-- DELETE JOURNAL ENTRY --}}
+
     <script>
+        // edit and delete journal
         $('#editJournalEntryModal').on('hidden.bs.modal', function() {
             $("tbody#bodysEdit tr").remove()
         })
@@ -281,18 +283,21 @@
                                 @foreach ($accountList as $account)
                                     if (accountId == {{ $account->id }}) {
                                         rows.find('.accountsDEdit').text(
-                                            '{{ $account->account_name }}'
+                                            '{{ $account->code }} {{ $account->account_name }}'
                                         ); //Paste Account Name to table
-                                    };
-                                @endforeach
-
-                                @foreach ($groupList as $group)
-                                    if (groupId == {{ $group->id }}) {
                                         rows.find('.groupsDEdit').text(
-                                            '{{ $group->group_name }}'
+                                            '{{ $account->group->group_name }}'
                                         ); //Paste Group Name to table
                                     };
                                 @endforeach
+
+                                // @foreach ($groupList as $group)
+                                //     if (groupId == {{ $group->id }}) {
+                                //         rows.find('.groupsDEdit').text(
+                                //             '{{ $group->group_name }}'
+                                //         ); //Paste Group Name to table
+                                //     };
+                                // @endforeach
 
 
                                 if (type == 1) {
@@ -371,7 +376,7 @@
             });
         });
     </script>
-    {{-- DELETE JOURNAL ENTRY --}}
+
     <script>
         // JOURNAL ENTRY MODAL FUNCTIONS
         // calculate journal Debit and Credit
@@ -410,15 +415,21 @@
         }
 
         $('#myButton').click(function() {
-            var accountId = $('#accountListJourn').val()
-            var groupId = $('#groupListJourn').val()
+            var spliter = $('#accountListJourn').val().split('|'),
+                a = spliter[0],
+                b = spliter[1];
+            var acc = Number(a)
+            var grp = Number(b)
+            var accountId = acc;
+            var groupId = grp;
             var amountx = $('#amountJourn').val()
             var type = $('#typeId').val()
+
+
             if (groupId == '' || accountId == '' || amountx == '' || type == '') {
                 $("#errorModalAccount").modal('show');
             } else {
                 document.getElementById("accountListJourn").value = "";
-                document.getElementById("groupListJourn").value = "";
                 document.getElementById("amountJourn").value = "";
                 document.getElementById("typeId").value = "";
 
@@ -430,16 +441,11 @@
 
                 @foreach ($accountList as $account)
                     if (accountId == {{ $account->id }}) {
-                        rows.find('.accountsD').text('{{ $account->account_name }}') //Paste Account Name to table
+                        rows.find('.accountsD').text(
+                            '{{ $account->code }} {{ $account->account_name }}') //Paste Account Name to table
+                        rows.find('.groupsD').text('{{ $account->group->group_name }}') //Paste Group Name to table
                     }
                 @endforeach
-
-                @foreach ($groupList as $group)
-                    if (groupId == {{ $group->id }}) {
-                        rows.find('.groupsD').text('{{ $group->group_name }}') //Paste Group Name to table
-                    }
-                @endforeach
-
 
                 if (type == '1') {
                     rows.find('.debitAmounts').text(parseFloat(amountx).toLocaleString('en-US', {
@@ -514,6 +520,7 @@
         });
         //catch
         // JOURNAL ENTRY MODAL FUNCTIONS end
+
         // =================for edit modal script====================//
         //calculate amount
         function editcalcuAmount() {
@@ -566,16 +573,26 @@
             }
         }
         $('#myButtonEdit').click(function() {
-            var accountId = $('#accountListJournEdit').val()
-            var groupId = $('#groupListJournEdit').val()
+            var spliter = $('#accountListJournEdit').val().split('|'),
+                a = spliter[0],
+                b = spliter[1];
+            var acc = Number(a)
+            var grp = Number(b)
+            var accountId = acc;
+            var groupId = grp;
             var amountx = $('#amountJournEdit').val()
             var type = $('#typeIdEdit').val()
+
+            // var accountId = $('#accountListJournEdit').val()
+            // var groupId = $('#groupListJournEdit').val()
+            // var amountx = $('#amountJournEdit').val()
+            // var type = $('#typeIdEdit').val()
             if (groupId == '' || accountId == '' || amountx == '' || type ==
                 '') {
                 $("#errorModalAccount").modal('show');
             } else {
                 document.getElementById("accountListJournEdit").value = "";
-                document.getElementById("groupListJournEdit").value = "";
+                // document.getElementById("groupListJournEdit").value = "";
                 document.getElementById("amountJournEdit").value = "";
                 document.getElementById("typeIdEdit").value = "";
 
@@ -592,16 +609,19 @@
                         rows.find('.accountsDEdit').text(
                             '{{ $account->account_name }}'
                         ); //Paste Account Name to table
-                    };
-                @endforeach
-
-                @foreach ($groupList as $group)
-                    if (groupId == {{ $group->id }}) {
                         rows.find('.groupsDEdit').text(
-                            '{{ $group->group_name }}'
+                            '{{ $account->group->group_name }}'
                         ); //Paste Group Name to table
                     };
                 @endforeach
+
+                // @foreach ($groupList as $group)
+                //     if (groupId == {{ $group->id }}) {
+                //         rows.find('.groupsDEdit').text(
+                //             '{{ $group->group_name }}'
+                //         ); //Paste Group Name to table
+                //     };
+                // @endforeach
 
 
                 if (type == 1) {

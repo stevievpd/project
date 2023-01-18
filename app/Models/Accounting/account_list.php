@@ -10,7 +10,9 @@ class account_list extends Model
     use HasFactory;
     protected $table = 'account_list';
     protected $fillable = [
+        'code',
         'account_name',
+        'type',
         'description',
         'status',
     ];
@@ -21,5 +23,8 @@ class account_list extends Model
 
     public function journItems(){
         return $this->hasMany(journal_item::class, 'account_id');
+    }
+    public function group(){
+        return $this->hasOne(group_list::class, 'id', 'type');
     }
 }
