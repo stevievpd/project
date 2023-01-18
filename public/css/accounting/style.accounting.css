@@ -93,3 +93,15 @@ input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
+
+.percent {
+	color: rgb(2, 2, 2) !important;
+	margin-left: auto;
+	display: table;
+	margin-right: auto;
+	border-radius: 100px;
+	padding-left: 20px;
+	padding-right: 20px;
+	font-weight: 600;
+	font-size: medium;
+}
