@@ -94,12 +94,13 @@
                         <div class="tab-pane active" id="home">
                             <div class="order">
                                 <div class="head">
-                                    <button type="button" class="addnewEmpButton" data-bs-toggle="modal"
-                                            data-bs-target="#newEmployee">
+                                    <button type="button" class="addnewEmpButton">
+                                        <a href="/registration">
                                             <span>
                                                 <i class='bx bxs-plus-circle'></i>
                                                 Add new employee
                                             </span>
+                                        </a>
                                         </button>
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
