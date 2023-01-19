@@ -43,6 +43,7 @@ Route::get('/account', [App\Http\Controllers\accountingController::class, 'accou
 Route::get('/journal', [App\Http\Controllers\accountingController::class, 'index'])->name('journal');
 Route::get('/general-ledger', [App\Http\Controllers\accountingController::class, 'generalLedger']);
 Route::get('/partner-ledger', [App\Http\Controllers\accountingController::class, 'partnerLedger']);
+Route::get('/registration', [App\Http\Controllers\HumanResourcesController::class, 'registration']);
 
 
 

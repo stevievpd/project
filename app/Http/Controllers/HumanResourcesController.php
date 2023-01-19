@@ -45,6 +45,10 @@ class HumanResourcesController extends Controller
 
         return view('human_resources.employee', compact('employee', 'empCount', 'departCount', 'depart', 'job', 'sched', 'departCount', 'jobCount', 'schedCount' , 'empMonth', 'workformat'));
     }
+
+    public function registration(){
+        return view('human_resources.registration_form');
+    }
     //  =====================SCHEDULE CONTROLLER========================//
     public function storeSchedule(Request $request){
         $sched = new schedules;
