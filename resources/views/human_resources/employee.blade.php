@@ -27,21 +27,21 @@
             <li>
                 <i class='bx bxs-building-house'></i>
                 <span class="text">
-                    <h3>{{$departCount}}</h3>
+                    <h3>{{ $departCount }}</h3>
                     <p>Total Department</p>
                 </span>
             </li>
             <li>
                 <i class='bx bxs-briefcase'></i>
                 <span class="text">
-                    <h3>{{$jobCount}}</h3>
+                    <h3>{{ $jobCount }}</h3>
                     <p>Total Jobs</p>
                 </span>
             </li>
             <li>
                 <i class='bx bx-user'></i>
                 <span class="text">
-                    <h3>{{$empCount}}</h3>
+                    <h3>{{ $empCount }}</h3>
                     <p>Total Employees</p>
                 </span>
             </li>
@@ -101,7 +101,7 @@
                                                 Add new employee
                                             </span>
                                         </a>
-                                        </button>
+                                    </button>
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
                                 </div>
@@ -118,18 +118,12 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($employee as $emp)
-                                            <tr>
+                                            <tr id="{{ $emp->id }}">
                                                 <td>{{ $emp->employee_code }}</td>
                                                 <td>{{ $emp->first_name }} {{ $emp->last_name }}</td>
                                                 <td>{{ $emp->job->job_name ?? 'NA' }}</td>
                                                 <td>{{ $emp->department->department_name }}</td>
-                                                <td>
-                                                    {{ $emp->manager ? '' : 'NA' }}
-                                                    @foreach ($employee as $man)
-                                                        @if ($man->id == $emp->manager)
-                                                            {{ $man->first_name }} {{ $man->last_name }}
-                                                        @endif
-                                                    @endforeach
+                                                <td>{{ $emp->manager }}
                                                 </td>
                                                 <td> <a data-id="{{ $emp->id }}"
                                                         class="btn btn-sm btn-success btnEditEmp"><i
@@ -148,13 +142,13 @@
                         <div class="tab-pane" id="profile">
                             <div class="order">
                                 <div class="head">
-                                   <button type="button" class="addnewEmpButton" data-bs-toggle="modal"
-                                            data-bs-target="#newJob">
-                                            <span>
-                                                <i class='bx bxs-plus-circle'></i>
-                                                Add New Job
-                                            </span>
-                                        </button>
+                                    <button type="button" class="addnewEmpButton" data-bs-toggle="modal"
+                                        data-bs-target="#newJob">
+                                        <span>
+                                            <i class='bx bxs-plus-circle'></i>
+                                            Add New Job
+                                        </span>
+                                    </button>
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
                                 </div>
@@ -191,14 +185,14 @@
                             <div class="order">
                                 <div class="head">
                                     <button type="button" class="addnewEmpButton" data-bs-toggle="modal"
-                                            data-bs-target="#newDepartment">
-                                            <span>
-                                                <i class='bx bxs-plus-circle'></i>
-                                                Add New Department
-                                            </span>
-                                        </button>
-                                        <i class='bx bx-search'></i>
-                                        <i class='bx bx-filter'></i>
+                                        data-bs-target="#newDepartment">
+                                        <span>
+                                            <i class='bx bxs-plus-circle'></i>
+                                            Add New Department
+                                        </span>
+                                    </button>
+                                    <i class='bx bx-search'></i>
+                                    <i class='bx bx-filter'></i>
                                 </div>
                                 <table>
                                     <thead>
@@ -228,13 +222,13 @@
                         <div class="tab-pane" id="settings">
                             <div class="order">
                                 <div class="head">
-                                  <button type="button" class="addnewEmpButton"
-                                            data-bs-toggle="modal" data-bs-target="#newSchedule">
-                                            <span>
-                                                <i class='bx bxs-plus-circle'></i>
-                                                Add New Schedule
-                                            </span>
-                                        </button>
+                                    <button type="button" class="addnewEmpButton" data-bs-toggle="modal"
+                                        data-bs-target="#newSchedule">
+                                        <span>
+                                            <i class='bx bxs-plus-circle'></i>
+                                            Add New Schedule
+                                        </span>
+                                    </button>
                                     <i class='bx bx-search'></i>
                                     <i class='bx bx-filter'></i>
                                 </div>
@@ -290,6 +284,10 @@
                 $(".tab, .tab-pane").removeClass("active");
                 $(this).addClass("active");
                 $("#" + categoryId).addClass("active");
+            });
+            $('tr').on('dblclick', function() {
+                var id = $(this).attr('id');
+                $('#profileModal').modal('show');
             });
         });
     </script>

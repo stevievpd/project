@@ -1,6 +1,10 @@
 .empMenu {
     margin-top: 200px;
 }
+/* for table cursor */
+.table tr {
+	cursor: pointer;
+}
 .canvaJs {
     padding-left: 0;
     padding-right: 0;

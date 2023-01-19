@@ -50,13 +50,14 @@ return new class extends Migration
             $table->string('manager')->nullable();
             $table->string('employee_code')->unique();
             $table->string('first_name');
+            $table->string('middle_name')->nullable();
             $table->string('last_name');
             $table->date('birthdate');
             $table->string('civil_status');
             $table->bigInteger('contact_number');
             $table->string('gender');
             $table->string('email')->unique();
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('perma_address');
             $table->string('elementary')->nullable();
             $table->string('highschool')->nullable();

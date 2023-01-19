@@ -47,7 +47,13 @@ class HumanResourcesController extends Controller
     }
 
     public function registration(){
-        return view('human_resources.registration_form');
+        $sched    = schedules::get()->whereNull('deleted_at');
+        $job      = job::get()->whereNull('deleted_at');
+        $depart   = department::get()->whereNull('deleted_at');
+        $empCount = employee::count();
+        $employee = employee::with('job', 'department')->get()->whereNull('deleted_at');
+
+        return view('human_resources.registration_form', compact('sched', 'job', 'depart','empCount','employee'));
     }
     //  =====================SCHEDULE CONTROLLER========================//
     public function storeSchedule(Request $request){
@@ -209,12 +215,29 @@ class HumanResourcesController extends Controller
 
         $emp->employee_code = $request->input('emp_code');
         $emp->first_name = $request->input('first_name');
+        $emp->middle_name = $request->input('middle_name');
         $emp->last_name = $request->input('last_name');
-        $emp->address = $request->input('address');
-        $emp->birthdate = $request->input('birthdate');
+        $emp->birthdate = $request->input('bdate');
+        $emp->civil_status = $request->input('civil_status');
         $emp->contact_number = $request->input('contact_number');
         $emp->gender = $request->input('gender');
         $emp->email = $request->input('email');
+        $emp->address = $request->input('present_add');
+        $emp->perma_address = $request->input('perma_add');
+        $emp->sss = $request->input('sss');
+        $emp->tin = $request->input('tin');
+        $emp->pagibig = $request->input('pagibig');
+        $emp->philhealth = $request->input('philhealth');
+        $emp->elementary = $request->input('elementary');
+        $emp->highschool = $request->input('higschool');
+        $emp->college = $request->input('college');
+        $emp->yearElem = $request->input('elem_year');
+        $emp->yearHigh = $request->input('high_year');
+        $emp->yearCollege = $request->input('college_year');
+        $emp->degree = $request->input('degree');
+        
+        
+       
         $emp->department_id = $request->input('department');
         $emp->job_id = $request->input('job');
         $emp->schedule_id = $request->input('schedule');
@@ -223,7 +246,7 @@ class HumanResourcesController extends Controller
 
         $msg = "$emp->first_name $emp->last_name has been Added";
 
-        return redirect()->back()->with(['msg' => $msg]);
+        return redirect()->route('employee')->with(['msg' => $msg]);
     }
 
     public function editEmployee($id){
