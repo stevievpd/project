@@ -74,6 +74,11 @@
                                     <label for="" class="text-muted">Transaction Title</label>
                                 </div>
                                 <div class="col-6 form-floating">
+                                    <input type="text" class="form-control user" id="username"
+                                        value="{{ Auth::user()->name }}" readonly>
+                                    <label for="account" class="">Creator</label>
+                                </div>
+                                <div class="col-6 form-floating">
                                     <input type="text" class="description form-control" name="description"
                                         style="text-transform:capitalize" placeholder="Description">
                                     <label for=""class="text-muted">Remarks</label>
@@ -83,11 +88,7 @@
                                         placeholder="Partner" required>
                                     <label for="" class="text-muted">Partner</label>
                                 </div>
-                                <div class="col-6 form-floating">
-                                    <input type="text" class="form-control user" id="username"
-                                        value="{{ Auth::user()->name }}" readonly>
-                                    <label for="account" class="">Creator</label>
-                                </div>
+
 
                             </div>
                             <div class="col-12 g-2 py-2 row shadow-lg p-2 mb-3 bg-body rounded border">
@@ -99,7 +100,8 @@
                                     <select class="form-control account" name="account" id="accountListJourn">
                                         <option value="" style="color:red;">Select</option>
                                         @foreach ($accountList as $account)
-                                            <option value="{{$account->id}}|{{$account->type}}" style="color:rgb(100, 100, 100);">{{$account->code}}-{{ $account->account_name }}</span></option>
+                                            <option value="{{ $account->id }}|{{ $account->type }}"
+                                                style="color:rgb(100, 100, 100);">{{$account->code}} {{ $account->account_name }}</option>
                                         @endforeach
                                     </select>
                                     <label for="account name" class="">Account Name</label>
@@ -119,15 +121,15 @@
                                     <label for="" class="">Amount</label>
                                 </div>
 
-                                <div class="col-3 form-floating">
+                                <div class="col-6 form-floating">
                                     <select class="form-control type" name="type" id="typeId">
                                         <option value="" style="color:red;">Select</option>
-                                        <option value="1">DEBIT</option>
-                                        <option value="2">CREDIT</option>
+                                        <option value="1" style="color:rgb(100, 100, 100);">DEBIT</option>
+                                        <option value="2" style="color:rgb(100, 100, 100);">CREDIT</option>
                                     </select>
                                     <label for="" class="">TYPE</label>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-6">
                                     <button type="button" class=" btn btn-success p-3  amount form-control"
                                         name="amount" id="myButton">Add Journal Item</button>
                                 </div>
@@ -194,8 +196,10 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 50px">Close</button>
-                <button type="submit" class="btn btn-primary" name="journAddnewEntry" style="border-radius: 50px">Create Journal Entry</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    style="border-radius: 50px">Close</button>
+                <button type="submit" class="btn btn-primary" name="journAddnewEntry"
+                    style="border-radius: 50px">Create Journal Entry</button>
             </div>
             </form>
         </div>
@@ -242,181 +246,8 @@
 
 
 {{-- <!-- modal EDIT JOURNAL ENTRY --> --}}
-{{-- <div class="modal fade w-80" id="editJournalEntryModal" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 2025;">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="fa-solid fa-book"></i> Edit Journal
-                    Entry</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-bodyEdit">
-                <form action="/updateJournal" id="journEdit" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <div class="">
-                        <input type="hidden" id="journIdEdit" name="journ_id" readonly>
-                        <div class="row py-2 align-items-start">
-                            <div class="col input-group">
-                                <span class="input-group-text" id="basic-addon1">JOURNAL CODE</span>
-                                <input type="text" class="form-control code text-dark bg bg-white"
-                                    name="entry_code" id="entryCodeEdit" style="--bs-text-opacity: .5;" readonly>
-                            </div>
-                            <div class="col input-group">
-                                <span class="input-group-text" id="basic-addon1">Date</span>
-                                <input type="date" class="form-control journDate" name="entry_date"
-                                    id="entryDateEdit">
-                            </div>
-                        </div>
-                        <div class=" p-2 row align-items-start">
-                            <div class="col-12 px-4 py-2 g-2 row align-items-start">
-                                <div class="col-6 form-floating">
-                                    <input type="text" class="title form-control" name="title" id="titleEdit"
-                                        style="text-transform:uppercase"
-                                        onkeyup="this.value = this.value.toUpperCase();" placeholder="Description"
-                                        required>
-                                    <label for="" class="text-muted">Title</label>
-                                </div>
-                                <div class="col-6 form-floating">
-                                    <input type="text" class="description form-control" name="description"
-                                        id="descriptEdit" style="text-transform:capitalize"
-                                        placeholder="Description">
-                                    <label for=""class="text-muted">Description</label>
-                                </div>
-                                <div class="col-6 form-floating">
-                                    <input type="text" class="partner form-control" name="partner"
-                                        id="partnerEdit" placeholder="Partner" required>
-                                    <label for="" class="text-muted">Partner</label>
-                                </div>
-                                <div class="col-6 form-floating">
-                                    <input type="text" class="form-control user" id="username"
-                                        value="{{ Auth::user()->name }}" readonly>
-                                    <label for="account" class="">Creator</label>
-                                </div>
-                            </div>
-                            <div class="col-12 g-2 py-2 row border rounded-1">
-
-                                <div class="col-6 form-floating ">
-                                    <select class="form-control bg-info account" name="account"
-                                        id="accountListJournEdit" style="--bs-bg-opacity: .25;">
-                                        <option value=""> </option>
-                                        @foreach ($accountList as $account)
-                                            <option value="{{ $account->id }}">{{ $account->account_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <label for="account" class="">Account</label>
-                                </div>
-                                <div class="col-6 form-floating">
-                                    <select class="form-control bg-warning group" name="group"
-                                        id="groupListJournEdit" style="--bs-bg-opacity: .25;">
-                                        <option value=""> </option>
-                                        @foreach ($groupList as $group)
-                                            <option value="{{ $group->id }}">{{ $group->group_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <label for="account" class="">Group</label>
-                                </div>
-                                <div class="col-6 form-floating">
-                                    <input type="number" class="form-control amount bg-success" id="amountJournEdit"
-                                        onchange="this.value = Math.abs(this.value)" style="--bs-bg-opacity: .25;">
-                                    <label for="" class="">Amount</label>
-                                </div>
-
-                                <div class="col-3 form-floating">
-                                    <select class="form-control type" name="type" id="typeIdEdit"
-                                        style="--bs-bg-opacity: .25;">
-                                        <option value=""> </option>
-                                        <option value="1">DEBIT</option>
-                                        <option value="2">CREDIT</option>
-                                    </select>
-                                    <label for="" class="">TYPE</label>
-                                </div>
-                                <div class="col-3">
-                                    <button type="button" class=" btn btn-success p-3  amount form-control"
-                                        name="amount" id="myButtonEdit"><i class="fa-solid fa-file-circle-plus"></i>
-                                        ADD</button>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <table id="tableJournEdit" class="table table-stripped table-bordered gx-3">
-                            <colgroup>
-
-                                <col width="30%">
-                                <col width="20%">
-                                <col width="20%">
-                                <col width="20%">
-                                <col width="5%">
-                            </colgroup>
-                            <thead>
-                                <tr class="bg-dark bg-gradient text-white">
-                                    <th>Account</th>
-                                    <th>Group</th>
-                                    <th>Debit</th>
-                                    <th>Credit</th>
-                                    <th>Tool</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bodysEdit"></tbody>
-                            <tfoot>
-                                <tr class="bg-gradient-secondary">
-                                </tr>
-                                <tr class=" border">
-                                    <th></th>
-                                    <th class="text-center">Total</th>
-                                    <th class="text-right totalDebitEdit">0.00</th>
-                                    <th class="text-right totalCreditEdit">0.00</th>
-                                </tr>
-
-                                <tr class=" border">
-                                    <th colspan="2" class="text-center"></th>
-                                    <th colspan="2" class="text-center totalBalanceJournEdit" id="totalColEdit">
-                                    </th>
-                                </tr>
-
-                            </tfoot>
-                            <input type="hidden" name="totalcatchEdit" id="totalcatchEdit" readonly value="0">
-                        </table>
-
-                        <noscript id="cloneThisEdit">
-                            <tr>
-                                <td class="">
-                                    <input type="hidden" class="accountNameEdit" name="account_idsEdit[]"
-                                        value="">
-                                    <input type="hidden" class="groupNameEdit" name="group_idsEdit[]"
-                                        value="">
-                                    <input type="hidden" class="amountEdit" name="amountsEdit[]" value="">
-                                    <input type="hidden" class="amountTypeEdit" name="amountTypeEdit[]"
-                                        value="">
-                                    <span class="accountsDEdit" id="accD"></span>
-                                </td>
-                                <td class="groupsDEdit"></td>
-                                <td class="debitAmountsEdit text-right"></td>
-                                <td class="creditAmountsEdit text-right"></td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-outline btn-danger btn-flat delRowEdit"
-                                        id="deleteRow" type="button"><i class="fa-solid fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        </noscript>
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary closeModal" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" name="journAddnewEntry">SAVE</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div> --}}
-{{-- <!-- modal EDIT JOURNAL ENTRY --> --}}
-
-
-{{-- edit journal --}}
-<div class="modal fade w-80" id="editJournalEntryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 2023">
+<div class="modal fade w-80" id="editJournalEntryModal" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 2023">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -452,20 +283,22 @@
                                     <label for="" class="text-muted">Transaction Title</label>
                                 </div>
                                 <div class="col-6 form-floating">
-                                    <input type="text" class="description form-control" name="description" id="descriptEdit"
-                                        style="text-transform:capitalize" placeholder="Description">
-                                    <label for=""class="text-muted">Remarks</label>
-                                </div>
-                                <div class="col-6 form-floating">
-                                    <input type="text" class="partner form-control" name="partner" id="partnerEdit"
-                                        placeholder="Partner" required>
-                                    <label for="" class="text-muted">Partner</label>
-                                </div>
-                                <div class="col-6 form-floating">
                                     <input type="text" class="form-control user" id="username"
                                         value="{{ Auth::user()->name }}" readonly>
                                     <label for="account" class="">Creator</label>
                                 </div>
+                                <div class="col-6 form-floating">
+                                    <input type="text" class="description form-control" name="description"
+                                        id="descriptEdit" style="text-transform:capitalize"
+                                        placeholder="Description">
+                                    <label for=""class="text-muted">Remarks</label>
+                                </div>
+                                <div class="col-6 form-floating">
+                                    <input type="text" class="partner form-control" name="partner"
+                                        id="partnerEdit" placeholder="Partner" required>
+                                    <label for="" class="text-muted">Partner</label>
+                                </div>
+                               
 
                             </div>
                             <div class="col-12 g-2 py-2 row shadow-lg p-2 mb-3 bg-body rounded border">
@@ -477,12 +310,13 @@
                                     <select class="form-control account" name="account" id="accountListJournEdit">
                                         <option value="" style="color:red;">Select</option>
                                         @foreach ($accountList as $account)
-                                        <option value="{{$account->id}}|{{$account->type}}">{{$account->code}}-{{ $account->account_name }}</span></option>
+                                            <option value="{{ $account->id }}|{{ $account->type }}">
+                                                {{ $account->code }} {{ $account->account_name }}</span></option>
                                         @endforeach
                                     </select>
                                     <label for="account" class="">Account Name</label>
                                 </div>
-                                <div class="col-6 form-floating">
+                                {{-- <div class="col-6 form-floating">
                                     <select class="form-control group" name="group" id="groupListJourn">
                                         <option value="" style="color:red;">Select</option>
                                         @foreach ($groupList as $group)
@@ -490,14 +324,14 @@
                                         @endforeach
                                     </select>
                                     <label for="account" class="">Group</label>
-                                </div>
+                                </div> --}}
                                 <div class="col-6 form-floating">
                                     <input type="number" class="form-control amount" id="amountJournEdit"
                                         onchange="this.value = Math.abs(this.value)">
                                     <label for="" class="">Amount</label>
                                 </div>
 
-                                <div class="col-3 form-floating">
+                                <div class="col-6 form-floating">
                                     <select class="form-control type" name="type" id="typeIdEdit">
                                         <option value="" style="color:red;">Select</option>
                                         <option value="1">DEBIT</option>
@@ -505,7 +339,7 @@
                                     </select>
                                     <label for="" class="">TYPE</label>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-6">
                                     <button type="button" class=" btn btn-success p-3  amount form-control"
                                         name="amount" id="myButtonEdit">Add Journal Item</button>
                                 </div>
@@ -524,7 +358,7 @@
                             </colgroup>
                             <thead>
                                 <tr class="bg-dark bg-gradient text-white">
-                                    <th>Account</th>
+                                    <th>Account Name</th>
                                     <th>Group</th>
                                     <th>Debit</th>
                                     <th>Credit</th>
@@ -544,7 +378,8 @@
 
                                 <tr class=" border">
                                     <th colspan="2" class="text-center"></th>
-                                    <th colspan="2" class="text-center totalBalanceJournEdit" id="totalColEdit">0</th>
+                                    <th colspan="2" class="text-center totalBalanceJournEdit" id="totalColEdit">0
+                                    </th>
                                 </tr>
 
                             </tfoot>
@@ -554,29 +389,34 @@
                         <noscript id="cloneThisEdit">
                             <tr>
                                 <td class="">
-                                    <input type="hidden" class="accountNameEdit" name="account_idsEdit[]" value="">
-                                    <input type="hidden" class="groupNameEdit" name="group_idsEdit[]" value="">
+                                    <input type="hidden" class="accountNameEdit" name="account_idsEdit[]"
+                                        value="">
+                                    <input type="hidden" class="groupNameEdit" name="group_idsEdit[]"
+                                        value="">
                                     <input type="hidden" class="amountEdit" name="amountsEdit[]" value="">
-                                    <input type="hidden" class="amountTypeEdit" name="amountTypeEdit[]" value="">
+                                    <input type="hidden" class="amountTypeEdit" name="amountTypeEdit[]"
+                                        value="">
                                     <span class="accountsDEdit" id="accD"></span>
                                 </td>
                                 <td class="groupsDEdit"></td>
                                 <td class="debitAmountsEdit text-right"></td>
                                 <td class="creditAmountsEdit text-right"></td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-outline btn-danger btn-flat delRowEdit" id="deleteRow"
-                                        type="button"><i class="fa-solid fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-outline btn-danger btn-flat delRowEdit"
+                                        id="deleteRow" type="button"><i class="fa-solid fa-trash"></i></button>
                                 </td>
                             </tr>
                         </noscript>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 50px">Close</button>
-                <button type="submit" class="btn btn-primary" name="journEditEntry" style="border-radius: 50px">update Journal Entry</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    style="border-radius: 50px">Close</button>
+                <button type="submit" class="btn btn-primary" name="journEditEntry"
+                    style="border-radius: 50px">update Journal Entry</button>
             </div>
             </form>
         </div>
     </div>
 </div>
-{{-- edit journal --}}
+{{-- <!--END modal EDIT JOURNAL ENTRY --> --}}

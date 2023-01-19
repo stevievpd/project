@@ -37,12 +37,13 @@ Route::get('/payroll', [App\Http\Controllers\PayrollController::class, 'index'])
 Route::get('/supplier', [App\Http\Controllers\InventoryController::class, 'supplierIndex']);
 Route::get('/warehouse', [App\Http\Controllers\InventoryController::class, 'warehouseIndex']);
 Route::get('/product', [App\Http\Controllers\InventoryController::class, 'index']);
-Route::get('/employee', [App\Http\Controllers\HumanResourcesController::class, 'index']);
+Route::get('/employee', [App\Http\Controllers\HumanResourcesController::class, 'index'])->name('employee');
 Route::get('/accounting', [App\Http\Controllers\accountingController::class, 'dashboard'])->name('dashboard');
 Route::get('/account', [App\Http\Controllers\accountingController::class, 'account'])->name('account');
 Route::get('/journal', [App\Http\Controllers\accountingController::class, 'index'])->name('journal');
 Route::get('/general-ledger', [App\Http\Controllers\accountingController::class, 'generalLedger']);
 Route::get('/partner-ledger', [App\Http\Controllers\accountingController::class, 'partnerLedger']);
+Route::get('/registration', [App\Http\Controllers\HumanResourcesController::class, 'registration']);
 
 
 

@@ -1,6 +1,10 @@
 .empMenu {
     margin-top: 200px;
 }
+/* for table cursor */
+.table tr {
+	cursor: pointer;
+}
 .canvaJs {
     padding-left: 0;
     padding-right: 0;
@@ -165,6 +169,9 @@ body {
 	grid-gap: 10px;
     border-color: white;
 }
+.addnewEmpButton a{
+	color: var(--light);
+}
 .journBtnInverse{
 	height: 36px;
 	padding: 0 16px;
@@ -215,6 +222,10 @@ body {
 .addnewEmpButton:hover{
     transition: 700ms;
     background-color: rgb(221, 219, 233);
+    color: rgb(32, 25, 71);
+    }
+.addnewEmpButton:hover a{
+	transition: 700ms;
     color: rgb(32, 25, 71);
     }
 .journBtnInverse:hover{
