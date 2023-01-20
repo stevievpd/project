@@ -94,7 +94,7 @@ input::-webkit-inner-spin-button {
   background-color: #FFFFFF;
   border-color: rgba(0, 0, 0, 0.19);
   color: rgb(10, 10, 10);
-}
+}   
 
 @media (min-width: 768px) {
   .button-46 {

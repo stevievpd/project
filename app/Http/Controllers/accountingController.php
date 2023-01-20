@@ -121,7 +121,13 @@ class accountingController extends Controller
 
         return view('accounting.general_ledger', compact( 'ledger', 'ledgeritems' ,'dateStart', 'dateEnd'));
     }
+    public function trialBalance(){
 
+        $journItems = journal_item::with(['account_list','entry'])      
+                ->groupBy('account_id')
+                ->get()->whereNull('deleted_at');
+        return view('accounting.trial_balance', compact('journItems'));
+    }
     public function partnerLedger(Request $request){
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
