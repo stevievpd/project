@@ -257,59 +257,98 @@
  <!-- END DELETE MODAL -->
 
  <!-- PROFILE MODAL -->
- <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+     style="z-index: 5000">
      <div class="modal-dialog modal-lg">
          <div class="modal-content">
              <div class="modal-header">
-                 <h1 class="modal-title fs-5" id="exampleModalLabel">Profile</h1>
+                 <h1 class="modal-title fs-5" id="exampleModalLabel">Employee Profile</h1>
                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
              </div>
              <div class="modal-body">
                  <!-- sample -->
                  <div class="row g-2">
-                     <div class="col-md-4 gradient-custom text-center text-white detail"
-                         style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                     <div class="col-md-4 text-center  detail"
+                         >
                          <img src="" alt="Avatar" class="img-fluid my-5 shadow p-3 mb-5 bg-white rounded"
                              id="pic" style="width: 150px; border-radius: 50%;" />
                          <h5>Unknown</h5>
                          <p>Not Set</p>
                          <!-- <i class="far fa-edit mb-5"></i> -->
                      </div>
+
                      <div class="col-md-8">
                          <div class="card-body p-4">
-                             <h6>Information</h6>
+                             <div style="display: inline-flex;">
+                                 <h5 class="mt-1">Information</h5>
+                             </div>
                              <hr class="mt-0 mb-4">
-                             <div class="row pt-1">
-                                 <div class="col-6 mb-3 emails">
+                             <div class=" row" id="info">
+                                 <div class="col-6 emails">
                                      <h6>Email</h6>
                                      <p class="text-muted">Not Set</p>
                                  </div>
-                                 <div class="col-6 mb-3 phone">
+                                 <div class="col-6 phone">
                                      <h6>Phone</h6>
                                      <p class="text-muted">Not Set</p>
                                  </div>
-                                 <div class="col-6 mb-3 add">
+                                 <div class="col-6 add">
                                      <h6>Address</h6>
                                      <p class="text-muted">Not Set</p>
                                  </div>
-                                 <div class="col-6 mb-3 bday">
+                                 <div class="col-6 bday">
                                      <h6>Birthdate</h6>
                                      <p class="text-muted">Not Set</p>
                                  </div>
+                                 <div class="col-6 civil">
+                                     <h6>Civil Status</h6>
+                                     <p class="text-muted">Not Set</p>
+                                 </div>
+                                 <div class="col-6 gender">
+                                     <h6>Gender</h6>
+                                     <p class="text-muted">Not Set</p>
+                                 </div>
                              </div>
-                             <h6>Work Overview</h6>
+                             <div style="display: inline-flex;">
+                                 <h5 class="mt-1">Statutory Numbers</h5><button type="button"
+                                     class="btn btn-sm mx-2" onclick="benefits()"><i class="fa-regular fa-eye"></i>
+                                     Show More</button>
+                             </div>
                              <hr class="mt-0 mb-4">
-                             <div class="row pt-1">
-                                 <div class="col-6 mb-3 sched">
+                             <div class="row" id="benefits" style="display: none;">
+                                 <div class="col-6 sss">
+                                     <h6>SSS Number</h6>
+                                     <p class="text-muted">Not Set</p>
+                                 </div>
+                                 <div class="col-6 tin">
+                                     <h6>TIN</h6>
+                                     <p class="text-muted">Not Set</p>
+                                 </div>
+                                 <div class="col-6 pagibig">
+                                     <h6>Pag-ibig Funds</h6>
+                                     <p class="text-muted">Not Set</p>
+                                 </div>
+                                 <div class="col-6 philhealth">
+                                     <h6>PhilHealth</h6>
+                                     <p class="text-muted">Not Set</p>
+                                 </div>
+                             </div>
+                             <div style="display: inline-flex;">
+                                 <h5 class="mt-1">Work Format</h5><button type="button" class="btn btn-sm mx-2"
+                                     onclick="workFormat()"><i class="fa-regular fa-eye"></i> Show More</button>
+                             </div>
+                             <hr class="mt-0 mb-4">
+                             <div class="row workFormat" id="workFormat" style="display: none;">
+                                 <div class="col-6 sched">
                                      <h6>Schedule
                                      </h6>
                                      <p class="text-muted">Not Set</p>
                                  </div>
-                                 <div class="col-6 mb-3 depart">
+                                 <div class="col-6 depart">
                                      <h6>Department</h6>
                                      <p class="text-muted">Not Set</p>
                                  </div>
-                                 <div class="col-6 mb-3 rate">
+                                 <div class="col-6 rate">
                                      <h6>Rate</h6>
                                      <p class="text-muted">Not Set</p>
                                  </div>
@@ -682,3 +721,22 @@
  </div>
  {{-- END DELETE MODAL --}}
  {{-- =============================================== DEPARTMENT MODAL ================================================================ --}}
+
+ <script>
+     function benefits() {
+         var x = document.getElementById("benefits");
+         if (x.style.display === "none") {
+             x.style.display = "flex";
+         } else {
+             x.style.display = "none";
+         }
+     }
+     function workFormat() {
+         var x = document.getElementById("workFormat");
+         if (x.style.display === "none") {
+             x.style.display = "flex";
+         } else {
+             x.style.display = "none";
+         }
+     }
+ </script>

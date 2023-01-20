@@ -248,51 +248,89 @@ class HumanResourcesController extends Controller
 
         return redirect()->route('employee')->with(['msg' => $msg]);
     }
-
-    public function editEmployee($id){
+    public function profileEmployee($id){
         $emp = new employee;
         
-        $emp1 = $emp::find($id);
+        $emp1 = employee::with('sched','job', 'department')->find($id);
         return response()->json($emp1);
+    }
+    public function editEmployee($id){
+        $employeeEdit = new employee;
+        $emp = $employeeEdit::find($id);
+
+        $sched = DB::table('schedule')->get()->whereNull('deleted_at');
+        $job = DB::table('job')->get()->whereNull('deleted_at');
+        $depart = DB::table('department')->get()->whereNull('deleted_at');
+        $employee = employee::with('job', 'department')->get()->whereNull('deleted_at');
+       
+        return view('human_resources.edit_page', compact('emp','sched','job','depart','employee'));
 
     }
+    
 
     public function updateEmployee(Request $request){
 
         $id = $request->input('employeeId');
-
         $employee_code = $request->input('emp_code');
-        $first_name = $request->input('first_name');
-        $last_name = $request->input('last_name');
-        $address = $request->input('address');
-        $birthdate = $request->input('birthdate');
-        $contact_number = $request->input('contact_number');
-        $gender = $request->input('gender');
-        $email = $request->input('email');
-        $department_id = $request->input('department');
-        $job_id = $request->input('job');
-        $schedule_id = $request->input('schedule');
-        $manager = $request->input('manager');
 
-        DB::table('employee')
-            ->where('id', $id)
+        $first_name     = $request->input('first_name');
+        $middle_name    = $request->input('middle_name');
+        $last_name      = $request->input('last_name');
+        $birthdate      = $request->input('bdate');
+        $civil_status   = $request->input('civil_status');
+        $contact_number = $request->input('contact_number');
+        $gender         = $request->input('gender');
+        $email          = $request->input('email');
+        $address        = $request->input('present_add');
+        $perma_address  = $request->input('perma_add');
+        $sss            = $request->input('sss');
+        $tin            = $request->input('tin');
+        $pagibig        = $request->input('pagibig');
+        $philhealth     = $request->input('philhealth');
+        $elementary     = $request->input('elementary');
+        $highschool     = $request->input('higschool');
+        $college        = $request->input('college');
+        $yearElem       = $request->input('elem_year');
+        $yearHigh       = $request->input('high_year');
+        $yearCollege    = $request->input('college_year');
+        $degree         = $request->input('degree');
+        $department_id  = $request->input('department');
+        $job_id         = $request->input('job');
+        $schedule_id    = $request->input('schedule');
+        $manager        = $request->input('manager');
+
+
+        employee::where('id', $id)
             ->update([
-                'employee_code' => $employee_code,
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'address' => $address,
-                'birthdate' => $birthdate,
+                'first_name'     => $first_name,
+                'middle_name'    => $middle_name,
+                'last_name'      => $last_name,
+                'birthdate'      => $birthdate,
+                'civil_status'   => $civil_status,
                 'contact_number' => $contact_number,
-                'gender' => $gender,
-                'email' => $email,
-                'department_id' => $department_id,
-                'job_id' => $job_id,
-                'schedule_id' => $schedule_id,
-                'manager' => $manager,
+                'gender'         => $gender,
+                'email'          => $email,
+                'address'        => $address,
+                'perma_address'  => $perma_address,
+                'sss'            => $sss,
+                'tin'            => $tin,
+                'pagibig'        => $pagibig,
+                'philhealth'     => $philhealth,
+                'elementary'     => $elementary,
+                'highschool'     => $highschool,
+                'college'        => $college,
+                'yearElem'       => $yearElem,
+                'yearHigh'       => $yearHigh,
+                'yearCollege'    => $yearCollege,
+                'degree'         => $degree,
+                'department_id'  => $department_id,
+                'job_id'         => $job_id,
+                'schedule_id'    => $schedule_id,
+                'manager'        => $manager,
             ]);
             $msg = "$employee_code has been Updated";
 
-        return redirect()->back()->with(['msg' => $msg]);
+        return redirect()->route('employee')->with(['msg' => $msg]);
     }
 
     public function deleteEmployee(Request $request){
