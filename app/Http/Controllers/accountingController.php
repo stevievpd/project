@@ -29,9 +29,9 @@ class accountingController extends Controller
         $bankMeta = bank_meta_data::whereNull('deleted_at')->get();
         $bankAccount = bank_account::with('bank_meta')->get()->whereNull('deleted_at');
 
-        $accountCount = $accountList->count();
-        $groupCount = $groupList->count();
-        $bankCount = $bankAccount->count();
+        $accountCount = $accountList->whereNull('deleted_at')->count();
+        $groupCount = $groupList->whereNull('deleted_at')->count();
+        $bankCount = $bankAccount->whereNull('deleted_at')->count();
         return view('accounting.account', compact('accountList', 'groupList', 'bankMeta', 'bankAccount', 'accountCount', 'groupCount','bankCount'));
     }
     public function dashboard(){
@@ -73,6 +73,7 @@ class accountingController extends Controller
         $journ = new journal_entry;
         $items = new journal_item;
         $code = $request->input('entry_code');
+        $date = $request->input('entry_date');
         $journ->user_id     = Auth::user()->id;
         $journ->entry_code  = $request->input('entry_code');
         $journ->title       = $request->input('title');
@@ -86,6 +87,7 @@ class accountingController extends Controller
                 'account_id' => $request->account_ids[$key],
                 'group_id'   => $request->group_ids[$key],
                 'journ_code' => $code,
+                'entry_date' => $date,
                 'amount'     => $request->amounts[$key],
                 'type'       => $request->amountType[$key],
             ]);
@@ -121,13 +123,41 @@ class accountingController extends Controller
 
         return view('accounting.general_ledger', compact( 'ledger', 'ledgeritems' ,'dateStart', 'dateEnd'));
     }
-    public function trialBalance(){
+    // ===========================REPORTS==================================//
+    public function trialBalance(Request $request){
+        $dateStart = $request->input('date_start');
+        $dateEnd = $request->input('date_end');
+        if(!empty($dateStart) && !empty($dateEnd)){
+            $from = date($dateStart);
+            $to = date($dateEnd);
+            $journItems = journal_item::with(['account_list','entry'])
+                                        ->whereBetween('entry_date', [$from, $to])
+                                        ->groupBy('account_id')
+                                        ->get()->whereNull('deleted_at');
+                                        $totalItems = journal_item::with(['account_list','entry'])
+                                        ->whereBetween('entry_date', [$from, $to])    
+                                        ->get()->whereNull('deleted_at');
+                                    }else{
+                                        $journItems = journal_item::with(['account_list','entry'])
+                                        ->groupBy('account_id')
+                                        ->get()->whereNull('deleted_at');
+                                        $totalItems = journal_item::with(['account_list','entry'])
+                                        ->get()->whereNull('deleted_at');
+                                    }
+                                    
+                                    return view('accounting.trial_balance', compact('journItems','totalItems','dateStart', 'dateEnd'));
+                                }
 
-        $journItems = journal_item::with(['account_list','entry'])      
-                ->groupBy('account_id')
-                ->get()->whereNull('deleted_at');
-        return view('accounting.trial_balance', compact('journItems'));
-    }
+        public function incomeStatement(){
+            $journItems = journal_item::with(['account_list','entry'])
+                                        ->groupBy('account_id')
+                                        ->get()->whereNull('deleted_at');
+            $totalItems = journal_item::with(['account_list','group'])
+                                        ->get()->whereNull('deleted_at');
+            return view('accounting.income_statement', compact('journItems','totalItems'));
+        }
+    // ===========================REPORTS==================================//
+
     public function partnerLedger(Request $request){
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
@@ -221,6 +251,7 @@ class accountingController extends Controller
                 'account_id' => $request->account_idsEdit[$key],
                 'group_id'   => $request->group_idsEdit[$key],
                 'journ_code' => $code,
+                'entry_date' => $entry_date,
                 'amount'     => $request->amountsEdit[$key],
                 'type'       => $request->amountTypeEdit[$key],
             ]);
