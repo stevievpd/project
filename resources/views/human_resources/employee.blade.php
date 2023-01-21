@@ -125,13 +125,13 @@
                                                 <td>{{ $emp->department->department_name }}</td>
                                                 <td>{{ $emp->manager }}
                                                 </td>
-                                                <td> <a data-id="{{ $emp->id }}"
-                                                        class="btn btn-sm btn-success btnEditEmp"><i
-                                                            class="fa-solid fa-user-pen"></i></a>
-
+                                                <td>
+                                                    <a href="/editEmployee/{{ $emp->id }}"
+                                                        class="btn btn-sm btn-success"><i class="fa-solid fa-user-pen">
+                                                            Edit</i></a>
                                                     <a data-del="{{ $emp->id }}"
                                                         class="btn btn-sm btn-danger btnDeleteEmp"><i
-                                                            class="fa-solid fa-delete-left"></i></a>
+                                                            class="fa-solid fa-delete-left"> Delete</i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -205,10 +205,10 @@
                                         @foreach ($depart as $dep)
                                             <tr>
                                                 <td>{{ $dep->department_name }}</td>
-                                                <td><a data-id="{{ $dep->id }}"
+                                                <td>
+                                                    <a data-id="{{ $dep->id }}"
                                                         class="btn btn-sm btn-success btnEditDepart"><i
                                                             class="fa-solid fa-user-pen"></i></a>
-
                                                     <a data-del="{{ $dep->id }}"
                                                         class="btn btn-sm btn-danger btnDeleteDepart"><i
                                                             class="fa-solid fa-delete-left"></i></a>
@@ -286,11 +286,33 @@
                 $("#" + categoryId).addClass("active");
             });
             $('tr').on('dblclick', function() {
-                var id = $(this).attr('id');
-                $('#profileModal').modal('show');
+                var empId = $(this).attr('id');
+                //new code
+                var url = "/profileEmployee";
+                $.get(url + '/' + empId, function(data) {
+                    $(".detail h5").html(data.first_name + '&nbsp' + data.last_name).change();
+                    $(".detail p").html(data.job.job_name).change();
+                    $(".phone p").html(data.contact_number).change();
+                    $(".add p").html(data.address ? data.address : data.perma_address).change();
+                    $(".bday p").html(data.birthdate).change();
+                    $(".emails p").html(data.email).change();
+                    $(".civil p").html(data.civil_status).change();
+                    $(".gender p").html(data.gender).change();
+                    $(".sched p").html(data.sched.time_in + ' - ' + data.sched.time_out)
+                        .change();
+                    $(".depart p").html(data.department.department_name).change();
+                    $(".rate p").html('₱ ' + data.job.rate).change();
+                    $(".sss p").html(data.sss ?? 'Not Set').change();
+                    $(".tin p").html(data.tin ?? 'Not Set').change();
+                    $(".pagibig p").html(data.pagibig ?? 'Not Set').change();
+                    $(".philhealth p").html(data.philhealth ?? 'Not Set').change();
+                    $('#profileModal').modal('show');
+                })
+                //new code
             });
         });
     </script>
+    <script></script>
 
     <script>
         $(document).ready(function() {

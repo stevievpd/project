@@ -40,21 +40,19 @@ Route::get('/product', [App\Http\Controllers\InventoryController::class, 'index'
 Route::get('/employee', [App\Http\Controllers\HumanResourcesController::class, 'index'])->name('employee');
 Route::get('/accounting', [App\Http\Controllers\accountingController::class, 'dashboard'])->name('dashboard');
 Route::get('/account', [App\Http\Controllers\accountingController::class, 'account'])->name('account');
-Route::get('/journal', [App\Http\Controllers\accountingController::class, 'index'])->name('journal');
-Route::get('/general-ledger', [App\Http\Controllers\accountingController::class, 'generalLedger']);
-Route::get('/partner-ledger', [App\Http\Controllers\accountingController::class, 'partnerLedger']);
 Route::get('/registration', [App\Http\Controllers\HumanResourcesController::class, 'registration']);
 
 
 
 
-// CRUD HUMAN RESOURCESphoto.store
+// CRUD HUMAN RESOURCES
 Route::post('/addSchedule', [App\Http\Controllers\HumanResourcesController::class, 'storeSchedule'])->name('addSchedule.store');
 Route::post('/addJob', [App\Http\Controllers\HumanResourcesController::class, 'storeJob'])->name('addJob.store');
 Route::post('/addDepartment', [App\Http\Controllers\HumanResourcesController::class, 'storeDepartment'])->name('addDepartment.store');
 Route::post('/addEmployee', [App\Http\Controllers\HumanResourcesController::class, 'storeEmployee'])->name('addEmployee.store');
 
 Route::get('/editEmployee/{id}', [App\Http\Controllers\HumanResourcesController::class, 'editEmployee'])->name('editEmployee.edit');
+Route::get('/profileEmployee/{id}', [App\Http\Controllers\HumanResourcesController::class, 'profileEmployee'])->name('profileEmployee.edit');
 Route::patch('/updateEmployee', [App\Http\Controllers\HumanResourcesController::class, 'updateEmployee'])->name('updateEmployee.update');
 Route::patch('/deleteEmployee', [App\Http\Controllers\HumanResourcesController::class, 'deleteEmployee'])->name('deleteEmployee.update');
 
@@ -112,6 +110,14 @@ Route::post('/addBankAccount', [App\Http\Controllers\accountingController::class
 Route::get('/editBankAccount/{id}', [App\Http\Controllers\accountingController::class, 'editBankAccount'])->name('editBankAccount.edit');
 Route::patch('/updateBankAccount', [App\Http\Controllers\accountingController::class, 'updateBankAccount'])->name('updateBankAccount.update');
 Route::patch('/deleteBankList', [App\Http\Controllers\accountingController::class, 'deleteBankList'])->name('deleteBankList.update');
+
+
+// ACCOUNTING REPORTS
+Route::get('/journal', [App\Http\Controllers\accountingController::class, 'index'])->name('journal');
+Route::get('/general-ledger', [App\Http\Controllers\accountingController::class, 'generalLedger']);
+Route::get('/partner-ledger', [App\Http\Controllers\accountingController::class, 'partnerLedger']);
+Route::get('/trial-balance', [App\Http\Controllers\accountingController::class, 'trialBalance']);
+
 
 // CRUD CASHADVANCE
 Route::post('/addCashAdvance', [App\Http\Controllers\PayrollController::class, 'storeCashAdvance'])->name('addCashAdvance.store');
