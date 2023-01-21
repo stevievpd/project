@@ -73,11 +73,11 @@
                                 <span class="text">Account List</span>
                             </a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="#group" class="tab" data-id="profile">
                                 <span class="text">Group List</span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li>
                             <a href="#partner" class="tab" data-id="messages">
                                 <span class="text">Partners</span>
@@ -149,70 +149,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="tab-pane" id="profile">
-                            <div class="order">
-                                <div class="head">
-                                    <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal"
-                                        data-bs-target="#newGroupListModal">
-                                        <span>
-                                            <i class='bx bxs-plus-circle'></i>
-                                            Add Group List
-                                        </span>
-                                    </button>
-                                </div>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">Group Name</th>
-                                            <th class="text-center">Description</th>
-                                            <th class="text-center">Type</th>
-                                            <th class="text-center">Status</th>
-                                            <th class="text-center">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($groupList as $grp)
-                                            <?php
-                                            $status = $grp->status;
-                                            if ($status == 1) {
-                                                $status = '<span class ="badge text-bg-success bg-opacity-25 percent" style="color: green !important">Active</span>';
-                                            } elseif ($status == 2) {
-                                                $status = '<span class ="badge text-bg-danger bg-opacity-25 percent" style="color: red !important">Inactive</span>';
-                                            } else {
-                                                $status = 'Undefined';
-                                            }
-                                            ?>
-                                            <tr>
 
-                                                <td class="text-center">{{ $grp->group_name }}</td>
-                                                <td class="text-center">{{ $grp->description }}</td>
-                                                <td class="text-center">
-
-                                                    @if ($grp->type == 1)
-                                                        Debit
-                                                    @elseif($grp->type == 2)
-                                                        Credit
-                                                    @else
-                                                        Undefined
-                                                    @endif
-                                                </td>
-                                                <td class="text-center"><?= $status ?> </td>
-                                                <td class="text-center">
-                                                    <div id="wrapper">
-                                                        <button class="dropdownBtnEdit btnEditGroup"
-                                                            data-id="{{ $grp->id }}"><i
-                                                                class="fa-solid fa-file-pen"></i></button>
-                                                        <button class="dropdownBtn btnDeleteGroup"
-                                                            data-del="{{ $grp->id }}"><i
-                                                                class="fa-solid fa-trash"></i></i></button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                         <div class="tab-pane" id="messages">
                             <div class="order">
                                 <div class="head">

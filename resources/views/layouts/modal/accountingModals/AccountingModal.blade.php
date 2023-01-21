@@ -15,24 +15,9 @@
                     autocomplete="off">
                     @csrf
                     <div class="col-md-6 form-floating">
-                        <input type="number" class="form-control accCode" name="code" required>
+                        <input type="number" class="form-control accCode" id="code" name="code" readonly
+                            style="color:rgb(107, 104, 104);">
                         <label for="Code">Code</label>
-                    </div>
-                    <div class="col-md-6 form-floating">
-                        <input type="text" class="form-control accountName" name="account_name" required>
-                        <label for="Account Name">Account Name</label>
-                    </div>
-                    <div class="col-md-12 form-floating">
-                        <input type="text" class="form-control description" name="description" required>
-                        <label for="Account Name">Description</label>
-                    </div>
-                    <div class="col-md-6 form-floating">
-                        <select class="form-control type" name="type" required>
-                            @foreach ($groupList as $type)
-                                <option value="{{$type->id}}" style="color:gray;">{{ $type->group_name }}</option>
-                            @endforeach
-                        </select>
-                        <label for="Account Name">Type</label>
                     </div>
                     <div class="col-md-6 form-floating">
                         <select class="form-control status" name="status" required>
@@ -41,6 +26,56 @@
                         </select>
                         <label for="Account Name">Status</label>
                     </div>
+                    <div class="col-md-6 form-floating">
+                        <input type="text" class="form-control accountName" name="account_name" required>
+                        <label for="Account Name">Account Name</label>
+                    </div>
+                    <div class="col-md-6 form-floating">
+                        <input type="text" class="form-control description" name="description" required>
+                        <label for="Account Name">Description</label>
+                    </div>
+
+                    <div class="col-md-12 form-floating">
+                        <select class="form-control type" onchange="myFunction(this)" name="type" required>
+                            <option disabled style="color:#585257; font-size:17px; font-weight:700">Assets</option>
+                                @foreach ($groupList as $type)
+                                    @if ($type->status == 1)
+                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                            style="color:gray;">{{ $type->group_name }}</option>
+                                    @endif
+                                @endforeach
+                                <option disabled style="color:#585257; font-size:17px; font-weight:700">Liabilities</option>
+                                @foreach ($groupList as $type)
+                                    @if ($type->status == 2)
+                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                            style="color:gray;">{{ $type->group_name }}</option>
+                                    @endif
+                                @endforeach
+                                <option disabled style="color:#585257; font-size:17px; font-weight:700">Equity</option>
+                                @foreach ($groupList as $type)
+                                    @if ($type->status == 3)
+                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                            style="color:gray;">{{ $type->group_name }}</option>
+                                    @endif
+                                @endforeach
+                                <option disabled style="color:#585257; font-size:17px; font-weight:700">Income</option>
+                                @foreach ($groupList as $type)
+                                    @if ($type->status == 4)
+                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                            style="color:gray;">{{ $type->group_name }}</option>
+                                    @endif
+                                @endforeach
+                                <option disabled style="color:#585257; font-size:17px; font-weight:700">Expenses</option>
+                                @foreach ($groupList as $type)
+                                    @if ($type->status == 5)
+                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                            style="color:gray;">{{ $type->group_name }}</option>
+                                    @endif
+                                @endforeach
+                        </select>
+                        <label for="Account Name">Type</label>
+                    </div>
+
                     <div class="mb-2">
                         <button type="button" data-bs-dismiss="modal" class="btn btn-danger opacity-75">Cancel</button>
                         <button type="submit" class="btn btn-success opacity-75 float-end"
@@ -464,3 +499,9 @@
 </div>
 </div>
 {{-- DELETE BANK ACCOUNT MODAL END --}}
+<script>
+    function myFunction(e) {
+        document.getElementById("code").value = e.options[e.selectedIndex].getAttribute('data-status') * 1000 +
+            {{ $accountCount }};
+    }
+</script>

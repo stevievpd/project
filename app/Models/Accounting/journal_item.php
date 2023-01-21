@@ -10,6 +10,7 @@ class journal_item extends Model
     use HasFactory;
     protected $table = 'journal_item';
     protected $fillable = [
+        'entry_date',
         'account_id',
         'group_id',
         'journ_code',
@@ -25,6 +26,6 @@ public function account_list(){
     return $this->hasOne(account_list::class, 'id', 'account_id');
 }
 public function group(){
-    return $this->hasOne(group_list::class, 'id');
+    return $this->hasOne(group_list::class, 'id', 'group_id');
 }
 }

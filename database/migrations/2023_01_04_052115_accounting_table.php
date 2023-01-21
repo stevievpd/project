@@ -57,6 +57,7 @@ return new class extends Migration
         Schema::create('journal_item', function (Blueprint $table) {
             
             $table->bigIncrements('id');
+            $table->date('entry_date');
             $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('group_id');
             $table->string('journ_code');
