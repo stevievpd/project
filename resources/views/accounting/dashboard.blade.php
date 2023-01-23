@@ -83,15 +83,26 @@
                         </div>
 
                     </div> --}}
-                    <div class="row">
+                    <div class="row mb-5">
                         <div class="column text-center">
-                            <canvas id="myChart" class="responsive-canvas"></canvas>
+                            <canvas id="assets" class="responsive-canvas"></canvas>
                             <span class="chartTitle">Assets</span>
 
                         </div>
                         <div class="column text-center">
-                            <canvas id="myChart2" class="responsive-canvas"></canvas>
+                            <canvas id="revenue" class="responsive-canvas"></canvas>
                             <span class="chartTitle">Revenue</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column text-center">
+                            <canvas id="bankAndCash" class="responsive-canvas"></canvas>
+                            <span class="chartTitle">Bank and Cash</span>
+
+                        </div>
+                        <div class="column text-center">
+                            <canvas id="expenses" class="responsive-canvas"></canvas>
+                            <span class="chartTitle">Expenses</span>
                         </div>
                     </div>
 
@@ -102,9 +113,11 @@
         </div>
     </main>
     <script>
-        const ctx = document.getElementById('myChart');
-        const ctxx = document.getElementById('myChart2');
-        new Chart(ctx, {
+        const asset = document.getElementById('assets');
+        const revenue = document.getElementById('revenue');
+        const bankcash = document.getElementById('bankAndCash');
+        const expense = document.getElementById('expenses');
+        new Chart(asset, {
             type: 'bar',
             data: {
                 labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
@@ -132,7 +145,77 @@
                 }
             }
         });
-        new Chart(ctxx, {
+        new Chart(bankcash, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                    'October', 'November', 'December'
+                ],
+                datasets: [{
+                    label: ['Debit'],
+                    data: [6543, 13219, 3356, 6545, 6462, 6543, 8569, 8541, 3649, 16547, 3695, 12354],
+                    borderWidth: 1,
+                    backgroundColor: 'rgba(238, 147, 7, 0.2)',
+                    borderColor: 'rgb(238, 147, 7)',
+                },
+                {
+                    label: ['Credit'],
+                    data: [3543, 11219, 6356, 1545, 6262, 6943, 5569, 8541, 3149, 12547, 1695, 10354],
+                    borderWidth: 1,
+                    backgroundColor: 'rgba(128, 128, 128, 0.2)',
+                    borderColor: 'rgb(128, 128, 128)',
+                },
+            ],
+            },
+            options: {
+                scales: {
+                    y: {
+                        
+                        beginAtZero: false,
+                        grid: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+        new Chart(expense, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                    'October', 'November', 'December'
+                ],
+                datasets: [{
+                    label: ['Expenses'],
+                    data: [6543, 13219, 3356, 6545, 6462, 6543, 8569, 8541, 3649, 16547, 3695, 12354],
+                    borderWidth: 1,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgb(255, 99, 132)',
+                }],
+
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+        new Chart(revenue, {
             type: 'bar',
             data: {
                 labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
@@ -142,8 +225,8 @@
                     label: ['Revenue'],
                     data: [6543, 13219, 3356, 6545, 6462, 6543, 8569, 8541, 3649, 16547, 3695, 12354],
                     borderWidth: 1,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgb(119, 172, 119, 0.2)',
+                    borderColor: 'rgb(119, 172, 119)',
                 }],
 
             },

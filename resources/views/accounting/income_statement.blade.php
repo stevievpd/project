@@ -107,58 +107,72 @@
                                         ?>
                                     @endif
                                     @if ($item->type == 1)
-                                    <?php
+                                        <?php
                                         $debit = $item->amount;
                                         ?>
                                     @endif
                                     <?php
-                                    $totalrev = $credit-$debit;
+                                    $totalrev = $credit - $debit;
                                     ?>
                                 @endif
                             @endforeach
                             <div class="col-6">Total Revenue:</div>
                             <div class="col-6 text-end"><?= $totalrev ?></div>
-
+                            <?php
+                            $debit = 0;
+                            $credit = 0;
+                            ?>
                             @foreach ($totalItems as $item)
                                 @if ($item->group->description == 'Income')
                                     @if ($item->type == 2)
                                         <?php
-                                        $credit = $item->amount;
+                                        $credit = $credit + $item->amount;
                                         ?>
                                     @endif
                                     @if ($item->type == 1)
-                                    <?php
-                                        $debit = $item->amount;
+                                        <?php
+                                        $debit = $debit + $item->amount;
                                         ?>
                                     @endif
-                                    <?php
-                                    $totalincome = $debit - $credit;
-                                    ?>
                                 @endif
+                                <?php
+                                $totalincome = $debit - $credit;
+                                ?>
                             @endforeach
                             <div class="col-6">Income:</div>
                             <div class="col-6 text-end"><?= $totalincome ?></div>
+                            <?php
+                            $debit = 0;
+                            $credit = 0;
+                            ?>
                             @foreach ($totalItems as $item)
                                 @if ($item->group->description == 'Other Income')
                                     @if ($item->type == 2)
                                         <?php
-                                        $credit = $item->amount;
+                                        $credit = $credit + $item->amount;
                                         ?>
                                     @endif
                                     @if ($item->type == 1)
-                                    <?php
-                                        $debit = $item->amount;
+                                        <?php
+                                        $debit = $debit + $item->amount;
                                         ?>
                                     @endif
-                                    <?php
-                                    $totalOtherIncome = $debit - $credit;
-                                    ?>
                                 @endif
+                                <?php
+                                $totalOtherIncome = $debit - $credit;
+                                ?>
                             @endforeach
                             <div class="col-6">Other Income:</div>
                             <div class="col-6 text-end"><?= $totalOtherIncome ?></div>
+                            <?php
+                            
+                            ?>
+                            <div class="col-6"> <b>Total:</b> </div>
+                            <div class="col-6 text-end">0</div>
                         </div>
                     </div>
+
+                    <br>
                     <div class="row">
                         <div class="titlerev">
                             <h4>Less: Expenses</h4>
@@ -169,26 +183,41 @@
                             $debit = 0;
                             $credit = 0;
                             ?>
-                            @foreach ($totalItems as $item)
+                            @foreach ($groupItems as $item)
+                                <?php
+                                $expense = 0;
+                                $totaldebit = 0;
+                                $totalcredit = 0;
+                                $debit = 0;
+                                $credit = 0;
+                                ?>
                                 @if ($item->group->status == 5)
-                                    @if ($item->type == 2)
+                                    @foreach ($totalItems as $exp)
+                                        @if ($item->account_list->account_name == $exp->account_list->account_name)
+                                            @if ($exp->type == 1)
+                                                <?php
+                                                $debit = $debit + $exp->amount;
+                                                ?>
+                                            @endif
+                                            @if ($exp->type == 2)
+                                                <?php
+                                                $credit = $credit + $exp->amount;
+                                                ?>
+                                            @endif
+                                        @endif
                                         <?php
-                                        $credit = $item->amount;
+                                        $expense = $debit - $credit;
                                         ?>
-                                    @endif
-                                    @if ($item->type == 1)
-                                    <?php
-                                        $debit = $item->amount;
-                                        ?>
-                                    @endif
-                                    <?php
-                                    $totalExpense = $debit-$credit;
-                                    ?>
+                                    @endforeach
+                                    <div class="col-6">{{ $item->account_list->account_name }}</div>
+                                    <div class="col-6 text-end"><?= $expense ?></div>
                                 @endif
-                            
-                            <div class="col-6">Total Revenue:</div>
-                            <div class="col-6 text-end"><?= $totalExpense ?></div>
+                                <?php
+                                $totalExpense = $expense + $totalExpense;
+                                ?>
                             @endforeach
+                            <div class="col-6"> <b>Total Expenses:</b> </div>
+                            <div class="col-6 text-end"><?= $totalExpense ?></div>
                         </div>
                     </div>
                 </div>

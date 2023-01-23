@@ -293,6 +293,8 @@
                     $('#accountId').val(data.id);
                     $('#accountName').val(data.account_name);
                     $('#description').val(data.description);
+                    $('#codes').val(data.code);
+                    $('#type').val(data.group.group_name);
                     $("div.statusSelect select").val(data.status).change();
                     $('#editAccountListModal').modal('show');
                 })

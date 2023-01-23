@@ -154,7 +154,10 @@ class accountingController extends Controller
                                         ->get()->whereNull('deleted_at');
             $totalItems = journal_item::with(['account_list','group'])
                                         ->get()->whereNull('deleted_at');
-            return view('accounting.income_statement', compact('journItems','totalItems'));
+            $groupItems = journal_item::with(['account_list','group'])
+                                        ->groupBy('account_id')
+                                        ->get()->whereNull('deleted_at');
+            return view('accounting.income_statement', compact('journItems','totalItems','groupItems'));
         }
     // ===========================REPORTS==================================//
 
@@ -282,7 +285,7 @@ class accountingController extends Controller
         return redirect()->back()->with(['msg' => $msg]);
     }
     public function editAccountList($id){
-        $account = account_list::find($id);
+        $account = account_list::with('group')->find($id);
         return response()->json($account);
     }
 
