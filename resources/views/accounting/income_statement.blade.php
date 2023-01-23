@@ -13,7 +13,7 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="active" href="#">Journal</a>
+                        <a class="active" >Income Statement</a>
                     </li>
                 </ul>
             </div>
@@ -117,7 +117,7 @@
                                 @endif
                             @endforeach
                             <div class="col-6">Total Revenue:</div>
-                            <div class="col-6 text-end"><?= $totalrev ?></div>
+                            <div class="col-6 text-end"><?= $pasterev = '₱ ' . number_format($totalrev, 2); ?></div>
                             <?php
                             $debit = 0;
                             $credit = 0;
@@ -140,7 +140,7 @@
                                 ?>
                             @endforeach
                             <div class="col-6">Income:</div>
-                            <div class="col-6 text-end"><?= $totalincome ?></div>
+                            <div class="col-6 text-end"><?= $pasteincome = number_format($totalincome, 2); ?></div>
                             <?php
                             $debit = 0;
                             $credit = 0;
@@ -163,12 +163,13 @@
                                 ?>
                             @endforeach
                             <div class="col-6">Other Income:</div>
-                            <div class="col-6 text-end"><?= $totalOtherIncome ?></div>
+                            <div class="col-6 text-end"><?= $pasteOtherincome = number_format($totalOtherIncome, 2); ?></div>
                             <?php
-                            
+                            $revenueTotal = 0;
+                            $revenueTotal = $totalrev + $totalincome + $totalOtherIncome;
                             ?>
                             <div class="col-6"> <b>Total:</b> </div>
-                            <div class="col-6 text-end">0</div>
+                            <div class="col-6 text-end"><b><?=$pasteTotal = number_format($revenueTotal, 2); ?></b></div>
                         </div>
                     </div>
 
@@ -209,15 +210,23 @@
                                         $expense = $debit - $credit;
                                         ?>
                                     @endforeach
-                                    <div class="col-6">{{ $item->account_list->account_name }}</div>
-                                    <div class="col-6 text-end"><?= $expense ?></div>
+                                    <div class="col-6">{{$item->account_list->code}} {{ $item->account_list->account_name }}</div>
+                                    <div class="col-6 text-end"><?= $pasteExpense = number_format($expense, 2); ?></div>
                                 @endif
                                 <?php
                                 $totalExpense = $expense + $totalExpense;
                                 ?>
                             @endforeach
                             <div class="col-6"> <b>Total Expenses:</b> </div>
-                            <div class="col-6 text-end"><?= $totalExpense ?></div>
+                            <div class="col-6 text-end"><b><?= $pasteTotalExpense = number_format($totalExpense, 2); ?></b></div>
+                        </div>
+                        <?php
+                        $profit = $revenueTotal - $totalExpense;
+                        ?>
+                        <div class="revenue row mt-3">
+                            <div class="col-6"> <h4><b>Profit:</b></h4> </div>
+                            <div class="col-6 text-end"><b> 
+                                <?= $pasteprofit =  '₱ '.number_format($profit, 2);?></b></div>
                         </div>
                     </div>
                 </div>
