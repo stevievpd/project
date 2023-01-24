@@ -118,3 +118,13 @@ input::-webkit-inner-spin-button {
 	padding-left: 50px;
 	padding-right: 50px;
 }
+.income .total{
+	padding-left: 50px;
+	padding-right: 50px;
+}
+.income .total .totalAsset{
+	margin-left: -20px;
+}
+.income .total .totalnum{
+	margin-left: 20px;
+}

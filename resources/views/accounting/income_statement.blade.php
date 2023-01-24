@@ -48,7 +48,7 @@
                         <div class="col-5">
                         </div>
                         <div class="col-7">
-                            <form action="/trial-balance" id="journAdd" method="get">
+                            <form action="/income-statement" id="incomeState" method="get">
                                 @csrf
                                 <div class="row input-daterange">
                                     <div class="col-md-4">
@@ -72,7 +72,7 @@
                                                 class="fa-solid fa-filter"></i>Filter</button>
                             </form>
                             <button type="button" name="refreshs" id="refreshs" class="journBtnInverse"><a
-                                    href="/trial-balance"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
+                                    href="/income-statement"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
                         </div>
                     </div>
                 </div>
@@ -82,13 +82,17 @@
         <div class="card-body">
 
             <div class="order">
-                {{-- <div class="" style="width: 50%; margin-left:auto; margin-right:auto;">
+                @if ($dateStart && $dateEnd)
+                <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                        <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
+                 @endif
+                <div class="" style="width: 50%; margin-left:auto; margin-right:auto;">
                     <h3>INCOME STATEMENT</h3>
-                </div> --}}
+                </div>
                 <div class="income border">
                     <div class="row">
                         <div class="titlerev">
-                            <h4>Revenue</h4>
+                            <h4>Income</h4>
                         </div>
                         <div class="revenue row ">
                             <?php
@@ -168,7 +172,7 @@
                             $revenueTotal = 0;
                             $revenueTotal = $totalrev + $totalincome + $totalOtherIncome;
                             ?>
-                            <div class="col-6"> <b>Total:</b> </div>
+                            <div class="col-6"> <b>Total Income:</b> </div>
                             <div class="col-6 text-end"><b><?=$pasteTotal = number_format($revenueTotal, 2); ?></b></div>
                         </div>
                     </div>

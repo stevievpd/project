@@ -143,24 +143,44 @@ class accountingController extends Controller
                                         ->get()->whereNull('deleted_at');
                                         $totalItems = journal_item::with(['account_list','entry'])
                                         ->get()->whereNull('deleted_at');
-                                    }
+                                         }
                                     
-                                    return view('accounting.trial_balance', compact('journItems','totalItems','dateStart', 'dateEnd'));
-                                }
+        return view('accounting.trial_balance', compact('journItems','totalItems','dateStart', 'dateEnd'));
+        }
 
-        public function incomeStatement(){
-            $journItems = journal_item::with(['account_list','entry'])
+        public function incomeStatement(Request $request){
+            $dateStart = $request->input('date_start');
+            $dateEnd = $request->input('date_end');
+            if(!empty($dateStart) && !empty($dateEnd)){
+                $from = date($dateStart);
+                $to = date($dateEnd);
+            $totalItems = journal_item::with(['account_list','group'])
+                                        ->whereBetween('entry_date', [$from, $to])
+                                        ->get()->whereNull('deleted_at');
+            $groupItems = journal_item::with(['account_list','group'])
+                                        ->whereBetween('entry_date', [$from, $to])
                                         ->groupBy('account_id')
                                         ->get()->whereNull('deleted_at');
-            $totalItems = journal_item::with(['account_list','group'])
+                                    }else{
+                                        $totalItems = journal_item::with(['account_list','group'])
                                         ->get()->whereNull('deleted_at');
             $groupItems = journal_item::with(['account_list','group'])
                                         ->groupBy('account_id')
                                         ->get()->whereNull('deleted_at');
-            return view('accounting.income_statement', compact('journItems','totalItems','groupItems'));
+                                    }
+            return view('accounting.income_statement', compact('totalItems','groupItems','dateStart','dateEnd'));
         }
     // ===========================REPORTS==================================//
-
+        public function balanceSheet(Request $request){
+            $dateStart = $request->input('date_start');
+            $dateEnd = $request->input('date_end');
+            $totalItems = journal_item::with(['account_list','group'])
+                                        ->whereNull('deleted_at')->get();
+            $groupItems = journal_item::with(['account_list','group'])
+                                        ->groupBy('account_id')
+                                        ->whereNull('deleted_at')->get();
+            return view('accounting.balance_sheet', compact('totalItems','groupItems','dateStart','dateEnd'));
+        }
     public function partnerLedger(Request $request){
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');

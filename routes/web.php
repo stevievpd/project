@@ -118,6 +118,7 @@ Route::get('/general-ledger', [App\Http\Controllers\accountingController::class,
 Route::get('/partner-ledger', [App\Http\Controllers\accountingController::class, 'partnerLedger']);
 Route::get('/trial-balance', [App\Http\Controllers\accountingController::class, 'trialBalance']);
 Route::get('/income-statement', [App\Http\Controllers\accountingController::class, 'incomeStatement']);
+Route::get('/balance-sheet', [App\Http\Controllers\accountingController::class, 'balanceSheet']);
 
 
 // CRUD CASHADVANCE
