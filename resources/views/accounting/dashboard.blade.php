@@ -26,11 +26,129 @@
         <ul class="box-info">
             <li>
                 <i class='bx bx-clipboard'></i>
-                <span class="text">
-                    <h3>₱ 1,655,102</h3>
-                    <p>Net Income</p>
-                </span>
+                <div class="col">
+                    {{-- Profit --}}
+                    <?php
+                    $totalrev = 0;
+                    $totalOtherIncome = 0;
+                    $totalincome = 0;
+                    $revenuedebit = 0;
+                    $debit = 0;
+                    $credit = 0;
+                    $rev = 0;
+                    ?>
+                    @foreach ($totalItems as $item)
+                        @if ($item->group->description == 'Revenue')
+                            @if ($item->type == 2)
+                                <?php
+                                $credit = $item->amount;
+                                ?>
+                            @endif
+                            @if ($item->type == 1)
+                                <?php
+                                $debit = $item->amount;
+                                ?>
+                            @endif
+                            <?php
+                            $rev = $credit - $debit;
+                            $totalrev = $totalrev + $rev;
+                            ?>
+                        @endif
+                    @endforeach
+                    <?php
+                    $debit = 0;
+                    $credit = 0;
+                    ?>
+                    @foreach ($totalItems as $item)
+                        @if ($item->group->description == 'Income')
+                            @if ($item->type == 2)
+                                <?php
+                                $credit = $credit + $item->amount;
+                                ?>
+                            @endif
+                            @if ($item->type == 1)
+                                <?php
+                                $debit = $debit + $item->amount;
+                                ?>
+                            @endif
+                        @endif
+                        <?php
+                        $totalincome = $debit - $credit;
+                        ?>
+                    @endforeach
+                    <?php
+                    $debit = 0;
+                    $credit = 0;
+                    ?>
+                    @foreach ($totalItems as $item)
+                        @if ($item->group->description == 'Other Income')
+                            @if ($item->type == 2)
+                                <?php
+                                $credit = $credit + $item->amount;
+                                ?>
+                            @endif
+                            @if ($item->type == 1)
+                                <?php
+                                $debit = $debit + $item->amount;
+                                ?>
+                            @endif
+                        @endif
+                        <?php
+                        $totalOtherIncome = $debit - $credit;
+                        ?>
+                    @endforeach
+                    <?php
+                    $revenueTotal = 0;
+                    $revenueTotal = $totalrev + $totalincome + $totalOtherIncome;
+                    ?>
+                    <?php
+                    $totalExpense = 0;
+                    $debit = 0;
+                    $credit = 0;
+                    ?>
+                    @foreach ($groupItems as $item)
+                        <?php
+                        $expense = 0;
+                        $totaldebit = 0;
+                        $totalcredit = 0;
+                        $debit = 0;
+                        $credit = 0;
+                        ?>
+                        @if ($item->group->status == 5)
+                            @foreach ($totalItems as $exp)
+                                @if ($item->account_list->account_name == $exp->account_list->account_name)
+                                    @if ($exp->type == 1)
+                                        <?php
+                                        $debit = $debit + $exp->amount;
+                                        ?>
+                                    @endif
+                                    @if ($exp->type == 2)
+                                        <?php
+                                        $credit = $credit + $exp->amount;
+                                        ?>
+                                    @endif
+                                @endif
+                                <?php
+                                $expense = $debit - $credit;
+                                ?>
+                            @endforeach
+                        @endif
+                        <?php
+                        $totalExpense = $expense + $totalExpense;
+                        ?>
+                    @endforeach
+                    <?php
+                    $profit = $revenueTotal - $totalExpense;
+                    ?>
+
+                    {{-- profit end --}}
+                    <span class="text">
+                        <h3><?= $pasteProfit = '₱ ' . number_format($profit, 2) ?></h3>
+                        <p>Net Income</p>
+                    </span>
+                </div>
             </li>
+            
             <li>
                 <i class='bx bx-book-content'></i></i>
                 <span class="text">
@@ -65,7 +183,16 @@
         @endif
         {{-- session --}}
         <div class="table-data">
+            
             <div class="card">
+                <div style="width: 20%">
+                    <select class="form-select shadow-sm p-3 mb-5 bg-body rounded asof" aria-label="Default select example">
+                        <option selected>As of January 2023</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                </div>
                 <div class="card-body">
                     {{-- charts --}}
                     {{-- <div class="row gx-3">
@@ -152,25 +279,25 @@
                     'October', 'November', 'December'
                 ],
                 datasets: [{
-                    label: ['Debit'],
-                    data: [6543, 13219, 3356, 6545, 6462, 6543, 8569, 8541, 3649, 16547, 3695, 12354],
-                    borderWidth: 1,
-                    backgroundColor: 'rgba(238, 147, 7, 0.2)',
-                    borderColor: 'rgb(238, 147, 7)',
-                },
-                {
-                    label: ['Credit'],
-                    data: [3543, 11219, 6356, 1545, 6262, 6943, 5569, 8541, 3149, 12547, 1695, 10354],
-                    borderWidth: 1,
-                    backgroundColor: 'rgba(128, 128, 128, 0.2)',
-                    borderColor: 'rgb(128, 128, 128)',
-                },
-            ],
+                        label: ['Debit'],
+                        data: [6543, 13219, 3356, 6545, 6462, 6543, 8569, 8541, 3649, 16547, 3695, 12354],
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(238, 147, 7, 0.2)',
+                        borderColor: 'rgb(238, 147, 7)',
+                    },
+                    {
+                        label: ['Credit'],
+                        data: [3543, 11219, 6356, 1545, 6262, 6943, 5569, 8541, 3149, 12547, 1695, 10354],
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(128, 128, 128, 0.2)',
+                        borderColor: 'rgb(128, 128, 128)',
+                    },
+                ],
             },
             options: {
                 scales: {
                     y: {
-                        
+
                         beginAtZero: false,
                         grid: {
                             display: false

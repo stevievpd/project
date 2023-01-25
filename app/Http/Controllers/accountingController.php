@@ -13,7 +13,7 @@ use App\Models\Accounting\bank_account;
 use App\Models\HumanResources\employee;
 use App\Models\User;
 
-
+use Carbon\Carbon;
 use DB;
 
 class accountingController extends Controller
@@ -35,7 +35,17 @@ class accountingController extends Controller
         return view('accounting.account', compact('accountList', 'groupList', 'bankMeta', 'bankAccount', 'accountCount', 'groupCount','bankCount'));
     }
     public function dashboard(){
-        return view('accounting.dashboard');
+
+        $start = Carbon::now()->startOfMonth()->toDateString();
+        $end = Carbon::now()->endOfMonth()->toDateString();
+        $totalItems = journal_item::with(['account_list','group'])
+        ->whereBetween('entry_date', [$start, $end])
+                 ->get()->whereNull('deleted_at');
+        $groupItems = journal_item::with(['account_list','group'])
+        ->whereBetween('entry_date', [$start, $end])
+                    ->groupBy('account_id')
+                    ->get()->whereNull('deleted_at');
+        return view('accounting.dashboard', compact('totalItems','groupItems','start','end'));
     }
     public function index(Request $request){
         $dateStart = $request->input('date_start');
@@ -79,7 +89,14 @@ class accountingController extends Controller
         $journ->title       = $request->input('title');
         $journ->description = $request->input('description');
         $journ->entry_date  = $request->input('entry_date');
-        $journ->partner     = $request->input('partner');
+        $partnerValidate = $request->input('partner');
+
+        if(!empty($partnerValidate)){
+            $journ->partner     = $partnerValidate; 
+        }
+        else{
+            $journ->partner   = 'Unknown Partner'; 
+        }
         $journ->save();
 
         foreach($request->account_ids as $key => $value){
@@ -107,17 +124,17 @@ class accountingController extends Controller
             $ledgeritems = journal_entry::with(['journal_item' => function($acc){
                 $acc
                 ->with('account_list');
-                }])->whereBetween('entry_date', [$from, $to])->get()->whereNull('deleted_at');
+                }])->whereBetween('entry_date', [$from, $to])->whereNull('deleted_at')->get();
         }else{
             $ledgeritems = journal_entry::with(['journal_item' => function($acc){
                 $acc
                 ->with('account_list') ;
-                }])->get()->whereNull('deleted_at');
+                }])->whereNull('deleted_at')->get();
         }
         
         $ledger = journal_item::with(['account_list','entry'])      
                 ->groupBy('account_id')
-                ->get();
+                ->whereNull('deleted_at')->get();
 
         
 
@@ -133,16 +150,16 @@ class accountingController extends Controller
             $journItems = journal_item::with(['account_list','entry'])
                                         ->whereBetween('entry_date', [$from, $to])
                                         ->groupBy('account_id')
-                                        ->get()->whereNull('deleted_at');
+                                        ->whereNull('deleted_at')->get();
                                         $totalItems = journal_item::with(['account_list','entry'])
                                         ->whereBetween('entry_date', [$from, $to])    
-                                        ->get()->whereNull('deleted_at');
+                                        ->whereNull('deleted_at')->get();
                                     }else{
                                         $journItems = journal_item::with(['account_list','entry'])
                                         ->groupBy('account_id')
-                                        ->get()->whereNull('deleted_at');
+                                        ->whereNull('deleted_at')->get();
                                         $totalItems = journal_item::with(['account_list','entry'])
-                                        ->get()->whereNull('deleted_at');
+                                        ->whereNull('deleted_at')->get();
                                          }
                                     
         return view('accounting.trial_balance', compact('journItems','totalItems','dateStart', 'dateEnd'));
@@ -156,17 +173,22 @@ class accountingController extends Controller
                 $to = date($dateEnd);
             $totalItems = journal_item::with(['account_list','group'])
                                         ->whereBetween('entry_date', [$from, $to])
-                                        ->get()->whereNull('deleted_at');
+                                        ->whereNull('deleted_at')->get();
             $groupItems = journal_item::with(['account_list','group'])
                                         ->whereBetween('entry_date', [$from, $to])
                                         ->groupBy('account_id')
-                                        ->get()->whereNull('deleted_at');
-                                    }else{
-                                        $totalItems = journal_item::with(['account_list','group'])
-                                        ->get()->whereNull('deleted_at');
-            $groupItems = journal_item::with(['account_list','group'])
+                                        ->whereNull('deleted_at')->get();
+             }else{
+                 $totalItems = journal_item::with(['account_list','group'])
+                 ->get()->whereNull('deleted_at');
+                $groupItems = journal_item::with(['account_list','group'])
                                         ->groupBy('account_id')
                                         ->get()->whereNull('deleted_at');
+                 $dateStart = journal_item::with(['account_list','group'])
+                 ->min('entry_date');
+                 $dateEnd = journal_item::with(['account_list','group'])
+                 ->whereNull('deleted_at')
+                 ->max('entry_date');
                                     }
             return view('accounting.income_statement', compact('totalItems','groupItems','dateStart','dateEnd'));
         }
@@ -174,11 +196,30 @@ class accountingController extends Controller
         public function balanceSheet(Request $request){
             $dateStart = $request->input('date_start');
             $dateEnd = $request->input('date_end');
+            if(!empty($dateStart) && !empty($dateEnd)){
+                $from = date($dateStart);
+                $to = date($dateEnd);
             $totalItems = journal_item::with(['account_list','group'])
+                                        ->whereBetween('entry_date', [$from, $to])
                                         ->whereNull('deleted_at')->get();
             $groupItems = journal_item::with(['account_list','group'])
+                                        ->whereBetween('entry_date', [$from, $to])
                                         ->groupBy('account_id')
                                         ->whereNull('deleted_at')->get();
+            }
+            else{
+                $totalItems = journal_item::with(['account_list','group'])
+                ->whereNull('deleted_at')->get();
+                $groupItems = journal_item::with(['account_list','group'])
+                ->groupBy('account_id')
+                ->whereNull('deleted_at')->get();
+                $dateStart = journal_item::with(['account_list','group'])
+                ->min('entry_date');
+                $dateEnd = journal_item::with(['account_list','group'])
+                ->whereNull('deleted_at')
+                ->max('entry_date');
+                
+            }
             return view('accounting.balance_sheet', compact('totalItems','groupItems','dateStart','dateEnd'));
         }
     public function partnerLedger(Request $request){
@@ -198,8 +239,9 @@ class accountingController extends Controller
             $partner = journal_entry::with(['user','journal_item' => function($acc){
                 $acc
                     ->with('account_list');
-                    }])->whereNull('deleted_at')
+                    }])
                     ->groupBy('partner')
+                    ->whereNull('deleted_at')
                     ->get();
         }
         
@@ -207,12 +249,12 @@ class accountingController extends Controller
                 $sd
                 ->with('account_list');
                 }])
-                ->get()->whereNull('deleted_at');
+                ->whereNull('deleted_at')->get();
          $ledgeritems = journal_item::with(['account_list','entry'=> function($journ){
                     $journ
                     ->orderBy('description', 'ASC');
                     }])
-                    ->get();
+                    ->whereNull('deleted_at')->get();
         return view('accounting.partner_ledger', compact('partner', 'ledgeritems', 'partneritem','dateStart', 'dateEnd'));
     }
     // DELETE JOURNAL 

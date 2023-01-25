@@ -82,14 +82,14 @@
         <div class="card-body">
 
             <div class="order">
-                @if ($dateStart && $dateEnd)
-                <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
-                        <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
-                 @endif
-                <div class="" style="width: 50%; margin-left:auto; margin-right:auto;">
-                    <h3>INCOME STATEMENT</h3>
-                </div>
                 <div class="income border">
+                    <div class="text-center">
+                        <h3>Income Statement</h3>
+                        @if ($dateStart && $dateEnd)
+                        <p class="text-center" style="color: rgb(92, 89, 89)"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                                <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
+                    @endif
+                     </div>
                     <div class="row">
                         <div class="titlerev">
                             <h4>Income</h4>
@@ -102,6 +102,7 @@
                             $revenuedebit = 0;
                             $debit = 0;
                             $credit = 0;
+                            $rev = 0;
                             ?>
                             @foreach ($totalItems as $item)
                                 @if ($item->group->description == 'Revenue')
@@ -116,7 +117,8 @@
                                         ?>
                                     @endif
                                     <?php
-                                    $totalrev = $credit - $debit;
+                                    $rev = $credit - $debit;
+                                    $totalrev = $totalrev + $rev;
                                     ?>
                                 @endif
                             @endforeach

@@ -121,7 +121,7 @@
                                     <?= date('F d, Y', strtotime($journalEntry->entry_date)) ?></td>
                                 <td class="" style="border-bottom:none;">
                                     {{ $journalEntry->entry_code }}</td>
-                                <td style="border-bottom:none;"><b>{{ $journalEntry->title }}</b>|{{ $journalEntry->description ? $journalEntry->description : '' }}
+                                <td style="border-bottom:none;"><b>{{ $journalEntry->title }}</b> | {{ $journalEntry->description ? $journalEntry->description : '' }}
                                 </td>
                                 <td style="border-bottom:none;"></td>
                                 <td style="border-bottom:none;"></td>

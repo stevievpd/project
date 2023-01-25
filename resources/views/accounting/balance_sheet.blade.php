@@ -48,7 +48,7 @@
                         <div class="col-5">
                         </div>
                         <div class="col-7">
-                            <form action="/income-statement" id="incomeState" method="get">
+                            <form action="/balance-sheet" id="incomeState" method="get">
                                 @csrf
                                 <div class="row input-daterange">
                                     <div class="col-md-4">
@@ -72,7 +72,7 @@
                                                 class="fa-solid fa-filter"></i>Filter</button>
                             </form>
                             <button type="button" name="refreshs" id="refreshs" class="journBtnInverse"><a
-                                    href="/income-statement"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
+                                    href="/balance-sheet"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
                         </div>
                     </div>
                 </div>
@@ -82,14 +82,21 @@
         <div class="card-body">
 
             <div class="order">
-                @if ($dateStart && $dateEnd)
-                    <p class="alert alert-success text-center"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
-                            <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
-                @endif
+
                 <div class="" style="width: 50%; margin-left:auto; margin-right:auto;">
                     {{-- <h3>Balance Sheet</h3> --}}
                 </div>
                 <div class="income border">
+
+                    <div class="text-center">
+                        <h3>Balance Sheet</h3>
+                        @if ($dateStart && $dateEnd)
+                            <p class="text-center" style="color: rgb(92, 89, 89)">
+                                <b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                                    <?= date('F d, Y', strtotime($dateEnd)) ?></b>
+                            </p>
+                        @endif
+                    </div>
                     <div class="row">
                         <div class="titlerev">
                             <h4>Assets</h4>
@@ -126,10 +133,11 @@
                                         $currentAsset = $debit - $credit;
                                         ?>
                                     @endforeach
-                                        <div class="col-6">{{ $item->account_list->code }}
-                                            {{ $item->account_list->account_name }}</div>
-                                        <div class="col-6 text-end"><?= $pasteAsset = number_format($currentAsset, 2) ?>
-                                        </div>
+                                    <div class="col-6">{{ $item->account_list->code }}
+                                        {{ $item->account_list->account_name }}</div>
+                                    <div class="col-6 botalign text-end">
+                                        <?= $pasteAsset = '₱ ' . number_format($currentAsset, 2) ?>
+                                    </div>
                                 @endif
                                 <?php
                                 $totalCurrentAssets = $currentAsset + $totalCurrentAssets;
@@ -137,8 +145,8 @@
                             @endforeach
                             <div class="col-6 border-top" style="color:rgb(107, 104, 104)"> <b>Total Current Assets:</b>
                             </div>
-                            <div class="col-6 border-top text-end"> <b>
-                                    <?= $pasteTotalAsset = number_format($totalCurrentAssets, 2) ?></b></div>
+                            <div class="col-6 border-top botalign text-end"> <b>
+                                    <?= $pasteTotalAsset = '₱ ' . number_format($totalCurrentAssets, 2) ?></b></div>
                             {{-- Non-Current Assets --}}
                             <br>
                             <div class="col-12 border-bottom border-2 mt-1"> <b>Non Current Asset</b> </div>
@@ -173,8 +181,8 @@
                                     @endforeach
                                     <div class="col-6">{{ $item->account_list->code }}
                                         {{ $item->account_list->account_name }}</div>
-                                    <div class="col-6 text-end">
-                                        <?= $pasteNonCurAsset = number_format($nonCurrentAsset, 2) ?></div>
+                                    <div class="col-6 botalign text-end">
+                                        <?= $pasteNonCurAsset = '₱ ' . number_format($nonCurrentAsset, 2) ?></div>
                                 @endif
                                 <?php
                                 $totalNonCurrentAssets = $nonCurrentAsset + $totalNonCurrentAssets;
@@ -182,8 +190,9 @@
                             @endforeach
                             <div class="col-6 border-top" style="color:rgb(107, 104, 104)"><b>Plus Total Non-Current
                                     Assets:</b></div>
-                            <div class="col-6 border-top text-end">
-                                <b><?= $pasteTotalNonCurAsset = number_format($totalNonCurrentAssets, 2) ?></b></div>
+                            <div class="col-6 border-top botalign text-end">
+                                <b><?= $pasteTotalNonCurAsset = '₱ ' . number_format($totalNonCurrentAssets, 2) ?></b>
+                            </div>
                             {{-- fixed Asset --}}
                             <br>
                             <div class="col-12 mt-1"> <b>Fixed Current Asset</b> </div>
@@ -218,8 +227,8 @@
                                     @endforeach
                                     <div class="col-6">{{ $item->account_list->code }}
                                         {{ $item->account_list->account_name }}</div>
-                                    <div class="col-6 text-end">
-                                        <?= $pasteNonCurAsset = number_format($nonCurrentAsset, 2) ?></div>
+                                    <div class="col-6 botalign text-end">
+                                        <?= $pasteNonCurAsset = '₱ ' . number_format($nonCurrentAsset, 2) ?></div>
                                 @endif
                                 <?php
                                 $totalfixAssets = $fixAsset + $totalfixAssets;
@@ -227,8 +236,8 @@
                             @endforeach
                             <div class="col-6 border-top" style="color:rgb(107, 104, 104)"> <b> Plus Total Fixed Assets:</b>
                             </div>
-                            <div class="col-6 border-top text-end">
-                                <?= $pasteTotalFixAsset = number_format($totalfixAssets, 2) ?></div>
+                            <div class="col-6 border-top botalign text-end">
+                                <?= $pasteTotalFixAsset = '₱ ' . number_format($totalfixAssets, 2) ?></div>
                         </div>
                         <?php
                         $totalAsset = $totalCurrentAssets + $totalNonCurrentAssets + $totalfixAssets;
@@ -237,8 +246,8 @@
                             <div class="col-6 totalAsset">
                                 <h5>Total Assets:</h5>
                             </div>
-                            <div class="col-6 totalnum text-end"> <b>
-                                    <?= $pasteTotalasset = number_format($totalAsset, 2) ?></b>
+                            <div class="col-6 totalnum botalign text-end"> <b>
+                                    <?= $pasteTotalasset = '₱ ' . number_format($totalAsset, 2) ?></b>
                             </div>
                         </div>
                     </div>
@@ -282,15 +291,16 @@
                                     @endforeach
                                     <div class="col-6">{{ $item->account_list->code }}
                                         {{ $item->account_list->account_name }}</div>
-                                    <div class="col-6 text-end"><?= $pastecurAsset = number_format($currentLiab, 2) ?></div>
+                                    <div class="col-6 botalign text-end">
+                                        <?= $pastecurAsset = '₱ ' . number_format($currentLiab, 2) ?></div>
                                 @endif
                                 <?php
                                 $totalCurrentLiab = $currentLiab + $totalCurrentLiab;
                                 ?>
                             @endforeach
                             <div class="col-6" style="color:rgb(107, 104, 104)"> <b>Total Current Liabilities:</b> </div>
-                            <div class="col-6 text-end"> <b>
-                                    <?= $pasteTotalLiab = number_format($totalCurrentLiab, 2) ?></b></div>
+                            <div class="col-6 botalign text-end"> <b>
+                                    <?= $pasteTotalLiab = '₱ ' . number_format($totalCurrentLiab, 2) ?></b></div>
                             {{-- Non-Current Liabilities --}}
                             <br>
                             <div class="col-12"> <b>Non Current Liabilities</b> </div>
@@ -325,8 +335,8 @@
                                     @endforeach
                                     <div class="col-6">{{ $item->account_list->code }}
                                         {{ $item->account_list->account_name }}</div>
-                                    <div class="col-6 text-end">
-                                        <?= $pasteNonCurAsset = number_format($nonCurrentAsset, 2) ?></div>
+                                    <div class="col-6 botalign text-end">
+                                        <?= $pasteNonCurAsset = '₱ ' . number_format($nonCurrentAsset, 2) ?></div>
                                 @endif
                                 <?php
                                 $totalNonCurrentLiab = $nonCurrentLiab + $totalNonCurrentLiab;
@@ -334,8 +344,8 @@
                             @endforeach
                             <div class="col-6" style="color:rgb(107, 104, 104)"> <b>Plus Total Non-Current Liabilities:</b>
                             </div>
-                            <div class="col-6 text-end">
-                                <?= $pasteTotalNonCurLiab = number_format($totalNonCurrentLiab, 2) ?></div>
+                            <div class="col-6 botalign text-end">
+                                <?= $pasteTotalNonCurLiab = '₱ ' . number_format($totalNonCurrentLiab, 2) ?></div>
                             <br>
                         </div>
                         <div class="total row">
@@ -345,8 +355,8 @@
                             <div class="col-6 totalAsset">
                                 <h5>Total Liabilities:</h5>
                             </div>
-                            <div class="col-6 totalnum text-end"> <b>
-                                    <?= $pasteTotalLiab = number_format($totalLiab, 2) ?></b>
+                            <div class="col-6 totalnum botalign text-end"> <b>
+                                    <?= $pasteTotalLiab = '₱ ' . number_format($totalLiab, 2) ?></b>
                             </div>
                         </div>
                         {{-- Profit --}}
@@ -357,6 +367,7 @@
                         $revenuedebit = 0;
                         $debit = 0;
                         $credit = 0;
+                        $rev = 0;
                         ?>
                         @foreach ($totalItems as $item)
                             @if ($item->group->description == 'Revenue')
@@ -371,7 +382,8 @@
                                     ?>
                                 @endif
                                 <?php
-                                $totalrev = $credit - $debit;
+                                $rev = $credit - $debit;
+                                $totalrev = $totalrev + $rev;
                                 ?>
                             @endif
                         @endforeach
@@ -503,7 +515,8 @@
                                     @endforeach
                                     <div class="col-6">{{ $item->account_list->code }}
                                         {{ $item->account_list->account_name }}</div>
-                                    <div class="col-6 text-end"><?= $pasteEquity = number_format($equity, 2) ?></div>
+                                    <div class="col-6 botalign text-end">
+                                        <?= $pasteEquity = '₱ ' . number_format($equity, 2) ?></div>
                                 @endif
                                 <?php
                                 $totalEquity = $totalEquity + $equity;
@@ -628,7 +641,8 @@
                             <div class="col-6">
                                 Plus Profit:
                             </div>
-                            <div class="col-6 totalnum text-end"> <b> <?= $pasteProfit = number_format($profit, 2) ?></b>
+                            <div class="col-6 totalnum botalign text-end"> <span><b>
+                                        <?= $pasteProfit = '₱ ' . number_format($profit, 2) ?></b></span>
                             </div>
 
                             {{-- profit end --}}
@@ -636,8 +650,8 @@
                             $totalOwnerEquity = $profit + $totalEquity;
                             ?>
                             <div class="col-6"> <b>Total Owner's Equity:</b> </div>
-                            <div class="col-6 text-end"> <b>
-                                    <?= $pasteTotalEquity = number_format($totalOwnerEquity, 2) ?></b></div>
+                            <div class="col-6 botalign text-end"> <b>
+                                    <?= $pasteTotalEquity = '₱ ' . number_format($totalOwnerEquity, 2) ?></b></div>
                         </div>
                         <div class="total row">
                             <?php
@@ -646,8 +660,8 @@
                             <div class="col-6 totalAsset">
                                 <h5>Total Liabilities + Owner's Equity:</h5>
                             </div>
-                            <div class="col-6 totalnum text-end"> <b>
-                                    <?= $pastebalance = number_format($balancesheet, 2) ?></b>
+                            <div class="col-6 totalnum botalign text-end"> <b>
+                                    <?= $pastebalance = '₱ ' . number_format($balancesheet, 2) ?></b>
                             </div>
                         </div>
 
