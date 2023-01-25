@@ -94,7 +94,7 @@ input::-webkit-inner-spin-button {
 	margin: 0;
 }
 
-.item{
+.item {
 	color: rgb(2, 2, 2) !important;
 	margin-left: auto;
 	display: table;
@@ -105,7 +105,8 @@ input::-webkit-inner-spin-button {
 	font-weight: 600;
 	font-size: medium;
 }
-.income{
+
+.income {
 	width: 50%;
 	margin-left: auto;
 	margin-right: auto;
@@ -114,7 +115,29 @@ input::-webkit-inner-spin-button {
 	padding-top: 1vw;
 	padding-bottom: 1vw;
 }
-.income .revenue{
+
+.income .revenue {
 	padding-left: 50px;
 	padding-right: 50px;
+}
+
+.income .total {
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.income .total .totalAsset {
+	margin-left: -20px;
+}
+
+.income .total .totalnum {
+	margin-left: 20px;
+}
+
+.botalign {
+	display: inline-block !important;
+	align-self: flex-end !important;
+}
+.titlerev{
+	padding-left: 30px;
 }

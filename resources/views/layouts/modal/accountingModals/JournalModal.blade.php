@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="col-6 form-floating">
                                     <input type="text" class="partner form-control" name="partner"
-                                        placeholder="Partner" required>
+                                        placeholder="Partner">
                                     <label for="" class="text-muted">Partner</label>
                                 </div>
 
@@ -295,7 +295,7 @@
                                 </div>
                                 <div class="col-6 form-floating">
                                     <input type="text" class="partner form-control" name="partner"
-                                        id="partnerEdit" placeholder="Partner" required>
+                                        id="partnerEdit" placeholder="Partner">
                                     <label for="" class="text-muted">Partner</label>
                                 </div>
                                

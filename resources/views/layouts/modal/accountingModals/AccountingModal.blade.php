@@ -38,40 +38,40 @@
                     <div class="col-md-12 form-floating">
                         <select class="form-control type" onchange="myFunction(this)" name="type" required>
                             <option disabled style="color:#585257; font-size:17px; font-weight:700">Assets</option>
-                                @foreach ($groupList as $type)
-                                    @if ($type->status == 1)
-                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
-                                            style="color:gray;">{{ $type->group_name }}</option>
-                                    @endif
-                                @endforeach
-                                <option disabled style="color:#585257; font-size:17px; font-weight:700">Liabilities</option>
-                                @foreach ($groupList as $type)
-                                    @if ($type->status == 2)
-                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
-                                            style="color:gray;">{{ $type->group_name }}</option>
-                                    @endif
-                                @endforeach
-                                <option disabled style="color:#585257; font-size:17px; font-weight:700">Equity</option>
-                                @foreach ($groupList as $type)
-                                    @if ($type->status == 3)
-                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
-                                            style="color:gray;">{{ $type->group_name }}</option>
-                                    @endif
-                                @endforeach
-                                <option disabled style="color:#585257; font-size:17px; font-weight:700">Income</option>
-                                @foreach ($groupList as $type)
-                                    @if ($type->status == 4)
-                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
-                                            style="color:gray;">{{ $type->group_name }}</option>
-                                    @endif
-                                @endforeach
-                                <option disabled style="color:#585257; font-size:17px; font-weight:700">Expenses</option>
-                                @foreach ($groupList as $type)
-                                    @if ($type->status == 5)
-                                        <option value="{{ $type->id }}" data-status="{{ $type->status }}"
-                                            style="color:gray;">{{ $type->group_name }}</option>
-                                    @endif
-                                @endforeach
+                            @foreach ($groupList as $type)
+                                @if ($type->status == 1)
+                                    <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                        style="color:gray;">{{ $type->group_name }}</option>
+                                @endif
+                            @endforeach
+                            <option disabled style="color:#585257; font-size:17px; font-weight:700">Liabilities</option>
+                            @foreach ($groupList as $type)
+                                @if ($type->status == 2)
+                                    <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                        style="color:gray;">{{ $type->group_name }}</option>
+                                @endif
+                            @endforeach
+                            <option disabled style="color:#585257; font-size:17px; font-weight:700">Equity</option>
+                            @foreach ($groupList as $type)
+                                @if ($type->status == 3)
+                                    <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                        style="color:gray;">{{ $type->group_name }}</option>
+                                @endif
+                            @endforeach
+                            <option disabled style="color:#585257; font-size:17px; font-weight:700">Income</option>
+                            @foreach ($groupList as $type)
+                                @if ($type->status == 4)
+                                    <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                        style="color:gray;">{{ $type->group_name }}</option>
+                                @endif
+                            @endforeach
+                            <option disabled style="color:#585257; font-size:17px; font-weight:700">Expenses</option>
+                            @foreach ($groupList as $type)
+                                @if ($type->status == 5)
+                                    <option value="{{ $type->id }}" data-status="{{ $type->status }}"
+                                        style="color:gray;">{{ $type->group_name }}</option>
+                                @endif
+                            @endforeach
                         </select>
                         <label for="Account Name">Type</label>
                     </div>
@@ -107,6 +107,17 @@
                     @csrf
                     @method('PATCH')
                     <div class="col-md-6 form-floating">
+                        <input type="text" class="form-control code" name="code" id="codes" disabled style="color:rgb(105, 101, 101);">
+                        <label for="Account Name">Account Code</label>
+                    </div>
+                    <div class="col-md-6 form-floating">
+                        <input type="text" class="form-control code" name="" id="type" disabled style="color:rgb(105, 101, 101);">
+                        <label for="Account Name">Account Type</label>
+                        
+                    </div>
+                    <div id="emailHelp" class="form-text">*Account Code and Account Type cannot be change
+                    </div>
+                    <div class="col-md-6 form-floating">
                         <input type="hidden" id="accountId" name="account_id">
                         <input type="text" class="form-control accountName" name="account_name" id="accountName"
                             required>
@@ -119,6 +130,7 @@
                         </select>
                         <label for="Account Name">Status</label>
                     </div>
+                   
                     <div class="col-md-12 form-floating">
                         <input type="text" class="form-control description" name="description" id="description"
                             required>

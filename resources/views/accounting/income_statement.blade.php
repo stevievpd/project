@@ -13,7 +13,7 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="active" href="#">Journal</a>
+                        <a class="active" >Income Statement</a>
                     </li>
                 </ul>
             </div>
@@ -48,7 +48,7 @@
                         <div class="col-5">
                         </div>
                         <div class="col-7">
-                            <form action="/trial-balance" id="journAdd" method="get">
+                            <form action="/income-statement" id="incomeState" method="get">
                                 @csrf
                                 <div class="row input-daterange">
                                     <div class="col-md-4">
@@ -72,7 +72,7 @@
                                                 class="fa-solid fa-filter"></i>Filter</button>
                             </form>
                             <button type="button" name="refreshs" id="refreshs" class="journBtnInverse"><a
-                                    href="/trial-balance"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
+                                    href="/income-statement"><i class="fa-solid fa-rotate-right"></i>Reset</a></button>
                         </div>
                     </div>
                 </div>
@@ -82,13 +82,17 @@
         <div class="card-body">
 
             <div class="order">
-                {{-- <div class="" style="width: 50%; margin-left:auto; margin-right:auto;">
-                    <h3>INCOME STATEMENT</h3>
-                </div> --}}
                 <div class="income border">
+                    <div class="text-center">
+                        <h3>Income Statement</h3>
+                        @if ($dateStart && $dateEnd)
+                        <p class="text-center" style="color: rgb(92, 89, 89)"><b><?= date('F d, Y', strtotime($dateStart)) ?> to
+                                <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
+                    @endif
+                     </div>
                     <div class="row">
                         <div class="titlerev">
-                            <h4>Revenue</h4>
+                            <h4>Income</h4>
                         </div>
                         <div class="revenue row ">
                             <?php
@@ -98,6 +102,7 @@
                             $revenuedebit = 0;
                             $debit = 0;
                             $credit = 0;
+                            $rev = 0;
                             ?>
                             @foreach ($totalItems as $item)
                                 @if ($item->group->description == 'Revenue')
@@ -107,58 +112,74 @@
                                         ?>
                                     @endif
                                     @if ($item->type == 1)
-                                    <?php
+                                        <?php
                                         $debit = $item->amount;
                                         ?>
                                     @endif
                                     <?php
-                                    $totalrev = $credit-$debit;
+                                    $rev = $credit - $debit;
+                                    $totalrev = $totalrev + $rev;
                                     ?>
                                 @endif
                             @endforeach
                             <div class="col-6">Total Revenue:</div>
-                            <div class="col-6 text-end"><?= $totalrev ?></div>
-
+                            <div class="col-6 text-end"><?= $pasterev = '₱ ' . number_format($totalrev, 2); ?></div>
+                            <?php
+                            $debit = 0;
+                            $credit = 0;
+                            ?>
                             @foreach ($totalItems as $item)
                                 @if ($item->group->description == 'Income')
                                     @if ($item->type == 2)
                                         <?php
-                                        $credit = $item->amount;
+                                        $credit = $credit + $item->amount;
                                         ?>
                                     @endif
                                     @if ($item->type == 1)
-                                    <?php
-                                        $debit = $item->amount;
+                                        <?php
+                                        $debit = $debit + $item->amount;
                                         ?>
                                     @endif
-                                    <?php
-                                    $totalincome = $debit - $credit;
-                                    ?>
                                 @endif
+                                <?php
+                                $totalincome = $debit - $credit;
+                                ?>
                             @endforeach
                             <div class="col-6">Income:</div>
-                            <div class="col-6 text-end"><?= $totalincome ?></div>
+                            <div class="col-6 text-end"><?= $pasteincome = number_format($totalincome, 2); ?></div>
+                            <?php
+                            $debit = 0;
+                            $credit = 0;
+                            ?>
                             @foreach ($totalItems as $item)
                                 @if ($item->group->description == 'Other Income')
                                     @if ($item->type == 2)
                                         <?php
-                                        $credit = $item->amount;
+                                        $credit = $credit + $item->amount;
                                         ?>
                                     @endif
                                     @if ($item->type == 1)
-                                    <?php
-                                        $debit = $item->amount;
+                                        <?php
+                                        $debit = $debit + $item->amount;
                                         ?>
                                     @endif
-                                    <?php
-                                    $totalOtherIncome = $debit - $credit;
-                                    ?>
                                 @endif
+                                <?php
+                                $totalOtherIncome = $debit - $credit;
+                                ?>
                             @endforeach
                             <div class="col-6">Other Income:</div>
-                            <div class="col-6 text-end"><?= $totalOtherIncome ?></div>
+                            <div class="col-6 text-end"><?= $pasteOtherincome = number_format($totalOtherIncome, 2); ?></div>
+                            <?php
+                            $revenueTotal = 0;
+                            $revenueTotal = $totalrev + $totalincome + $totalOtherIncome;
+                            ?>
+                            <div class="col-6"> <b>Total Income:</b> </div>
+                            <div class="col-6 text-end"><b><?=$pasteTotal = number_format($revenueTotal, 2); ?></b></div>
                         </div>
                     </div>
+
+                    <br>
                     <div class="row">
                         <div class="titlerev">
                             <h4>Less: Expenses</h4>
@@ -169,26 +190,49 @@
                             $debit = 0;
                             $credit = 0;
                             ?>
-                            @foreach ($totalItems as $item)
+                            @foreach ($groupItems as $item)
+                                <?php
+                                $expense = 0;
+                                $totaldebit = 0;
+                                $totalcredit = 0;
+                                $debit = 0;
+                                $credit = 0;
+                                ?>
                                 @if ($item->group->status == 5)
-                                    @if ($item->type == 2)
+                                    @foreach ($totalItems as $exp)
+                                        @if ($item->account_list->account_name == $exp->account_list->account_name)
+                                            @if ($exp->type == 1)
+                                                <?php
+                                                $debit = $debit + $exp->amount;
+                                                ?>
+                                            @endif
+                                            @if ($exp->type == 2)
+                                                <?php
+                                                $credit = $credit + $exp->amount;
+                                                ?>
+                                            @endif
+                                        @endif
                                         <?php
-                                        $credit = $item->amount;
+                                        $expense = $debit - $credit;
                                         ?>
-                                    @endif
-                                    @if ($item->type == 1)
-                                    <?php
-                                        $debit = $item->amount;
-                                        ?>
-                                    @endif
-                                    <?php
-                                    $totalExpense = $debit-$credit;
-                                    ?>
+                                    @endforeach
+                                    <div class="col-6">{{$item->account_list->code}} {{ $item->account_list->account_name }}</div>
+                                    <div class="col-6 text-end"><?= $pasteExpense = number_format($expense, 2); ?></div>
                                 @endif
-                            
-                            <div class="col-6">Total Revenue:</div>
-                            <div class="col-6 text-end"><?= $totalExpense ?></div>
+                                <?php
+                                $totalExpense = $expense + $totalExpense;
+                                ?>
                             @endforeach
+                            <div class="col-6"> <b>Total Expenses:</b> </div>
+                            <div class="col-6 text-end"><b><?= $pasteTotalExpense = number_format($totalExpense, 2); ?></b></div>
+                        </div>
+                        <?php
+                        $profit = $revenueTotal - $totalExpense;
+                        ?>
+                        <div class="revenue row mt-3">
+                            <div class="col-6"> <h4><b>Profit:</b></h4> </div>
+                            <div class="col-6 text-end"><b> 
+                                <?= $pasteprofit =  '₱ '.number_format($profit, 2);?></b></div>
                         </div>
                     </div>
                 </div>

@@ -111,7 +111,7 @@
                             $totalcred = '';
                             ?>
                             <tr>
-                                <td><b>{{ $account->account_list->account_name }}</b></td>
+                                <td><b>{{$account->account_list->code}}  {{ $account->account_list->account_name }}</b></td>
 
                                 <td>
                                     <div class="d-flex w-100 asd">
