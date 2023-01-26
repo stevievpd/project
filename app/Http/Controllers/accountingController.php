@@ -34,18 +34,164 @@ class accountingController extends Controller
         $bankCount = $bankAccount->whereNull('deleted_at')->count();
         return view('accounting.account', compact('accountList', 'groupList', 'bankMeta', 'bankAccount', 'accountCount', 'groupCount','bankCount'));
     }
-    public function dashboard(){
+    public function dashboard(Request $request){
+        $dateFilter = $request->input('option');
+        if(!empty($dateFilter)){
+            if($dateFilter == 'this_month'){
+                $start = Carbon::now()->startOfMonth()->toDateString();
+                $end = Carbon::now()->endOfMonth()->toDateString();
 
-        $start = Carbon::now()->startOfMonth()->toDateString();
-        $end = Carbon::now()->endOfMonth()->toDateString();
-        $totalItems = journal_item::with(['account_list','group'])
-        ->whereBetween('entry_date', [$start, $end])
-                 ->get()->whereNull('deleted_at');
-        $groupItems = journal_item::with(['account_list','group'])
-        ->whereBetween('entry_date', [$start, $end])
-                    ->groupBy('account_id')
-                    ->get()->whereNull('deleted_at');
-        return view('accounting.dashboard', compact('totalItems','groupItems','start','end'));
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->whereNull('deleted_at')->get();
+                $groupItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->groupBy('account_id')
+                            ->whereNull('deleted_at')->get();
+                $filter = $dateFilter;
+            }
+            if($dateFilter == 'asofnow'){
+                $start = journal_item::with(['account_list','group'])
+                 ->min('entry_date');
+                 $end = journal_item::with(['account_list','group'])
+                 ->whereNull('deleted_at')
+                 ->max('entry_date');
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                
+                ->whereBetween('entry_date', [$start, $end])
+                     ->whereNull('deleted_at')->get();
+                    $groupItems = journal_item::with(['account_list','group'])
+             ->whereBetween('entry_date', [$start, $end])
+                        ->groupBy('account_id')
+                        ->whereNull('deleted_at')->get();
+
+             $filter = $dateFilter; 
+            }
+            if($dateFilter == 'last_month'){
+                $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->whereNull('deleted_at')->get();
+                $groupItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->groupBy('account_id')
+                            ->whereNull('deleted_at')->get();
+                $filter = $dateFilter;
+            }
+            if($dateFilter == 'this_year'){
+                $start = Carbon::now()->startOfYear()->toDateString();
+                $end = Carbon::now()->endOfYear()->toDateString();
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->whereNull('deleted_at')->get();
+                $groupItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->groupBy('account_id')
+                            ->whereNull('deleted_at')->get();
+                $filter = $dateFilter;
+            }
+            if($dateFilter == 'last_year'){
+                $start = Carbon::now()->startOfYear()->subYear()->toDateString();
+                $end = Carbon::now()->endOfYear()->subYear()->toDateString();
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->whereNull('deleted_at')->get();
+                $groupItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->groupBy('account_id')
+                            ->whereNull('deleted_at')->get();
+                $filter = $dateFilter;
+            }
+        }else{
+                $start = journal_item::with(['account_list','group'])
+                 ->min('entry_date');
+                 $end = journal_item::with(['account_list','group'])
+                 ->whereNull('deleted_at')
+                 ->max('entry_date');
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                
+                ->whereBetween('entry_date', [$start, $end])
+                     ->whereNull('deleted_at')->get();
+                    $groupItems = journal_item::with(['account_list','group'])
+                ->whereBetween('entry_date', [$start, $end])
+                        ->groupBy('account_id')
+                        ->whereNull('deleted_at')->get();
+             $filter = $dateFilter; 
+
+             $journItemsdate = journal_item::with(['account_list','entry'])
+                                        ->groupBy(DB::raw("MONTHNAME(entry_date)"))
+                                        ->whereNull('deleted_at')->get();
+              $totalItemsdate = journal_item::with(['account_list','entry','group'])
+                                ->select(DB::raw('*, MONTHNAME(entry_date) as month'))
+                                ->whereNull('deleted_at')->get();
+              $grouptotal = journal_item::with(['account_list','entry','group'])
+                                ->select(DB::raw('*, MONTHNAME(entry_date) as month'))
+                                ->groupBY('month')
+                                ->whereNull('deleted_at')->get();
+
+                                        $assetdebit = DB::table('journal_item as item')
+                                                ->join('group_list as gl', 'gl.id', '=' ,'item.group_id')
+                                                ->select(DB::raw('MONTHNAME(entry_date) as month, type ,description'))
+                                                ->groupBy(DB::raw("MONTH(entry_date)"))
+                                                ->where('gl.description', 'Current Assets')
+                                                ->whereNull('item.deleted_at')
+                                                ->get();
+                                        $assetcredit = DB::table('journal_item as item')
+                                                ->join('group_list as gl', 'gl.id', '=' ,'item.group_id')
+                                                ->select(DB::raw('MONTHNAME(entry_date) as month, type ,amount'))
+                                                ->whereNull('item.deleted_at')
+                                                ->get();
+        }
+           
+        return view('accounting.dashboard', compact('totalItems','groupItems','start','end','now','lastMonth','thisMonth','thisYear', 'lastYear', 'filter', 'journItemsdate','assetdebit', 'assetcredit','totalItemsdate','grouptotal'));
     }
     public function index(Request $request){
         $dateStart = $request->input('date_start');

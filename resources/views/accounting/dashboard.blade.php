@@ -140,7 +140,6 @@
                     <?php
                     $profit = $revenueTotal - $totalExpense;
                     ?>
-
                     {{-- profit end --}}
                     <span class="text">
                         <h3><?= $pasteProfit = '₱ ' . number_format($profit, 2) ?></h3>
@@ -148,7 +147,7 @@
                     </span>
                 </div>
             </li>
-            
+
             <li>
                 <i class='bx bx-book-content'></i></i>
                 <span class="text">
@@ -183,15 +182,24 @@
         @endif
         {{-- session --}}
         <div class="table-data">
-            
             <div class="card">
                 <div style="width: 20%">
-                    <select class="form-select shadow-sm p-3 mb-5 bg-body rounded asof" aria-label="Default select example">
-                        <option selected>As of January 2023</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
+                    <form action="/accounting" id="dashboard" method="get">
+                        @csrf
+                        <select class="form-select shadow-sm p-3 mb-5 bg-body rounded asof"
+                            aria-label="Default select example" name="option" onchange="this.form.submit()">
+                            <option value="asofnow " {{ $filter == 'asofnow' ? 'selected' : '' }}>As of {{ $now }}
+                            </option>
+                            <option value="this_month" {{ $filter == 'this_month' ? 'selected' : '' }}>This Month:
+                                {{ $thisMonth }} </option>
+                            <option value="last_month" {{ $filter == 'last_month' ? 'selected' : '' }}>Last Month:
+                                {{ $lastMonth }}</option>
+                            <option value="this_year" {{ $filter == 'this_year' ? 'selected' : '' }}>This Year:
+                                {{ $thisYear }}</option>
+                            <option value="last_year" {{ $filter == 'last_year' ? 'selected' : '' }}>Last Year:
+                                {{ $lastYear }}</option>
+                        </select>
+                    </form>
                 </div>
                 <div class="card-body">
                     {{-- charts --}}
@@ -210,6 +218,45 @@
                         </div>
 
                     </div> --}}
+                    {{-- asset --}}
+                    
+                    @foreach ($grouptotal as $group)
+                    <?php
+                    $totaldeb = 0;
+                    $totalcred = 0;
+                    $debit = 0;
+                    $credit = 0;
+                    $asset = 0;
+                    ?>
+                     
+                        @foreach ($totalItemsdate as $items)
+                            @if ($group->month == $items->month)
+                                @if ($items->group->description == 'Current Assets')
+                                    @if ($items->type == 1)
+                                        <?php
+                                        $debit = $items->amount;
+                                        $totaldeb = $totaldeb + $debit;
+                                        ?>
+                                        
+                                    @endif
+                                    @if ($items->type == 2)
+                                        <?php
+                                        $credit = $items->amount;
+                                        $totalcred = $totalcred + $credit;
+                                        ?>
+                                        
+                                    @endif
+                                   
+                                @endif
+                            @endif
+                        @endforeach
+                        <?php
+                        $asset = $totaldeb - $totalcred;
+                        ?>
+                        <div>{{ $group->month }} </div>
+                        <div><?= $asset ?></div>
+                    @endforeach
+                    {{-- asset --}}
                     <div class="row mb-5">
                         <div class="column text-center">
                             <canvas id="assets" class="responsive-canvas"></canvas>
