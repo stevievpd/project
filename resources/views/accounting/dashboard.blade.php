@@ -3,6 +3,7 @@
     @include('layouts.modals')
     <link rel="stylesheet" href="/css/accounting/style.dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <main>
         <div class="head-title">
             <div class="left">
@@ -151,15 +152,15 @@
             <li>
                 <i class='bx bx-book-content'></i></i>
                 <span class="text">
-                    <h3>₱ 2,644,350</h3>
-                    <p>Account Receivable</p>
+                    <h3><?= $pasteProfit = '₱ ' . number_format($bankandcash, 2) ?></h3>
+                    <p>Bank and Cash</p>
                 </span>
             </li>
             <li>
                 <i class='bx bx-user'></i>
                 <span class="text">
-                    <h3>₱ 342,553</h3>
-                    <p>Account Payable</p>
+                    <h3><?= $pasteProfit = '₱ ' . number_format($receivable, 2) ?></h3>
+                    <p>Account Receivable</p>
                 </span>
             </li>
         </ul>
@@ -182,7 +183,7 @@
         @endif
         {{-- session --}}
         <div class="table-data">
-            <div class="card">
+            <div class="">
                 <div style="width: 20%">
                     <form action="/accounting" id="dashboard" method="get">
                         @csrf
@@ -218,207 +219,216 @@
                         </div>
 
                     </div> --}}
-                    {{-- asset --}}
-                    
-                    @foreach ($grouptotal as $group)
-                    <?php
-                    $totaldeb = 0;
-                    $totalcred = 0;
-                    $debit = 0;
-                    $credit = 0;
-                    $asset = 0;
-                    ?>
-                     
-                        @foreach ($totalItemsdate as $items)
-                            @if ($group->month == $items->month)
-                                @if ($items->group->description == 'Current Assets')
-                                    @if ($items->type == 1)
-                                        <?php
-                                        $debit = $items->amount;
-                                        $totaldeb = $totaldeb + $debit;
-                                        ?>
-                                        
-                                    @endif
-                                    @if ($items->type == 2)
-                                        <?php
-                                        $credit = $items->amount;
-                                        $totalcred = $totalcred + $credit;
-                                        ?>
-                                        
-                                    @endif
-                                   
-                                @endif
-                            @endif
-                        @endforeach
-                        <?php
-                        $asset = $totaldeb - $totalcred;
-                        ?>
-                        <div>{{ $group->month }} </div>
-                        <div><?= $asset ?></div>
-                    @endforeach
-                    {{-- asset --}}
-                    <div class="row mb-5">
-                        <div class="column text-center">
-                            <canvas id="assets" class="responsive-canvas"></canvas>
-                            <span class="chartTitle">Assets</span>
 
-                        </div>
-                        <div class="column text-center">
-                            <canvas id="revenue" class="responsive-canvas"></canvas>
-                            <span class="chartTitle">Revenue</span>
-                        </div>
-                    </div>
                     <div class="row">
-                        <div class="column text-center">
-                            <canvas id="bankAndCash" class="responsive-canvas"></canvas>
-                            <span class="chartTitle">Bank and Cash</span>
-
+                        <div class="col-6 ">
+                            <div class="text-center"><h3>Assets</h3></div>
+                            <div class="border shadow p-3 mb-5 bg-body-tertiary rounded"id="currentasset"></div>
                         </div>
-                        <div class="column text-center">
-                            <canvas id="expenses" class="responsive-canvas"></canvas>
-                            <span class="chartTitle">Expenses</span>
+                        <div class="col-6 ">
+                            <div class="text-center"><h3>Revenue</h3></div>
+                            <div class="border shadow p-3 mb-5 bg-body-tertiary rounded" id="revenue"></div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="text-center"><h3>Sample</h3></div>
+                            <div class="border shadow p-3 mb-5 bg-body-tertiary rounded"id="currentasset"></div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="text-center"><h3>Expenses</h3></div>
+                            <div class="border shadow p-3 mb-5 bg-body-tertiary rounded"id="expenses"></div>
                         </div>
                     </div>
-
                 </div>
 
                 {{-- charts --}}
             </div>
         </div>
     </main>
+    {{-- apexcharts --}}
     <script>
-        const asset = document.getElementById('assets');
-        const revenue = document.getElementById('revenue');
-        const bankcash = document.getElementById('bankAndCash');
-        const expense = document.getElementById('expenses');
-        new Chart(asset, {
-            type: 'bar',
-            data: {
-                labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                    'October', 'November', 'December'
-                ],
-                datasets: [{
-                    label: ['Total Assets'],
-                    data: [6543, 13219, 3356, 6545, 6462, 6543, 8569, 8541, 3649, 16547, 3695, 12354],
-                    borderWidth: 1
-                }]
+        // current asset
+        var options = {
+            
+            series: [{
+                name: 'Current Assets',
+                data: [
+                    @foreach ($assetvalue as $item)
+                        {{ $item }},
+                    @endforeach
+                ]
+            }],
+            chart: {
+                type: 'area',
+                height: 350,
             },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        grid: {
-                            display: false
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded',
+                    borderRadius: 10,
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                curve: 'smooth',
+                lineCap: 'butt',
+                colors: undefined,
+                width: 2,
+                dashArray: 0,
+            },
+            xaxis: {
+                categories: [
+                    @foreach ($assetmonth as $item)
+                        '{{ $item }}',
+                    @endforeach
+                ],
+            },
+            yaxis: {
+                title: {
+                    text: ''
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return "P " + val
                     }
                 }
-            }
-        });
-        new Chart(bankcash, {
-            type: 'bar',
-            data: {
-                labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                    'October', 'November', 'December'
-                ],
-                datasets: [{
-                        label: ['Debit'],
-                        data: [6543, 13219, 3356, 6545, 6462, 6543, 8569, 8541, 3649, 16547, 3695, 12354],
-                        borderWidth: 1,
-                        backgroundColor: 'rgba(238, 147, 7, 0.2)',
-                        borderColor: 'rgb(238, 147, 7)',
-                    },
-                    {
-                        label: ['Credit'],
-                        data: [3543, 11219, 6356, 1545, 6262, 6943, 5569, 8541, 3149, 12547, 1695, 10354],
-                        borderWidth: 1,
-                        backgroundColor: 'rgba(128, 128, 128, 0.2)',
-                        borderColor: 'rgb(128, 128, 128)',
-                    },
-                ],
             },
-            options: {
-                scales: {
-                    y: {
 
-                        beginAtZero: false,
-                        grid: {
-                            display: false
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-        new Chart(expense, {
-            type: 'bar',
-            data: {
-                labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                    'October', 'November', 'December'
-                ],
-                datasets: [{
-                    label: ['Expenses'],
-                    data: [6543, 13219, 3356, 6545, 6462, 6543, 8569, 8541, 3649, 16547, 3695, 12354],
-                    borderWidth: 1,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgb(255, 99, 132)',
-                }],
+        };
+        var chart = new ApexCharts(document.querySelector("#currentasset"), options);
+        chart.render();
+        // current asset
 
+        // Revenue
+        var options = {
+            colors : ['#5c9e4f', '#69d173'],
+            series: [{
+                name: 'Revenue',
+                data: [
+                    @foreach ($revenuevalue as $item)
+                        {{ $item }},
+                    @endforeach
+                ]
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
             },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        grid: {
-                            display: false
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-        new Chart(revenue, {
-            type: 'bar',
-            data: {
-                labels: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                    'October', 'November', 'December'
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded',
+                    borderRadius: 10,
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                curve: 'smooth',
+                lineCap: 'butt',
+                colors: undefined,
+                width: 2,
+                dashArray: 0,
+            },
+            xaxis: {
+                categories: [
+                    @foreach ($revenuemonth as $item)
+                        '{{ $item }}',
+                    @endforeach
                 ],
-                datasets: [{
-                    label: ['Revenue'],
-                    data: [6543, 13219, 3356, 6545, 6462, 6543, 8569, 8541, 3649, 16547, 3695, 12354],
-                    borderWidth: 1,
-                    backgroundColor: 'rgb(119, 172, 119, 0.2)',
-                    borderColor: 'rgb(119, 172, 119)',
-                }],
-
             },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        grid: {
-                            display: false
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
+            yaxis: {
+                title: {
+                    text: ''
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return "P " + val
                     }
                 }
-            }
-        });
+            },
+
+        };
+        var chart = new ApexCharts(document.querySelector("#revenue"), options);
+        chart.render();
+        // Revenue
+        // Expenses
+        var options = {
+            colors : ['#b84644', '#4576b5'],
+            series: [{
+                name: 'Revenue',
+                data: [
+                    @foreach ($expensesvalue as $item)
+                        {{ $item }},
+                    @endforeach
+                ]
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded',
+                    borderRadius: 10,
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                curve: 'smooth',
+                lineCap: 'butt',
+                colors: undefined,
+                width: 2,
+                dashArray: 0,
+            },
+            xaxis: {
+                categories: [
+                    @foreach ($expensesmonth as $item)
+                        '{{ $item }}',
+                    @endforeach
+                ],
+            },
+            yaxis: {
+                title: {
+                    text: ''
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return "P " + val
+                    }
+                }
+            },
+
+        };
+        var chart = new ApexCharts(document.querySelector("#expenses"), options);
+        chart.render();
+        // Revenue
     </script>
 @endsection
