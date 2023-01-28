@@ -222,19 +222,27 @@
 
                     <div class="row">
                         <div class="col-6 ">
-                            <div class="text-center"><h3>Assets</h3></div>
+                            <div class="text-center">
+                                <h3>Assets</h3>
+                            </div>
                             <div class="border shadow p-3 mb-5 bg-body-tertiary rounded"id="currentasset"></div>
                         </div>
                         <div class="col-6 ">
-                            <div class="text-center"><h3>Revenue</h3></div>
+                            <div class="text-center">
+                                <h3>Revenue</h3>
+                            </div>
                             <div class="border shadow p-3 mb-5 bg-body-tertiary rounded" id="revenue"></div>
                         </div>
                         <div class="col-6 ">
-                            <div class="text-center"><h3>Sample</h3></div>
-                            <div class="border shadow p-3 mb-5 bg-body-tertiary rounded"id="currentasset"></div>
+                            <div class="text-center">
+                                <h3>Liability</h3>
+                            </div>
+                            <div class="border shadow p-3 mb-5 bg-body-tertiary rounded"id="liability"></div>
                         </div>
                         <div class="col-6 ">
-                            <div class="text-center"><h3>Expenses</h3></div>
+                            <div class="text-center">
+                                <h3>Expenses</h3>
+                            </div>
                             <div class="border shadow p-3 mb-5 bg-body-tertiary rounded"id="expenses"></div>
                         </div>
                     </div>
@@ -248,7 +256,7 @@
     <script>
         // current asset
         var options = {
-            
+
             series: [{
                 name: 'Current Assets',
                 data: [
@@ -298,7 +306,8 @@
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return "P " + val
+                        num = parseFloat(val).toFixed(2).toLocaleString();
+                        return "P " + num
                     }
                 }
             },
@@ -310,7 +319,7 @@
 
         // Revenue
         var options = {
-            colors : ['#5c9e4f', '#69d173'],
+            colors: ['#5c9e4f', '#69d173'],
             series: [{
                 name: 'Revenue',
                 data: [
@@ -320,7 +329,7 @@
                 ]
             }],
             chart: {
-                type: 'bar',
+                type: 'area',
                 height: 350,
             },
             plotOptions: {
@@ -360,7 +369,8 @@
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return "P " + val
+                        num = parseFloat(val).toFixed(2).toLocaleString();
+                        return "P " + num
                     }
                 }
             },
@@ -371,9 +381,9 @@
         // Revenue
         // Expenses
         var options = {
-            colors : ['#b84644', '#4576b5'],
+            colors: ['#b84644', '#4576b5'],
             series: [{
-                name: 'Revenue',
+                name: 'Expenses',
                 data: [
                     @foreach ($expensesvalue as $item)
                         {{ $item }},
@@ -381,7 +391,7 @@
                 ]
             }],
             chart: {
-                type: 'bar',
+                type: 'area',
                 height: 350,
             },
             plotOptions: {
@@ -421,7 +431,8 @@
             tooltip: {
                 y: {
                     formatter: function(val) {
-                        return "P " + val
+                        num = parseFloat(val).toFixed(2).toLocaleString();
+                        return "P " + num
                     }
                 }
             },
@@ -429,6 +440,68 @@
         };
         var chart = new ApexCharts(document.querySelector("#expenses"), options);
         chart.render();
-        // Revenue
+        // Expenses
+        // Liability
+        var options = {
+            colors: ['#E7B85D', '#4576b5'],
+            series: [{
+                name: 'Liabilities',
+                data: [
+                    @foreach ($liabvalue as $item)
+                        {{ $item }},
+                    @endforeach
+                ]
+            }],
+            chart: {
+                type: 'area',
+                height: 350,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded',
+                    borderRadius: 10,
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                curve: 'smooth',
+                lineCap: 'butt',
+                colors: undefined,
+                width: 2,
+                dashArray: 0,
+            },
+            xaxis: {
+                categories: [
+                    @foreach ($liabmonth as $item)
+                        '{{ $item }}',
+                    @endforeach
+                ],
+            },
+            yaxis: {
+                title: {
+                    text: ''
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        num = parseFloat(val).toFixed(2).toLocaleString();
+                        return "P " + num
+                    }
+                }
+            },
+
+        };
+        var chart = new ApexCharts(document.querySelector("#liability"), options);
+        chart.render();
+        // Liability
     </script>
 @endsection

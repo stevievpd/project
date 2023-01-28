@@ -27,7 +27,6 @@
                                     style="opacity: 50%;" readonly="true">
                                 <label for="firstName">Employee Code</label>
                             </div>
-
                             <div class="row">
                                 <div class="form-floating mb-3 col-4">
                                     <input type="text" class="form-control" name="last_name" required>

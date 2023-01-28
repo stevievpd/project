@@ -46,6 +46,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->date('entry_date');
             $table->string('partner');
+            $table->string('journal')->index();
             $table->softDeletes();
 
             $table->timestamps();
@@ -61,6 +62,7 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('group_id');
             $table->string('journ_code');
+            $table->string('journal');
             $table->float('amount', 10, 2);
             $table->tinyInteger('type');
             $table->softDeletes();
@@ -72,6 +74,7 @@ return new class extends Migration
             $table->foreign('account_id')->references('id')->on('account_list');
             $table->foreign('group_id')->references('id')->on('group_list');
             $table->foreign('journ_code')->references('entry_code')->on('journal_entry');
+            $table->foreign('journal')->references('journal')->on('journal_entry');
         });
 
         Schema::create('bank_meta_data', function (Blueprint $table) {

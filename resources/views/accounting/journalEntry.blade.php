@@ -139,8 +139,8 @@
                                                     data-id="{{ $journalEntry->id }}"><i
                                                         class="fa-solid fa-file-pen"></i></button>
                                                 <button class="dropdownBtn btnDeleteJourn"
-                                                    data-del="{{ $journalEntry->id }}"
-                                                    data-code="{{ $journalEntry->entry_code }}"><i
+                                                    data-del="{{$journalEntry->id}}"
+                                                    data-code="{{$journalEntry->entry_code}}"><i
                                                         class="fa-solid fa-trash"></i></i></button>
                                             </div>
                                         </ul>
@@ -185,6 +185,8 @@
             // Load the content from the link's href attribute
             $('.main-data').load($(this).attr('href'));
         });
+        
+        
     </script>
     {{-- DATA TABLE --}}
     <script>
@@ -232,15 +234,15 @@
         })
         $(document).ready(function() {
 
-            $('.btnDeleteJourn').on('click', function() {
-
+        $('#journalTable tbody').on('click', '.btnDeleteJourn', function () {
                 const journ_id = $(this).attr("data-del");
                 const journ_code = $(this).attr("data-code");
                 $('.journId').val(journ_id);
                 $('.journCode').val(journ_code);
                 $("#code").find("p").html(journ_code);
                 $('#deleteJournalModal').modal('show');
-            });
+        });
+            
 
             //edit journal
             $(document).on('click', '.btnEditJournal', function() {
