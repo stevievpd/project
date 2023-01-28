@@ -34,18 +34,389 @@ class accountingController extends Controller
         $bankCount = $bankAccount->whereNull('deleted_at')->count();
         return view('accounting.account', compact('accountList', 'groupList', 'bankMeta', 'bankAccount', 'accountCount', 'groupCount','bankCount'));
     }
-    public function dashboard(){
+    public function dashboard(Request $request){
+        $dateFilter = $request->input('option');
+        if(!empty($dateFilter)){
+            if($dateFilter == 'this_month'){
+                $start = Carbon::now()->startOfMonth()->toDateString();
+                $end = Carbon::now()->endOfMonth()->toDateString();
 
-        $start = Carbon::now()->startOfMonth()->toDateString();
-        $end = Carbon::now()->endOfMonth()->toDateString();
-        $totalItems = journal_item::with(['account_list','group'])
-        ->whereBetween('entry_date', [$start, $end])
-                 ->get()->whereNull('deleted_at');
-        $groupItems = journal_item::with(['account_list','group'])
-        ->whereBetween('entry_date', [$start, $end])
-                    ->groupBy('account_id')
-                    ->get()->whereNull('deleted_at');
-        return view('accounting.dashboard', compact('totalItems','groupItems','start','end'));
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->whereNull('deleted_at')->get();
+                $groupItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->groupBy('account_id')
+                            ->whereNull('deleted_at')->get();
+                $filter = $dateFilter;
+            }
+            if($dateFilter == 'asofnow'){
+                $start = journal_item::with(['account_list','group'])
+                 ->min('entry_date');
+                 $end = journal_item::with(['account_list','group'])
+                 ->whereNull('deleted_at')
+                 ->max('entry_date');
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                
+                ->whereBetween('entry_date', [$start, $end])
+                     ->whereNull('deleted_at')->get();
+                    $groupItems = journal_item::with(['account_list','group'])
+             ->whereBetween('entry_date', [$start, $end])
+                        ->groupBy('account_id')
+                        ->whereNull('deleted_at')->get();
+
+             $filter = $dateFilter; 
+            }
+            if($dateFilter == 'last_month'){
+                $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->whereNull('deleted_at')->get();
+                $groupItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->groupBy('account_id')
+                            ->whereNull('deleted_at')->get();
+                $filter = $dateFilter;
+            }
+            if($dateFilter == 'this_year'){
+                $start = Carbon::now()->startOfYear()->toDateString();
+                $end = Carbon::now()->endOfYear()->toDateString();
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->whereNull('deleted_at')->get();
+                $groupItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->groupBy('account_id')
+                            ->whereNull('deleted_at')->get();
+                $filter = $dateFilter;
+            }
+            if($dateFilter == 'last_year'){
+                $start = Carbon::now()->startOfYear()->subYear()->toDateString();
+                $end = Carbon::now()->endOfYear()->subYear()->toDateString();
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->whereNull('deleted_at')->get();
+                $groupItems = journal_item::with(['account_list','group'])
+                            ->whereBetween('entry_date', [$start, $end])
+                            ->groupBy('account_id')
+                            ->whereNull('deleted_at')->get();
+                $filter = $dateFilter;
+
+                // for bank and cash
+            $totalbankcash = 0;
+            foreach ($totalItems as $item){
+                $debit = 0;
+                $credit = 0;
+                $bankcash = 0;
+                               if ($item->group->group_name == 'Bank and Cash'){
+                                    if ($item->type == 2){
+                                        $credit = $item->amount;
+                                    }
+                                    if ($item->type == 1){
+                                        $debit = $item->amount;   
+                                    }
+                                    $bankcash = $debit - $credit;
+                                    $totalbankcash = $totalbankcash + $bankcash;   
+                               }
+            }
+            $bankandcash = $totalbankcash; //pass to view
+            // for bank and cash
+            // for Receivables
+            $totalreceivable = 0;
+            foreach ($totalItems as $item){
+                $debit = 0;
+                $credit = 0;
+                $receive = 0;
+                               if ($item->group->group_name == 'Receivable'){
+                                    if ($item->type == 2){
+                                        $credit = $item->amount;
+                                    }
+                                    if ($item->type == 1){
+                                        $debit = $item->amount;   
+                                    }
+                                    $receive = $debit - $credit;
+                                    $totalreceivable = $totalreceivable + $receive;   
+                               }
+            }
+            $receivable = $totalreceivable; //pass to view
+            // for Receivables
+              $totalItemsdate = journal_item::with(['account_list','entry','group'])
+                                ->whereBetween('entry_date', [$start, $end])
+                                ->select(DB::raw('*, MONTHNAME(entry_date) as month'))
+                                ->whereNull('deleted_at')->get();
+              $grouptotal = journal_item::with(['account_list','entry','group'])
+                                ->whereBetween('entry_date', [$start, $end])
+                                ->select(DB::raw('*, MONTHNAME(entry_date) as month'))
+                                ->groupBY('month')
+                                ->whereNull('deleted_at')->get();
+            // foreach Current Asset
+            foreach($grouptotal as $group){
+                $totaldeb = 0;
+                $totalcred = 0;
+                $debit = 0;
+                $credit = 0;
+                $asset = 0;
+                foreach($totalItemsdate as $items){
+                    if($group->month == $items->month){
+                        if ($items->group->description == 'Current Assets'){
+                            if ($items->type == 1){
+                                $debit = $items->amount;
+                                $totaldeb = $totaldeb + $debit;
+                            }
+                            if ($items->type == 2){
+                                $credit = $items->amount;
+                                $totalcred = $totalcred + $credit;
+                            }
+                        }
+                    }
+                }
+                $asset = $totaldeb - $totalcred;
+                $assetmonth[] = $group->month;
+                $assetvalue[] =$asset;
+            }
+            // foreach
+            // foreach Revenue
+            foreach($grouptotal as $group){
+                $totaldeb = 0;
+                $totalcred = 0;
+                $debit = 0;
+                $credit = 0;
+                $revenue = 0;
+                foreach($totalItemsdate as $items){
+                    if($group->month == $items->month){
+                        if ($items->group->description == 'Revenue'){
+                            if ($items->type == 1){
+                                $debit = $items->amount;
+                                $totaldeb = $totaldeb + $debit;
+                            }
+                            if ($items->type == 2){
+                                $credit = $items->amount;
+                                $totalcred = $totalcred + $credit;
+                            }
+                        }
+                    }
+                }
+                $revenue = $totalcred - $totaldeb;
+                $revenuemonth[] = $group->month;
+                $revenuevalue[] = $revenue;
+            }
+            // foreach
+            // foreach Expenses
+            foreach($grouptotal as $group){
+                $totaldeb = 0;
+                $totalcred = 0;
+                $debit = 0;
+                $credit = 0;
+                $expenses = 0;
+                foreach($totalItemsdate as $items){
+                    if($group->month == $items->month){
+                        if ($items->group->description == 'Expenses'){
+                            if ($items->type == 1){
+                                $debit = $items->amount;
+                                $totaldeb = $totaldeb + $debit;
+                            }
+                            if ($items->type == 2){
+                                $credit = $items->amount;
+                                $totalcred = $totalcred + $credit;
+                            }
+                        }
+                    }
+                }
+                $expenses = $totaldeb - $totalcred;
+                $expensesmonth[] = $group->month;
+                $expensesvalue[] = $expenses;
+            }
+            // foreach
+            }
+        }else{
+                $start = journal_item::with(['account_list','group'])
+                 ->min('entry_date');
+                 $end = journal_item::with(['account_list','group'])
+                 ->whereNull('deleted_at')
+                 ->max('entry_date');
+
+                $now = Carbon::now()->format('F Y');
+                $asOfnow = Carbon::parse($now)->format('F Y');
+                $thisYear = Carbon::parse($now)->format('Y');
+                $lastYear = Carbon::parse($now)->subYear()->format('Y');
+                $thisMonth = Carbon::parse($now)->format('F');
+                $lastMonth = Carbon::parse($now)->subMonth()->format('F');
+
+                $totalItems = journal_item::with(['account_list','group'])
+                
+                ->whereBetween('entry_date', [$start, $end])
+                     ->whereNull('deleted_at')->get();
+                    $groupItems = journal_item::with(['account_list','group'])
+                ->whereBetween('entry_date', [$start, $end])
+                        ->groupBy('account_id')
+                        ->whereNull('deleted_at')->get();
+             $filter = $dateFilter; 
+            // for bank and cash
+            $totalbankcash = 0;
+            foreach ($totalItems as $item){
+                $debit = 0;
+                $credit = 0;
+                $bankcash = 0;
+                               if ($item->group->group_name == 'Bank and Cash'){
+                                    if ($item->type == 2){
+                                        $credit = $item->amount;
+                                    }
+                                    if ($item->type == 1){
+                                        $debit = $item->amount;   
+                                    }
+                                    $bankcash = $debit - $credit;
+                                    $totalbankcash = $totalbankcash + $bankcash;   
+                               }
+            }
+            $bankandcash = $totalbankcash; //pass to view
+            // for bank and cash
+            // for Receivables
+            $totalreceivable = 0;
+            foreach ($totalItems as $item){
+                $debit = 0;
+                $credit = 0;
+                $receive = 0;
+                               if ($item->group->group_name == 'Receivable'){
+                                    if ($item->type == 2){
+                                        $credit = $item->amount;
+                                    }
+                                    if ($item->type == 1){
+                                        $debit = $item->amount;   
+                                    }
+                                    $receive = $debit - $credit;
+                                    $totalreceivable = $totalreceivable + $receive;   
+                               }
+            }
+            $receivable = $totalreceivable; //pass to view
+            // for Receivables
+              $totalItemsdate = journal_item::with(['account_list','entry','group'])
+                                ->select(DB::raw('*, MONTHNAME(entry_date) as month'))
+                                ->whereNull('deleted_at')->get();
+              $grouptotal = journal_item::with(['account_list','entry','group'])
+                                ->select(DB::raw('*, MONTHNAME(entry_date) as month'))
+                                ->groupBY('month')
+                                ->whereNull('deleted_at')->get();
+            // foreach Current Asset
+            foreach($grouptotal as $group){
+                $totaldeb = 0;
+                $totalcred = 0;
+                $debit = 0;
+                $credit = 0;
+                $asset = 0;
+                foreach($totalItemsdate as $items){
+                    if($group->month == $items->month){
+                        if ($items->group->description == 'Current Assets'){
+                            if ($items->type == 1){
+                                $debit = $items->amount;
+                                $totaldeb = $totaldeb + $debit;
+                            }
+                            if ($items->type == 2){
+                                $credit = $items->amount;
+                                $totalcred = $totalcred + $credit;
+                            }
+                        }
+                    }
+                }
+                $asset = $totaldeb - $totalcred;
+                $assetmonth[] = $group->month;
+                $assetvalue[] =$asset;
+            }
+            // foreach
+            // foreach Revenue
+            foreach($grouptotal as $group){
+                $totaldeb = 0;
+                $totalcred = 0;
+                $debit = 0;
+                $credit = 0;
+                $revenue = 0;
+                foreach($totalItemsdate as $items){
+                    if($group->month == $items->month){
+                        if ($items->group->description == 'Revenue'){
+                            if ($items->type == 1){
+                                $debit = $items->amount;
+                                $totaldeb = $totaldeb + $debit;
+                            }
+                            if ($items->type == 2){
+                                $credit = $items->amount;
+                                $totalcred = $totalcred + $credit;
+                            }
+                        }
+                    }
+                }
+                $revenue = $totalcred - $totaldeb;
+                $revenuemonth[] = $group->month;
+                $revenuevalue[] = $revenue;
+            }
+            // foreach
+            // foreach Expenses
+            foreach($grouptotal as $group){
+                $totaldeb = 0;
+                $totalcred = 0;
+                $debit = 0;
+                $credit = 0;
+                $expenses = 0;
+                foreach($totalItemsdate as $items){
+                    if($group->month == $items->month){
+                        if ($items->group->description == 'Expenses'){
+                            if ($items->type == 1){
+                                $debit = $items->amount;
+                                $totaldeb = $totaldeb + $debit;
+                            }
+                            if ($items->type == 2){
+                                $credit = $items->amount;
+                                $totalcred = $totalcred + $credit;
+                            }
+                        }
+                    }
+                }
+                $expenses = $totaldeb - $totalcred;
+                $expensesmonth[] = $group->month;
+                $expensesvalue[] = $expenses;
+            }
+            // foreach
+        }
+           
+        return view('accounting.dashboard', compact('totalItems','groupItems','start','end','now','lastMonth','thisMonth','thisYear', 'lastYear', 'filter','totalItemsdate','grouptotal','assetmonth','assetvalue','revenuemonth','revenuevalue','expensesmonth','expensesvalue','bankandcash','receivable'));
     }
     public function index(Request $request){
         $dateStart = $request->input('date_start');
