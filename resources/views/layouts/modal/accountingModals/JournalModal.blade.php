@@ -79,7 +79,7 @@
                                     <label for="" class="text-muted">Transaction Title</label>
                                 </div>
                                 <div class="col-6 form-floating">
-                                    <input type="text" class="form-control user" id="username"
+                                    <input type="text" class="form-control user" id="username" name="added_by"
                                         value="{{ Auth::user()->name }}" readonly>
                                     <label for="account" class="">Creator</label>
                                 </div>
@@ -294,7 +294,7 @@
                                     <label for="" class="text-muted">Transaction Title</label>
                                 </div>
                                 <div class="col-6 form-floating">
-                                    <input type="text" class="form-control user" id="username"
+                                    <input type="text" class="form-control user" id="username" name="added_by"
                                         value="{{ Auth::user()->name }}" readonly>
                                     <label for="account" class="">Creator</label>
                                 </div>
@@ -310,11 +310,9 @@
                                     <label for="" class="text-muted">Partner</label>
                                 </div>
                                 <div class="col-6 form-floating">
-                                    <select class="journal form-control" name="journal" id="">
-                                        <option value="Miscellaneous">Miscellaneous Operations</option>
-                                        <option value="Invoices">Customer Invoices</option>
-                                    </select>
-                                    <label for="" class="text-muted">Journal</label>
+                                    <input type="text" class="form-control journ" id="journ" name="journal"
+                                         readonly>
+                                    <label for="account" class="text-muted">Journal <em>*This Cannot Be Change</em></label>
                                 </div>
 
 

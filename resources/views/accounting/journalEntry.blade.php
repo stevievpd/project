@@ -126,7 +126,7 @@
                                 <td style="border-bottom:none;"></td>
                                 <td style="border-bottom:none;"></td>
                                 <td class="text-center" style="border-bottom:none;">
-                                    {{ $journalEntry->user->name }}</td>
+                                    {{ $journalEntry->added_by }}</td>
                                 <td class="text-center" style="border-bottom:none;">
                                     <div class="dropdown ">
                                         <button class="btn btn-sm btn-secondary dropdown-toggle " type="button"
@@ -256,6 +256,7 @@
                     $('#titleEdit').val(data.journ.title);
                     $('#descriptEdit').val(data.journ.description);
                     $('#partnerEdit').val(data.journ.partner);
+                    $('#journ').val(data.journ.journal);
 
                     var entry = data.journ.entry_code;
 

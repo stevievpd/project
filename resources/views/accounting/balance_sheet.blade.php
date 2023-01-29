@@ -531,6 +531,7 @@
                             $revenuedebit = 0;
                             $debit = 0;
                             $credit = 0;
+                            $rev = 0;
                             ?>
                             @foreach ($totalItems as $item)
                                 @if ($item->group->description == 'Revenue')
@@ -545,7 +546,8 @@
                                         ?>
                                     @endif
                                     <?php
-                                    $totalrev = $credit - $debit;
+                                    $rev = $credit - $debit;
+                                    $totalrev = $totalrev + $rev;
                                     ?>
                                 @endif
                             @endforeach

@@ -16,6 +16,7 @@ class journal_item extends Model
         'journ_code',
         'amount',
         'type',
+        'journal',
     ];
 
     public function entry()

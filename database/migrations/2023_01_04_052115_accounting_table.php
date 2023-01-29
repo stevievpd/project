@@ -40,7 +40,7 @@ return new class extends Migration
 
         Schema::create('journal_entry', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->string('added_by');
             $table->string('entry_code')->index();
             $table->string('title');
             $table->string('description')->nullable();
@@ -52,7 +52,7 @@ return new class extends Migration
             $table->timestamps();
 
             // foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
+            // $table->foreign('user_id')->references('id')->on('users');
         });
 
         Schema::create('journal_item', function (Blueprint $table) {

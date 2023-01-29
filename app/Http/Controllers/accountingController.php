@@ -470,6 +470,8 @@ class accountingController extends Controller
                                     ->groupBY('month')
                                     ->whereNull('deleted_at')->get();
                 // foreach Current Asset
+                $assetmonth[] = 0;
+                $assetvalue[] = 0;
                 foreach($grouptotal as $group){
                     $totaldeb = 0;
                     $totalcred = 0;
@@ -496,6 +498,8 @@ class accountingController extends Controller
                 }
                 // foreach
                 // foreach Revenue
+                $revenuemonth[] = 0;
+                $revenuevalue[] = 0;
                 foreach($grouptotal as $group){
                     $totaldeb = 0;
                     $totalcred = 0;
@@ -522,6 +526,8 @@ class accountingController extends Controller
                 }
                 // foreach
                 // foreach Expenses
+                $expensesmonth[] = 0;
+                $expensesvalue[] = 0;
                 foreach($grouptotal as $group){
                     $totaldeb = 0;
                     $totalcred = 0;
@@ -1127,12 +1133,12 @@ class accountingController extends Controller
         {
             $from = date($dateStart);
             $to = date($dateEnd);
-            $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
+            $journalEntry = journal_entry::with(['journal_item' => function($acc){
                     $acc
                     ->with('account_list')->whereNull('deleted_at');
                     }])->whereBetween('entry_date', [$from, $to])->orderBy('entry_date', 'ASC')->get()->whereNull('deleted_at');
         }else{
-            $journalEntry = journal_entry::with(['user','journal_item' => function($acc){
+            $journalEntry = journal_entry::with(['journal_item' => function($acc){
                 $acc
                 ->with('account_list');
                 }])->orderBy('entry_date', 'ASC')->get()->whereNull('deleted_at');
@@ -1157,22 +1163,39 @@ class accountingController extends Controller
         $items = new journal_item;
         $code = $request->input('entry_code');
         $date = $request->input('entry_date');
-        $journ = $request->input('journal');
-        $journ->user_id     = Auth::user()->id;
-        $journ->entry_code  = $request->input('entry_code');
-        $journ->title       = $request->input('title');
-        $journ->description = $request->input('description');
-        $journ->entry_date  = $request->input('entry_date');
-        $journ->journal     = $request->input('journal');
-        $partnerValidate = $request->input('partner');
+        $journal = $request->input('journal');
+        $partnerValidate   = $request->input('partner');
+        // $journ->added_by     = $request->input('added_by')
+        // $journ->entry_code  = $request->input('entry_code');
+        // $journ->title       = $request->input('title');
+        // $journ->description = $request->input('description');
+        // $journ->entry_date  = $request->input('entry_date');
+        // $journ->journal     = $request->input('journal');
+        // $partnerValidate   = $request->input('partner');
 
+        // if(!empty($partnerValidate)){
+        //     $journ->partner     = $partnerValidate; 
+        // }
+        // else{
+        //     $journ->partner   = 'Unknown Partner'; 
+        // }
+        // $journ->save();
         if(!empty($partnerValidate)){
-            $journ->partner     = $partnerValidate; 
+            $part = $partnerValidate; 
         }
         else{
-            $journ->partner   = 'Unknown Partner'; 
+            $part = 'Unknown Partner'; 
         }
-        $journ->save();
+        journal_entry::create([
+            'added_by'    =>$request->added_by,
+            'entry_code'  =>$request->entry_code,
+            'title'       =>$request->title,
+            'description' =>$request->description,
+            'entry_date'  =>$request->entry_date,
+            'journal'     =>$request->journal,
+            'partner'    =>$part,
+            
+        ]);
 
         foreach($request->account_ids as $key => $value){
             journal_item::create([
@@ -1180,12 +1203,12 @@ class accountingController extends Controller
                 'group_id'   => $request->group_ids[$key],
                 'journ_code' => $code,
                 'entry_date' => $date,
-                'journal'    => $journ,
+                'journal'    => $request->journal,
                 'amount'     => $request->amounts[$key],
                 'type'       => $request->amountType[$key],
             ]);
         }
-        $msg = "New Journal Entry has been created.";
+        $msg = "New Journal Entry '$code' has been created.";
         return redirect()->back()->with(['msg' => $msg]);
     }
     public function generalLedger(Request $request){
@@ -1305,14 +1328,14 @@ class accountingController extends Controller
         {
             $from = date($dateStart);
             $to = date($dateEnd);
-            $partner = journal_entry::with(['user','journal_item' => function($acc){
+            $partner = journal_entry::with(['journal_item' => function($acc){
                 $acc
                     ->with('account_list');
                     }])->whereNull('deleted_at')
                     ->groupBy('partner')
                     ->whereBetween('entry_date', [$from, $to])->get();
         }else{
-            $partner = journal_entry::with(['user','journal_item' => function($acc){
+            $partner = journal_entry::with(['journal_item' => function($acc){
                 $acc
                     ->with('account_list');
                     }])
@@ -1376,7 +1399,7 @@ class accountingController extends Controller
 
         journal_entry::where('id', $id)
                        ->update([
-                        'user_id' => $user_id,
+                        'added_by' => $request->added_by,
                         'title' => $title,
                         'description' => $description,
                         'entry_date' => $entry_date,
@@ -1393,6 +1416,7 @@ class accountingController extends Controller
                 'group_id'   => $request->group_idsEdit[$key],
                 'journ_code' => $code,
                 'entry_date' => $entry_date,
+                'journal'    => $request->journal,
                 'amount'     => $request->amountsEdit[$key],
                 'type'       => $request->amountTypeEdit[$key],
             ]);
