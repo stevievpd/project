@@ -210,6 +210,11 @@
                     },
                     {
                         extend: 'excelHtml5',
+                        customize: function(xlsx) {
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                            $('row c[r^="D"]', sheet).attr('s', '52');
+                            $('row c[r^="E"]', sheet).attr('s', '52');
+                        },
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5]
                         }
