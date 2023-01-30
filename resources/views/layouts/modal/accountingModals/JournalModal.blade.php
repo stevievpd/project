@@ -1,3 +1,8 @@
+<style>
+    .form-control {
+        border-bottom-style: groove;
+    }
+</style>
 {{-- <!-- Start error modal --> --}}
 <div class="modal fade" id="errorModalAccount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     style="z-index: 4000">
@@ -54,8 +59,8 @@
                         <div class="row py-2 align-items-start">
                             <div class="col input-group">
                                 <span class="input-group-text" id="basic-addon1">JOURNAL CODE</span>
-                                <input type="text" class="form-control code text-dark bg bg-white" name="entry_code"
-                                    value="JRE-<?php echo (new DateTime())->format('mY'); ?>-00{{ $journCount }}" style="--bs-text-opacity: .5;"
+                                <input type="text" class="form-control code text-dark bg bg-white" name="entry_code" id="sample"
+                                    value="MSC-<?php echo (new DateTime())->format('mY'); ?>-00{{ $journCount }}" style="--bs-text-opacity: .5;"
                                     readonly>
                             </div>
                             <div class="col input-group">
@@ -74,7 +79,7 @@
                                     <label for="" class="text-muted">Transaction Title</label>
                                 </div>
                                 <div class="col-6 form-floating">
-                                    <input type="text" class="form-control user" id="username"
+                                    <input type="text" class="form-control user" id="username" name="added_by"
                                         value="{{ Auth::user()->name }}" readonly>
                                     <label for="account" class="">Creator</label>
                                 </div>
@@ -88,8 +93,13 @@
                                         placeholder="Partner">
                                     <label for="" class="text-muted">Partner</label>
                                 </div>
-
-
+                                <div class="col-6 form-floating">
+                                    <select class="journal form-control" onchange="load(this)" name="journal" id="">
+                                        <option value="Miscellaneous" data-id="MSC">Miscellaneous Operations</option>
+                                        <option value="Invoices" data-id="INV">Customer Invoices</option>
+                                    </select>
+                                    <label for="" class="text-muted">Journal</label>
+                                </div>
                             </div>
                             <div class="col-12 g-2 py-2 row shadow-lg p-2 mb-3 bg-body rounded border">
                                 <div class="journTitle">
@@ -101,7 +111,8 @@
                                         <option value="" style="color:red;">Select</option>
                                         @foreach ($accountList as $account)
                                             <option value="{{ $account->id }}|{{ $account->type }}"
-                                                style="color:rgb(100, 100, 100);">{{$account->code}} {{ $account->account_name }}</option>
+                                                style="color:rgb(100, 100, 100);">{{ $account->code }}
+                                                {{ $account->account_name }}</option>
                                         @endforeach
                                     </select>
                                     <label for="account name" class="">Account Name</label>
@@ -122,7 +133,7 @@
                                 </div>
 
                                 <div class="col-6 form-floating">
-                                    <select class="form-control type" name="type" id="typeId">
+                                    <select class="form-control type" onchange="myFunction(this)" name="type" id="typeId">
                                         <option value="" style="color:red;">Select</option>
                                         <option value="1" style="color:rgb(100, 100, 100);">DEBIT</option>
                                         <option value="2" style="color:rgb(100, 100, 100);">CREDIT</option>
@@ -283,7 +294,7 @@
                                     <label for="" class="text-muted">Transaction Title</label>
                                 </div>
                                 <div class="col-6 form-floating">
-                                    <input type="text" class="form-control user" id="username"
+                                    <input type="text" class="form-control user" id="username" name="added_by"
                                         value="{{ Auth::user()->name }}" readonly>
                                     <label for="account" class="">Creator</label>
                                 </div>
@@ -298,7 +309,12 @@
                                         id="partnerEdit" placeholder="Partner">
                                     <label for="" class="text-muted">Partner</label>
                                 </div>
-                               
+                                <div class="col-6 form-floating">
+                                    <input type="text" class="form-control journ" id="journ" name="journal"
+                                         readonly>
+                                    <label for="account" class="text-muted">Journal <em>*This Cannot Be Change</em></label>
+                                </div>
+
 
                             </div>
                             <div class="col-12 g-2 py-2 row shadow-lg p-2 mb-3 bg-body rounded border">
@@ -420,3 +436,8 @@
     </div>
 </div>
 {{-- <!--END modal EDIT JOURNAL ENTRY --> --}}
+<script>
+    function load(e){
+        document.getElementById("sample").value = e.options[e.selectedIndex].getAttribute('data-id')+'-<?php echo (new DateTime())->format('mY'); ?>-00{{ $journCount }}';
+    }
+</script>

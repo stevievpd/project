@@ -14,20 +14,21 @@ class journal_entry extends Model
     use HasFactory;
     protected $table = 'journal_entry';
     protected $fillable = [
-        'user_id',
+        'added_by',
         'entry_code',
         'title',
         'description',
         'entry_date',
         'partner',
+        'journal',
     ];
 
     public function journal_item()
     {
         return $this->hasMany(journal_item::class,'journ_code', 'entry_code');
     }
-    public function user()
-    {
-        return $this->hasOne('App\Models\User'::class, 'id', 'user_id');
-    }
+    // public function user()
+    // {
+    //     return $this->hasOne('App\Models\User'::class, 'id', 'user_id');
+    // }
 }

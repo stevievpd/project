@@ -85,7 +85,7 @@
                         <?= date('F d, Y', strtotime($dateEnd)) ?></b></p>
             @endif
             <div class="order">
-                <table id="journalTable" class="table">
+                <table id="trialBalTable" class="table">
                     <thead>
                         <tr>
                             <th class="text-center"></th>
@@ -117,7 +117,8 @@
                             $totalcredPaste = 0;
                             ?>
                             <tr>
-                                <td scope="col">{{$item->account_list->code}} {{ $item->account_list->account_name }}</td>
+                                <td scope="col">{{ $item->account_list->code }} {{ $item->account_list->account_name }}
+                                </td>
                                 @foreach ($totalItems as $totalJourn)
                                     <?php
                                     if ($item->account_list->account_name == $totalJourn->account_list->account_name) {
@@ -144,7 +145,6 @@
                                 } else {
                                     $totalcredPaste = '₱ ' . number_format($totalcredPaste, 2);
                                 }
-                                
                                 ?>
                                 <td scope="col" class="text-end">
                                     <?= $totaldebPaste ?></td>
@@ -211,7 +211,7 @@
             window.history.replaceState(null, null, window.location.href);
         }
         $(document).ready(function() {
-            $('#journalTable').DataTable({
+            $('#trialBalTable').DataTable({
                 bSort: false,
                 pageLength: 20,
                 lengthMenu: [
@@ -227,14 +227,24 @@
                     },
                     {
                         extend: 'excelHtml5',
+                        customize: function(xlsx) {
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            $('row c[r^="B"]', sheet).attr('s', '52');
+                            $('row c[r^="C"]', sheet).attr('s', '52');
+                            $('row c[r^="D"]', sheet).attr('s', '52');
+                            $('row c[r^="E"]', sheet).attr('s', '52');
+                        },
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5]
+                            columns: [0, 1, 2, 3, 4]
                         }
                     },
+
                     {
                         extend: 'pdfHtml5',
+
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5]
+                            columns: [0, 1, 2, 3, 4]
                         }
                     },
                     // 'colvis'

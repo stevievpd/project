@@ -38,6 +38,7 @@
                     <div class="col-md-12 form-floating">
                         <select class="form-control type" onchange="myFunction(this)" name="type" required>
                             <option disabled style="color:#585257; font-size:17px; font-weight:700">Assets</option>
+                            <option value=""></option>
                             @foreach ($groupList as $type)
                                 @if ($type->status == 1)
                                     <option value="{{ $type->id }}" data-status="{{ $type->status }}"

@@ -126,7 +126,7 @@
                                 <td style="border-bottom:none;"></td>
                                 <td style="border-bottom:none;"></td>
                                 <td class="text-center" style="border-bottom:none;">
-                                    {{ $journalEntry->user->name }}</td>
+                                    {{ $journalEntry->added_by }}</td>
                                 <td class="text-center" style="border-bottom:none;">
                                     <div class="dropdown ">
                                         <button class="btn btn-sm btn-secondary dropdown-toggle " type="button"
@@ -139,8 +139,8 @@
                                                     data-id="{{ $journalEntry->id }}"><i
                                                         class="fa-solid fa-file-pen"></i></button>
                                                 <button class="dropdownBtn btnDeleteJourn"
-                                                    data-del="{{ $journalEntry->id }}"
-                                                    data-code="{{ $journalEntry->entry_code }}"><i
+                                                    data-del="{{$journalEntry->id}}"
+                                                    data-code="{{$journalEntry->entry_code}}"><i
                                                         class="fa-solid fa-trash"></i></i></button>
                                             </div>
                                         </ul>
@@ -185,6 +185,8 @@
             // Load the content from the link's href attribute
             $('.main-data').load($(this).attr('href'));
         });
+        
+        
     </script>
     {{-- DATA TABLE --}}
     <script>
@@ -208,6 +210,11 @@
                     },
                     {
                         extend: 'excelHtml5',
+                        customize: function(xlsx) {
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                            $('row c[r^="D"]', sheet).attr('s', '52');
+                            $('row c[r^="E"]', sheet).attr('s', '52');
+                        },
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5]
                         }
@@ -232,15 +239,15 @@
         })
         $(document).ready(function() {
 
-            $('.btnDeleteJourn').on('click', function() {
-
+        $('#journalTable tbody').on('click', '.btnDeleteJourn', function () {
                 const journ_id = $(this).attr("data-del");
                 const journ_code = $(this).attr("data-code");
                 $('.journId').val(journ_id);
                 $('.journCode').val(journ_code);
                 $("#code").find("p").html(journ_code);
                 $('#deleteJournalModal').modal('show');
-            });
+        });
+            
 
             //edit journal
             $(document).on('click', '.btnEditJournal', function() {
@@ -254,6 +261,7 @@
                     $('#titleEdit').val(data.journ.title);
                     $('#descriptEdit').val(data.journ.description);
                     $('#partnerEdit').val(data.journ.partner);
+                    $('#journ').val(data.journ.journal);
 
                     var entry = data.journ.entry_code;
 
